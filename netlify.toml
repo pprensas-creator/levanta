@@ -1,4 +1,2 @@
 [build]
   publish = "."
-  command = ""
-  base = ""
