@@ -4,6 +4,9 @@
 [functions]
   node_bundler = "esbuild"
 
+[edge_functions]
+  directory = "edge-functions"
+
 [[edge_functions]]
   path = "/api/proxy"
   function = "proxy"
