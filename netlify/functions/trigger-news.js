@@ -25,18 +25,33 @@ export default async (req) => {
     });
 
     const data = await resp.json();
+
+    // Si hay error de API devuélvelo completo
+    if (data.error) {
+      return new Response(JSON.stringify({ error: data.error }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
     const match = text.match(/\[[\s\S]*\]/);
-    if (!match) return new Response(JSON.stringify({ error: 'No JSON', raw: text.slice(0,200) }), { status: 500, headers: { 'Content-Type': 'application/json' } });
-    const news = JSON.parse(match[0]);
+    if (!match) {
+      return new Response(JSON.stringify({ error: 'No JSON', raw: text.slice(0,500), stop_reason: data.stop_reason }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
+    const news = JSON.parse(match[0]);
     const store = getStore({ name: 'levanta-news', consistency: 'strong' });
     await store.set(today, JSON.stringify({ news, date: today, generated: new Date().toISOString() }));
 
     return new Response(JSON.stringify({ ok: true, date: today, count: news.length }), {
       headers: { 'Content-Type': 'application/json' }
     });
+
   } catch(e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ error: e.message, stack: e.stack?.slice(0,300) }), {
+      status: 500, headers: { 'Content-Type': 'application/json' }
+    });
   }
 };
