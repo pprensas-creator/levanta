@@ -50,7 +50,7 @@ export default async (req) => {
           </div>
           <div style="padding:32px;background:#fff;border:1px solid #e2e8d8">
             <h2 style="color:#1a4f82">Hola ${name}, ¡bienvenido a LEVANTA IA News!</h2>
-            <p style="color:#4b5563;line-height:1.7">A partir de <strong>mañana a las 7h</strong> recibirás cada día las <strong>6 noticias más relevantes para tu empresa</strong>, seleccionadas por inteligencia artificial.</p>
+            <p style="color:#4b5563;line-height:1.7">Cada <strong>lunes a primera hora</strong> recibirás las <strong>6 noticias más relevantes de la semana</strong> para tu empresa, seleccionadas por inteligencia artificial.</p>
             <p style="color:#4b5563;line-height:1.7">Cada noticia viene con una pregunta directa para reflexionar sobre tu negocio.</p>
             <div style="text-align:center;margin:28px 0">
               <a href="https://calendly.com/pprensas" style="background:#4a6e1a;color:#fff;padding:14px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px">📅 Agenda tu diagnóstico gratuito</a>
