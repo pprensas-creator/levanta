@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LEVANTA – Consultoría La Mancha</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--az:#1a4f82;--az2:#2d6faf;--vd:#4a6e1a;--vd2:#638a28;--cr:#f8f6f0;--tx:#1e2a1e;--gr:#6b7280;--bd:#e2e8d8}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--tx);background:#fff;line-height:1.7}
+a{color:inherit;text-decoration:none}
+nav{background:#fff;border-bottom:1px solid var(--bd);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;height:60px}
+.nl{display:flex;gap:1.25rem;font-size:13px;color:var(--gr)}.nl a{cursor:pointer}.nl a:hover{color:var(--az)}
+.ncta{background:var(--vd);color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}.ham span{width:22px;height:2px;background:var(--az);border-radius:2px;display:block}
+.mmenu{display:none;position:fixed;top:60px;left:0;right:0;background:#fff;border-bottom:1px solid var(--bd);padding:1rem 1.25rem;z-index:99;flex-direction:column;gap:.75rem}
+.mmenu a{font-size:15px;color:var(--tx);padding:.4rem 0;border-bottom:1px solid var(--bd);cursor:pointer}
+.mmenu.open{display:flex}
+.hero{background:linear-gradient(135deg,var(--az) 0%,#0d3360 60%,#2a4a10 100%);color:#fff;padding:60px 1.25rem;text-align:center}
+.hero img{height:110px;width:auto;filter:brightness(0) invert(1);opacity:.9;margin-bottom:1.25rem}
+.hbadge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:12px;margin-bottom:1rem}
+.hero h1{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:.9rem;max-width:640px;margin-left:auto;margin-right:auto}
+.hsub{font-size:1rem;color:rgba(255,255,255,.85);max-width:520px;margin:0 auto 1.75rem;line-height:1.7}
+.hstats{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 2rem;max-width:340px;margin:0 auto 1.75rem}
+.sn{font-size:1.8rem;font-weight:700;display:block}.sl{font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;line-height:1.3;display:block}
+.bp{background:#fff;color:var(--az);padding:13px 26px;border-radius:8px;font-size:15px;font-weight:600;border:none;cursor:pointer;margin:0 5px 8px;display:inline-block}.bp:hover{background:var(--cr)}
+.bs{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55);padding:13px 26px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin:0 5px 8px;display:inline-block}
+.sec{padding:60px 1.25rem;max-width:1100px;margin:0 auto}
+.stag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--vd);margin-bottom:.35rem}
+.stit{font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--az);margin-bottom:.6rem;line-height:1.25}
+.sdesc{color:var(--gr);font-size:.95rem;max-width:540px;margin-bottom:2.5rem;line-height:1.7}
+.sobre{background:var(--cr);padding:60px 1.25rem}
+.sobre-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.av{width:190px;height:190px;border-radius:50%;overflow:hidden;margin-bottom:1.25rem;border:4px solid var(--vd);box-shadow:0 4px 20px rgba(26,79,130,.15)}
+.av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.cred{display:flex;align-items:center;gap:9px;margin-bottom:.6rem;font-size:14px}
+.cred .ic{width:26px;height:26px;border-radius:50%;background:var(--az);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0}
+.scard{background:#fff;border:1px solid var(--bd);border-radius:11px;padding:1rem;display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.scard .num{font-size:1.3rem;font-weight:700;color:var(--vd)}.scard strong{display:block;color:var(--tx);font-size:13.5px}.scard p{font-size:12.5px;color:var(--gr);line-height:1.5}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem}
+.svcard{background:#fff;border:1px solid var(--bd);border-radius:11px;padding:1.5rem;transition:border-color .2s}.svcard:hover{border-color:var(--az2)}
+.sico{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.85rem}
+.sico.a{background:#e6f1fb}.sico.v{background:#eaf3de}
+.svcard h3{font-size:.9rem;font-weight:600;color:var(--az);margin-bottom:.4rem}.svcard p{font-size:13px;color:var(--gr);line-height:1.6}
+.svtag{display:inline-block;margin-top:.65rem;font-size:11px;font-weight:600;color:var(--vd);background:#eaf3de;padding:3px 9px;border-radius:20px}
+.pbg{background:var(--cr);padding:60px 1.25rem}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;max-width:1100px;margin:0 auto}
+.paso{background:#fff;border:1px solid var(--bd);border-radius:11px;padding:1.5rem;position:relative}
+.pnum{width:36px;height:36px;border-radius:50%;background:var(--az);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:.85rem}
+.paso h3{font-size:.9rem;font-weight:600;color:var(--az);margin-bottom:.4rem}.paso p{font-size:13px;color:var(--gr);line-height:1.6}
+.pgtag{background:var(--vd);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;position:absolute;top:.9rem;right:.9rem}
+.qsec{background:var(--cr);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem}
+.qstit{display:flex;align-items:center;gap:.65rem;font-size:1rem;font-weight:700;color:var(--az);margin-bottom:.25rem}
+.qnum{width:28px;height:28px;border-radius:50%;background:var(--az);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qsdesc{font-size:12.5px;color:var(--gr);margin-bottom:1rem;padding-left:2.25rem}
+.qq{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.qq:last-of-type{border-bottom:none}
+.qlbl{font-size:13.5px;color:var(--tx);line-height:1.5;flex:1;min-width:180px}
+.qstars{display:flex;gap:4px;flex-shrink:0}
+.qstars button{width:34px;height:34px;border-radius:6px;border:1.5px solid var(--bd);background:#fff;font-size:13px;font-weight:600;color:var(--gr);cursor:pointer;transition:all .15s}
+.qstars button:hover{border-color:var(--az);color:var(--az)}
+.qstars button.on{background:var(--az) !important;color:#fff !important;border-color:var(--az) !important}
+.qscrow{margin-top:.85rem;font-size:13px;font-weight:600;color:var(--vd);text-align:right}
+.tip{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--az);color:#fff;font-size:10px;font-weight:700;cursor:pointer;margin-left:5px;vertical-align:middle;flex-shrink:0;font-style:normal}
+.bmark{background:var(--cr);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin-top:1.25rem}
+.bmark-legend{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:.75rem}
+.bmark-legend span{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gr)}
+.bmark-legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
+.chatsec{background:var(--az);padding:60px 1.25rem}
+.chatbox{background:#fff;border-radius:14px;overflow:hidden;max-width:720px;margin:0 auto}
+.ctop{background:#0d3360;padding:.75rem 1.1rem;display:flex;align-items:center;gap:.65rem}
+.cav{width:32px;height:32px;border-radius:50%;background:var(--vd);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:12px}
+.cname{color:#fff;font-size:13px;font-weight:600}.cstat{color:rgba(255,255,255,.6);font-size:11px}
+.cdot{width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:3px}
+.msgs{height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.65rem;background:#f9fafb}
+.msg{max-width:85%;padding:.65rem .9rem;border-radius:10px;font-size:13.5px;line-height:1.6}
+.msg.bot{background:#fff;border:1px solid var(--bd);border-radius:4px 10px 10px 10px;color:var(--tx);align-self:flex-start}
+.msg.usr{background:var(--az);color:#fff;border-radius:10px 4px 10px 10px;align-self:flex-end}
+.msg.typ{background:#fff;border:1px solid var(--bd);border-radius:4px 10px 10px 10px;align-self:flex-start;color:var(--gr);font-style:italic;font-size:12.5px}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1rem;background:#f9fafb;border-top:1px solid var(--bd)}
+.chip{background:#fff;border:1px solid var(--bd);border-radius:20px;padding:4px 12px;font-size:11.5px;cursor:pointer;color:var(--az)}.chip:hover{background:var(--az);color:#fff}
+.cinp{display:flex;gap:.4rem;padding:.85rem;border-top:1px solid var(--bd);background:#fff}
+.cinp input{flex:1;border:1px solid var(--bd);border-radius:7px;padding:9px 12px;font-size:13.5px;font-family:inherit;outline:none;min-width:0}.cinp input:focus{border-color:var(--az)}
+.csend{background:var(--vd);color:#fff;border:none;border-radius:7px;padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer}.csend:disabled{background:#ccc;cursor:not-allowed}
+.ctsec{padding:60px 1.25rem;background:#fff}
+.citem{display:flex;gap:.85rem;align-items:center}
+.cico{width:36px;height:36px;border-radius:50%;background:var(--cr);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.citem strong{color:var(--tx);font-size:13px;display:block;word-break:break-all}.citem p{font-size:12.5px;color:var(--gr);margin:0}
+.fbox{background:var(--cr);border:1.5px solid var(--vd);border-radius:14px;padding:1.5rem}
+.fbox h3{font-size:1.1rem;font-weight:700;color:var(--az);margin-bottom:.25rem}
+.fbox>p{font-size:13px;color:var(--gr);margin-bottom:1rem}
+.fr{margin-bottom:.55rem}
+.fr label{display:block;font-size:11.5px;font-weight:600;color:var(--tx);margin-bottom:.2rem}
+.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--bd);border-radius:6px;padding:7px 10px;font-size:12.5px;font-family:inherit;background:#fff;outline:none;color:var(--tx)}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--az)}
+.fr textarea{resize:vertical;min-height:60px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.55rem}
+.fbtn{background:var(--vd);color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:.25rem}.fbtn:hover{background:var(--vd2)}
+.fnote{font-size:11px;color:var(--vd);font-weight:600;margin-top:.5rem;text-align:center}
+.fresumen{display:none;margin-top:1rem;background:#eaf3de;border:1px solid var(--vd);border-radius:10px;padding:1rem}
+.wa-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer;z-index:999;transition:transform .2s}.wa-btn:hover{transform:scale(1.1)}.wa-btn svg{width:30px;height:30px;fill:#fff}
+footer{background:#0d1f35;color:rgba(255,255,255,.6);text-align:center;padding:1.5rem 1.25rem 5.5rem;font-size:12.5px}
+footer strong{color:#fff}
+/* IA News */
+.ni-sec{background:#0b1a2e;padding:60px 1.25rem}
+.ni-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(74,110,26,.2);border:1px solid rgba(74,110,26,.4);border-radius:20px;padding:4px 12px;font-size:11px;color:#86c94a;font-weight:600;margin-bottom:.5rem}
+.ni-badge span{width:6px;height:6px;background:#86c94a;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ni-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.1rem;margin-bottom:2rem}
+.ni-card{background:#112240;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.35rem;display:flex;flex-direction:column;gap:.65rem;transition:border-color .2s,transform .2s;cursor:default}
+.ni-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.ni-card-head{display:flex;align-items:center;gap:.6rem}
+.ni-ico{font-size:1.3rem;flex-shrink:0}
+.ni-svc{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--vd2)}
+.ni-titular{font-size:14.5px;font-weight:700;color:#e8f0fe;line-height:1.4}
+.ni-resumen{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6}
+.ni-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.ni-fuente{font-size:11px;color:rgba(255,255,255,.35);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:10px}
+.ni-fuente-link{text-decoration:none;cursor:pointer;transition:color .15s,background .15s}.ni-fuente-link:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.15)}
+.ni-fecha{font-size:11px;color:rgba(255,255,255,.3)}
+.ni-cta{margin-top:auto;background:linear-gradient(90deg,var(--vd) 0%,var(--vd2) 100%);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.4;width:100%}
+.ni-cta:hover{opacity:.9}
+.ni-skeleton .ni-titular{background:rgba(255,255,255,.08);border-radius:4px;height:18px;color:transparent}
+.ni-skeleton .ni-resumen{background:rgba(255,255,255,.06);border-radius:4px;height:40px;color:transparent}
+.ni-hist-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.4);margin-bottom:.75rem}
+.ni-days{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.ni-day{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);background:transparent;transition:all .15s}
+.ni-day:hover{border-color:var(--az2);color:#fff}
+.ni-day.active{background:var(--az);border-color:var(--az);color:#fff}
+.ni-day.today{border-color:var(--vd);color:var(--vd2)}
+.ni-day.today.active{background:var(--vd);color:#fff}
+.ni-empty{text-align:center;padding:2rem;color:rgba(255,255,255,.3);font-size:14px}
+.ni-error{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:10px;padding:1rem;color:#fca5a5;font-size:13px;text-align:center;margin-bottom:1rem}
+@media(max-width:768px){.ni-grid{grid-template-columns:1fr}.ni-days{gap:.35rem}
+  #ni-sub-wrap,.ni-sub-grid{grid-template-columns:1fr !important}
+  .ni-sub-2col{grid-template-columns:1fr !important;display:grid}}
+@media print{body>*:not(#pdf-overlay){display:none !important}#pdf-overlay{position:static !important;background:#fff !important;padding:0 !important}.pdf-noprint{display:none !important}}
+@media(max-width:768px){
+  .nl,.ncta{display:none}.ham{display:flex}
+  .hero{padding:48px 1.25rem}.hero img{height:90px}
+  .hstats{max-width:280px}.sn{font-size:1.5rem}
+  .bp,.bs{display:block;width:100%;max-width:280px;margin:0 auto 10px;text-align:center}
+  .sobre-in{grid-template-columns:1fr;gap:2rem}.av{width:150px;height:150px;margin:0 auto 1.25rem}
+  .sec,.sobre,.pbg,.chatsec,.ctsec{padding:48px 1.25rem}
+  .qq{flex-direction:column;gap:.5rem}.qstars button{width:38px;height:38px}
+  .fg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div onclick="window.scrollTo({top:0,behavior:'smooth'})" style="cursor:pointer;display:flex;align-items:center;gap:8px">
+    <img id="nav-logo-img" src="" alt="LEVANTA" style="height:44px;display:none"/>
+    <div><div style="font-size:18px;font-weight:700;color:var(--az);letter-spacing:1px">LEVANTA</div><div style="font-size:10px;color:var(--vd);font-weight:500">Consultoría · La Mancha</div></div>
+  </div>
+  <div class="nl">
+    <a onclick="navTo('servicios')">Servicios</a>
+    <a onclick="navTo('proceso')">Cómo funciona</a>
+    <a onclick="navTo('cuestionario')">Diagnóstico</a>
+    <a onclick="navTo('chat')">Asistente IA</a>
+    <a onclick="navTo('ainews')" style="color:var(--az);font-weight:600">📰 IA News</a>
+    <a onclick="navTo('contacto')">Contacto</a>
+  </div>
+  <button class="ncta" onclick="navTo('contacto')">Diagnóstico gratuito</button>
+  <div class="ham" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mmenu" id="mmenu">
+  <a onclick="navTo('servicios')">Servicios</a>
+  <a onclick="navTo('proceso')">Cómo funciona</a>
+  <a onclick="navTo('cuestionario')">Diagnóstico</a>
+  <a onclick="navTo('chat')">Asistente IA</a>
+  <a onclick="navTo('ainews')" style="color:var(--az);font-weight:600">📰 IA News</a>
+  <a onclick="navTo('contacto')">Contacto</a>
+  <button class="ncta" style="margin-top:.5rem" onclick="navTo('contacto')">Diagnóstico gratuito</button>
+</div>
+
+<section class="hero">
+  <div style="display:none"><img id="hero-logo-img" src="" alt="LEVANTA"/></div>
+  <div id="hero-logo-txt" style="margin-bottom:1.25rem"><div style="font-size:2.4rem;font-weight:800;letter-spacing:4px;color:#fff">LEVANTA</div><div style="font-size:.9rem;color:rgba(255,255,255,.8);letter-spacing:2px">Consultoría de Desarrollo Local · La Mancha</div></div>
+  <div class="hbadge">📍 Consultoría Local · Experiencia Global</div>
+  <h1>Tu empresa de La Mancha, con estándares de multinacional</h1>
+  <p class="hsub">Aplico 20 años de experiencia internacional en logística, finanzas y transformación digital al servicio de las PYMEs de La Mancha.</p>
+  <div class="hstats">
+    <div><span class="sn">+30%</span><span class="sl">Ahorro operativo</span></div>
+    <div><span class="sn">$20M</span><span class="sl">EBIT generado</span></div>
+    <div><span class="sn">20+</span><span class="sl">Años experiencia</span></div>
+    <div><span class="sn">130+</span><span class="sl">Personas lideradas</span></div>
+  </div>
+  <button class="bp" onclick="navTo('contacto')">Diagnóstico gratuito</button>
+  <button class="bs" onclick="navTo('servicios')">Ver servicios</button>
+</section>
+
+<section class="sobre">
+  <div class="sobre-in">
+    <div>
+      <!-- Dos fotos lado a lado -->
+      <div style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start">
+        <div class="av" style="flex-shrink:0"><img id="pablo-photo" src="" alt="Pablo Prensa"/></div>
+        <div style="flex-shrink:0;width:190px;height:190px;border-radius:50%;overflow:hidden;border:4px solid var(--az);box-shadow:0 4px 20px rgba(26,79,130,.15)">
+          <img id="pablo-mancha" src="3.jpeg" alt="Pablo en los molinos de La Mancha" style="width:100%;height:100%;object-fit:cover;object-position:center top" onerror="this.style.display='none'"/>
+        </div>
+      </div>
+      <div class="stag" style="margin-top:.75rem">¿Quién soy?</div>
+      <h2 class="stit" style="margin-bottom:.9rem">Pablo Prensa,<br/>el consultor manchego<br/>de vuelta a casa</h2>
+      <p style="color:var(--gr);font-size:14.5px;line-height:1.7;margin-bottom:.9rem">Manchego de origen. Senior Director internacional en CHEP y Pegasus Solutions durante más de 20 años. He liderado transformaciones en logística, finanzas, IT y experiencia de cliente en múltiples países. Ahora aplico todo ese conocimiento a escala de PYME, con cercanía y sin letra pequeña.</p>
+      <p style="color:var(--gr);font-size:14.5px;line-height:1.7;margin-bottom:1.25rem">Me crié entre gente que madruga, que trabaja la tierra y que quiere dejar un negocio fuerte para sus hijos. Por eso mi forma de trabajar es cercana: primero un café, luego un plan claro y paso a paso.</p>
+      <div class="cred"><span class="ic">✓</span> Senior Director en CHEP (multinacional global)</div>
+      <div class="cred"><span class="ic">✓</span> Gestión de presupuestos de $9M</div>
+      <div class="cred"><span class="ic">✓</span> Equipos de más de 130 personas</div>
+      <div class="cred"><span class="ic">✓</span> Lean / Six Sigma aplicado a PYMEs</div>
+    </div>
+    <div>
+      <!-- Cita + Atardecer lado a lado -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+        <div style="background:var(--az);border-radius:10px;padding:1.25rem;display:flex;align-items:center;justify-content:center;text-align:center">
+          <p style="color:#fff;font-size:13px;line-height:1.6;font-style:italic">"El verdadero éxito es que tu negocio crezca y siga aquí para las próximas generaciones."</p>
+        </div>
+        <div style="position:relative;border-radius:10px;overflow:hidden;min-height:130px;background:linear-gradient(135deg,#1a1a2e 0%,#8b1a1a 50%,#e67e22 100%);display:flex;align-items:center;justify-content:center">
+          <span id="placeholder-atardecer" style="color:rgba(255,255,255,.7);font-size:12px">🌅 Atardecer en La Mancha</span>
+          <img src="5.jpeg" alt="Atardecer en La Mancha" id="foto-atardecer"
+            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px"
+            onerror="this.style.display='none'"
+            onload="document.getElementById('placeholder-atardecer').style.display='none'"/>
+        </div>
+      </div>
+      <!-- Cards -->
+      <div class="scard"><div class="num">$20M</div><strong>EBIT recurrente generado</strong><p>Optimización de costes y mejora de modelos operativos en entornos corporativos internacionales.</p></div>
+      <div class="scard"><div class="num">1<sup style="font-size:.6em">er</sup> trim.</div><strong>ROI desde el primer trimestre</strong><p>Soluciones modulares diseñadas para generar impacto desde las primeras semanas.</p></div>
+      <div class="scard"><div class="num">0€</div><strong>Diagnóstico inicial sin coste</strong><p>Analizo tu facturación, operaciones, IT y equipos y te digo dónde pierdes dinero, sin compromiso.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="servicios">
+  <div class="stag">Servicios</div>
+  <h2 class="stit">Todo lo que tu PYME necesita para crecer</h2>
+  <p class="sdesc">Prácticas de grandes multinacionales, adaptadas a tu realidad y tu bolsillo.</p>
+  <div class="sgrid">
+    <div class="svcard"><div class="sico a">⚙️</div><h3>Eficiencia Operativa</h3><p>Lean/Six Sigma aplicado a tu modelo operativo y finanzas. Mejoras en administración, facturación y pagos.</p><span class="svtag">Hasta +30% de ahorro</span></div>
+    <div class="svcard"><div class="sico v">📊</div><h3>Sistemas de Información</h3><p>Datos y métricas en tiempo real para estar en control y adelantarte a cualquier situación de tu negocio.</p><span class="svtag">Decisiones basadas en datos</span></div>
+    <div class="svcard"><div class="sico a">⭐</div><h3>Experiencia del Cliente</h3><p>Mejora y escala tu servicio. Fideliza dando respuesta rápida y anticipándote a las necesidades del cliente.</p><div style="margin-top:.55rem;font-size:17px;color:#f59e0b;letter-spacing:2px">★★★★★</div><span class="svtag">Mayor retención</span></div>
+    <div class="svcard"><div class="sico v">💻</div><h3>Digitalización e IT</h3><p>¿Sistemas obsoletos? Te guío en ERP, CRM y adopción digital. Sin complicaciones ni sorpresas.</p><span class="svtag">Evita costes ocultos</span></div>
+    <div class="svcard"><div class="sico a">🤝</div><h3>Talento y Liderazgo</h3><p>Mentoría directiva. De empresa familiar a organización profesional: delega, mide y motiva sin gastar fortunas.</p><span class="svtag">Equipos autónomos</span></div>
+    <div class="svcard"><div class="sico v">🎯</div><h3>Imagen de Marca</h3><p>Moderniza tu imagen y gana visibilidad fuera de la región con una presencia online que refleje tu valor real.</p><span class="svtag">Más allá de La Mancha</span></div>
+  </div>
+</section>
+
+<section class="pbg" id="proceso">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="stag">Cómo empezamos</div>
+    <h2 class="stit">Sin compromiso. Sin letra pequeña.</h2>
+    <p class="sdesc" style="margin-bottom:2rem">Un proceso diseñado para que la inversión sea sostenible desde el primer día.</p>
+    <div class="pasos">
+      <div class="paso"><span class="pgtag">GRATIS</span><div class="pnum">1</div><h3>Diagnóstico inicial</h3><p>Analizo tu facturación, operaciones, IT o equipo y te digo exactamente dónde pierdes dinero y cómo recuperarlo.</p></div>
+      <div class="paso"><div class="pnum">2</div><h3>Plan a tu medida</h3><p>Diseñamos un plan por fases, adaptado a tu ritmo, prioridades y presupuesto. Nada de soluciones enlatadas.</p></div>
+      <div class="paso"><div class="pnum">3</div><h3>Impacto en el primer trimestre</h3><p>ROI rápido y formación de tu equipo para que sean autónomos en la gestión futura.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:60px 1.25rem;background:#fff" id="cuestionario">
+  <div style="max-width:860px;margin:0 auto">
+    <div class="stag">Diagnóstico Express</div>
+    <h2 class="stit">¿Cómo de madura es tu empresa?</h2>
+    <div style="background:linear-gradient(135deg,var(--az) 0%,#0d3360 100%);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;align-items:flex-start">
+      <span style="font-size:1.6rem;flex-shrink:0">⏱️</span>
+      <div>
+        <p style="color:#fff;font-size:15px;font-weight:600;line-height:1.6;margin-bottom:.35rem">En solo 5-7 minutos obtén tu puntuación + comparativa con el mercado manchego + 3 recomendaciones prácticas adaptadas a tu empresa.</p>
+        <p style="color:rgba(255,255,255,.75);font-size:13.5px;font-style:italic">Experiencia global al servicio de tu negocio local.</p>
+      </div>
+    </div>
+    <p style="color:var(--gr);font-size:14.5px;margin-bottom:1.5rem;line-height:1.7">Puntúa del <strong>1</strong> (Nada maduro) al <strong>5</strong> (Muy maduro). Al terminar verás tu resultado, comparativa con el mercado y 3 recomendaciones concretas.</p>
+
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">1</span>Eficiencia Operativa y Finanzas</div>
+      <p class="qsdesc">¿Tu empresa funciona sin desperdiciar tiempo ni dinero?</p>
+      <div class="qq"><span class="qlbl">¿Tienes bien definido cómo se factura, se cobra y se controlan los gastos en tu empresa?</span><div class="qstars" data-q="1_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Sabes exactamente cuánto te cuesta producir o prestar cada servicio, y buscas formas de reducir ese coste continuamente? <i class="tip" data-tip="Lean es una metodología para eliminar pasos innecesarios y reducir gastos sin sacrificar calidad.">i</i></span><div class="qstars" data-q="1_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Usas alguna herramienta tecnológica o automatización para evitar tareas repetitivas en la oficina? <i class="tip" data-tip="Por ejemplo: facturación automática, recordatorios de pago automáticos, o informes que se generan solos.">i</i></span><div class="qstars" data-q="1_3"></div></div>
+      <div class="qq"><span class="qlbl">¿Has conseguido gastar menos en los últimos 2 años manteniendo o mejorando lo que produces o vendes?</span><div class="qstars" data-q="1_4"></div></div>
+      <div class="qscrow">Sección 1: <span id="sc1">0</span> / 20</div>
+    </div>
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">2</span>Información y Datos</div>
+      <p class="qsdesc">¿Tienes los datos que necesitas para tomar buenas decisiones?</p>
+      <div class="qq"><span class="qlbl">¿Tienes un resumen claro de los números clave de tu negocio (ventas, gastos, márgenes) actualizado cada semana? <i class="tip" data-tip="A esto se le llama 'cuadro de mando' o KPIs. Es como el salpicadero de tu coche: de un vistazo sabes cómo va todo.">i</i></span><div class="qstars" data-q="2_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Todos en tu empresa trabajan con los mismos datos, sin que cada departamento tenga su propia versión?</span><div class="qstars" data-q="2_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Puedes saber en menos de 5 minutos cuánto has vendido, cuál es tu margen o cuánto stock tienes?</span><div class="qstars" data-q="2_3"></div></div>
+      <div class="qq"><span class="qlbl">¿Sabes qué clientes o productos te dan más dinero y cuáles te hacen perder tiempo o recursos?</span><div class="qstars" data-q="2_4"></div></div>
+      <div class="qscrow">Sección 2: <span id="sc2">0</span> / 20</div>
+    </div>
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">3</span>Atención y Experiencia del Cliente</div>
+      <p class="qsdesc">¿Tus clientes están contentos y repiten?</p>
+      <div class="qq"><span class="qlbl">¿Preguntas a tus clientes cómo de satisfechos están con tu servicio, de forma regular? <i class="tip" data-tip="Puede ser una encuesta corta o simplemente preguntar: '¿Nos recomendarías?' Esto se llama NPS o CSAT.">i</i></span><div class="qstars" data-q="3_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Respondes a las consultas o quejas de tus clientes en menos de 24 horas en la mayoría de los casos?</span><div class="qstars" data-q="3_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Anticipas lo que van a necesitar tus clientes antes de que te lo pidan?</span><div class="qstars" data-q="3_3"></div></div>
+      <div class="qq"><span class="qlbl">¿La satisfacción del cliente es algo que mides y por lo que reconoces o motivas a tu equipo?</span><div class="qstars" data-q="3_4"></div></div>
+      <div class="qscrow">Sección 3: <span id="sc3">0</span> / 20</div>
+    </div>
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">4</span>Tecnología y Digitalización</div>
+      <p class="qsdesc">¿Tus herramientas tecnológicas te ayudan o te frenan?</p>
+      <div class="qq"><span class="qlbl">¿El programa que usas para gestionar tu negocio está al día y cubre lo que necesitas? <i class="tip" data-tip="A este tipo de programa se le llama ERP. Une contabilidad, almacén, ventas y más en un solo lugar.">i</i></span><div class="qstars" data-q="4_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Usas algún programa para llevar el seguimiento de clientes, presupuestos y oportunidades de venta? <i class="tip" data-tip="Esto se llama CRM. Es como una agenda inteligente que recuerda todo de tus clientes.">i</i></span><div class="qstars" data-q="4_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Usas herramientas en la nube para trabajar en equipo o compartir documentos desde cualquier lugar? <i class="tip" data-tip="Por ejemplo: Google Drive, Microsoft 365, correo profesional, videollamadas...">i</i></span><div class="qstars" data-q="4_3"></div></div>
+      <div class="qq"><span class="qlbl">¿Tienes claro qué tecnología necesita tu empresa y si lo que pagas en software te da resultados?</span><div class="qstars" data-q="4_4"></div></div>
+      <div class="qscrow">Sección 4: <span id="sc4">0</span> / 20</div>
+    </div>
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">5</span>Equipo y Liderazgo</div>
+      <p class="qsdesc">¿Tu equipo funciona bien sin que tengas que estar en todo?</p>
+      <div class="qq"><span class="qlbl">¿Cada persona de tu equipo sabe exactamente qué se espera de ella y cómo contribuye al éxito de la empresa?</span><div class="qstars" data-q="5_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Puedes irte de vacaciones una semana sin que la empresa se paralice?</span><div class="qstars" data-q="5_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Tienes algún plan para que tus mejores empleados crezcan dentro de la empresa y no se vayan?</span><div class="qstars" data-q="5_3"></div></div>
+      <div class="qq"><span class="qlbl">¿Sabes cómo está el ambiente en tu empresa? ¿Preguntas a tu equipo si está a gusto?</span><div class="qstars" data-q="5_4"></div></div>
+      <div class="qscrow">Sección 5: <span id="sc5">0</span> / 20</div>
+    </div>
+    <div class="qsec">
+      <div class="qstit"><span class="qnum">6</span>Imagen de Marca y Presencia Online</div>
+      <p class="qsdesc">¿Te conocen más allá de tu pueblo o tu comarca?</p>
+      <div class="qq"><span class="qlbl">¿Tu imagen de empresa (logo, web, redes sociales) da una impresión profesional y está actualizada?</span><div class="qstars" data-q="6_1"></div></div>
+      <div class="qq"><span class="qlbl">¿Consigues clientes nuevos a través de internet, de fuera de La Mancha?</span><div class="qstars" data-q="6_2"></div></div>
+      <div class="qq"><span class="qlbl">¿Tu web se ve bien en el móvil y aparece en Google? ¿Te recomienda la inteligencia artificial? <i class="tip" data-tip="Hoy muchas personas preguntan a ChatGPT o Google '¿Dónde puedo comprar vino en La Mancha?' Si tu negocio no aparece, estás perdiendo clientes.">i</i></span><div class="qstars" data-q="6_3"></div></div>
+      <div class="qq"><span class="qlbl">¿Sabes cuántas personas visitan tu web y si esas visitas se convierten en clientes?</span><div class="qstars" data-q="6_4"></div></div>
+      <div class="qscrow">Sección 6: <span id="sc6">0</span> / 20</div>
+    </div>
+
+    <div style="background:var(--az);border-radius:14px;padding:1.75rem;text-align:center;margin-top:1.5rem">
+      <div style="color:rgba(255,255,255,.75);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:.35rem">Puntuación total</div>
+      <div style="font-size:3rem;font-weight:700;color:#fff"><span id="sctotal">0</span><span style="font-size:1.5rem;font-weight:400;color:rgba(255,255,255,.6)"> / 120</span></div>
+      <div id="qinterp" style="margin-top:.75rem;font-size:15px;color:#fff;font-weight:500"></div>
+    </div>
+
+    <div id="recom-wrap" style="display:none;margin-top:1.25rem">
+      <div style="font-size:1rem;font-weight:700;color:var(--az);margin-bottom:.25rem">🎯 Tus 3 prioridades de mejora</div>
+      <p style="font-size:12.5px;color:var(--gr);margin-bottom:1rem">Basadas en tus puntuaciones más bajas. Aquí es donde más valor podemos crear juntos.</p>
+      <div id="recom-list" style="display:flex;flex-direction:column;gap:.85rem"></div>
+    </div>
+
+    <div class="bmark">
+      <div style="font-size:1rem;font-weight:700;color:var(--az);margin-bottom:.2rem">📊 Tu empresa vs. el mercado</div>
+      <p style="font-size:12.5px;color:var(--gr);margin-bottom:1rem">Comparativa por área. Puntuación sobre 20.</p>
+      <div id="bmark-wrap"></div>
+      <div class="bmark-legend">
+        <span><i style="background:#1a4f82"></i>Tu empresa</span>
+        <span><i style="background:#c8a84b"></i>PYME media La Mancha</span>
+        <span><i style="background:#4a6e1a"></i>PYME media España</span>
+        <span><i style="background:#d4a017;height:2.5px;border-radius:0;width:18px"></i>Top 25% España</span>
+      </div>
+      <p style="font-size:10px;color:#aaa;text-align:center;margin-top:.6rem">* Benchmarks orientativos basados en informes de digitalización PYME España 2023-2024.</p>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--vd) 0%,#2a4a10 100%);border-radius:16px;padding:2rem;text-align:center;margin-top:1.25rem">
+      <div style="font-size:1.5rem;margin-bottom:.5rem">📅</div>
+      <h3 style="color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;line-height:1.4">¿Quieres saber exactamente dónde está perdiendo dinero tu empresa?</h3>
+      <p style="color:rgba(255,255,255,.85);font-size:14px;margin-bottom:1.25rem;line-height:1.6">Agenda una sesión gratuita de 30 minutos conmigo — por videollamada o tomando un café en La Mancha.</p>
+      <a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#fff;color:var(--vd);padding:16px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:.75rem;line-height:1.4">
+        📅 Agenda tu Diagnóstico Gratuito con Pablo Prensa<br/>
+        <span style="font-size:12.5px;font-weight:500;color:var(--az)">30 min · Videollamada o café en La Mancha</span>
+      </a>
+      <div style="color:rgba(255,255,255,.7);font-size:12px">✓ Totalmente gratuito &nbsp;·&nbsp; ✓ Sin compromiso &nbsp;·&nbsp; ✓ Elige el horario que te venga bien</div>
+    </div>
+
+    <div style="margin-top:1rem;text-align:center">
+      <button onclick="generarPDF()" style="background:#fff;color:var(--az);border:2px solid var(--az);padding:13px 28px;border-radius:9px;font-size:14.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.6rem">
+        <span>📄</span> Descargar informe PDF con mis resultados
+      </button>
+      <p style="font-size:11.5px;color:var(--gr);margin-top:.5rem">Incluye puntuación, comparativa con el mercado y recomendaciones personalizadas</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.25rem">
+      <div class="fr"><label>Tu nombre</label><input id="q-nombre" type="text" placeholder="Nombre y apellidos"/></div>
+      <div class="fr"><label>Tu empresa</label><input id="q-empresa" type="text" placeholder="Nombre de la empresa"/></div>
+    </div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem">
+      <button class="fbtn" style="flex:1;min-width:200px;background:var(--vd)" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
+      <button class="fbtn" style="flex:1;min-width:200px;background:var(--az)" onclick="prepEmail()">📊 Descargar Excel + Email</button>
+    </div>
+    <div id="email-wrap" style="display:none;margin-top:1rem;background:var(--cr);border:1px solid var(--bd);border-radius:10px;padding:1rem">
+      <p style="font-size:13px;font-weight:600;color:var(--az);margin-bottom:.5rem">✅ Excel descargado. Envía el email:</p>
+      <p style="font-size:12.5px;color:var(--gr);margin-bottom:.6rem">Adjunta el archivo y copia este texto a <strong style="color:var(--az)">levantalamancha@levanta.email</strong></p>
+      <textarea id="email-txt" readonly style="width:100%;height:110px;font-size:12px;border:1px solid var(--bd);border-radius:6px;padding:8px;font-family:monospace;resize:none;background:#fff"></textarea>
+      <button onclick="copiarEmail()" style="margin-top:.5rem;width:100%;padding:9px;background:var(--az);color:#fff;border:none;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer">📋 Copiar texto</button>
+      <div id="copy-ok" style="display:none;font-size:12px;color:var(--vd);font-weight:600;text-align:center;margin-top:.4rem">✓ ¡Copiado!</div>
+    </div>
+  </div>
+</section>
+
+<section class="chatsec" id="chat">
+  <div style="max-width:720px;margin:0 auto">
+    <div style="color:#fff;text-align:center;margin-bottom:1.75rem">
+      <div class="stag" style="color:rgba(255,255,255,.7)">Asistente IA</div>
+      <h2 class="stit" style="color:#fff">Habla directamente conmigo</h2>
+      <p style="color:rgba(255,255,255,.75);font-size:14px">Mi asistente responde como yo lo haría — con honestidad y al grano.</p>
+    </div>
+    <div class="chatbox">
+      <div class="ctop">
+        <div class="cav">PP</div>
+        <div><div class="cname">Pablo Prensa · LEVANTA</div><div class="cstat"><span class="cdot"></span>Disponible</div></div>
+      </div>
+      <div class="msgs" id="msgs">
+        <div class="msg bot">¡Hola! Soy Pablo Prensa, fundador de LEVANTA. Llevo más de 20 años trabajando en transformación empresarial a nivel internacional y ahora lo aplico a PYMEs de La Mancha. ¿En qué puedo ayudarte?</div>
+      </div>
+      <div class="chips" id="chips">
+        <span class="chip" onclick="sendChip(this)">¿En qué consiste el diagnóstico gratuito?</span>
+        <span class="chip" onclick="sendChip(this)">¿Cuánto cobras?</span>
+        <span class="chip" onclick="sendChip(this)">¿Qué servicios ofreces?</span>
+        <span class="chip" onclick="sendChip(this)">¿Cuál es tu experiencia?</span>
+      </div>
+      <div class="cinp">
+        <input id="chat-in" type="text" placeholder="Escríbeme..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="csend" id="csend" onclick="sendMsg()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ctsec" id="contacto">
+  <div style="max-width:860px;margin:0 auto">
+    <div class="stag">Contacto</div>
+    <h2 class="stit">Hablemos de tu negocio</h2>
+    <p style="color:var(--gr);margin-bottom:1.5rem;font-size:14.5px">El diagnóstico inicial es completamente gratuito y sin compromiso.</p>
+    <div class="fbox">
+      <h3>Solicita tu diagnóstico gratuito</h3>
+      <p>Cuéntame sobre tu empresa y te respondo en menos de 24h.</p>
+      <div class="fg">
+        <div class="fr"><label>Nombre *</label><input id="f-nombre" type="text" placeholder="Tu nombre"/></div>
+        <div class="fr"><label>Empresa *</label><input id="f-empresa" type="text" placeholder="Tu empresa"/></div>
+      </div>
+      <div class="fg">
+        <div class="fr"><label>Teléfono</label><input id="f-tel" type="tel" placeholder="+34 600 000 000"/></div>
+        <div class="fr"><label>Email *</label><input id="f-email" type="email" placeholder="tu@email.com"/></div>
+      </div>
+      <div class="fg">
+        <div class="fr"><label>Empleados *</label>
+          <select id="f-empleados"><option value="">Selecciona...</option><option>1-5</option><option>6-15</option><option>16-50</option><option>51-100</option><option>+100</option></select>
+        </div>
+        <div class="fr"><label>Sector *</label>
+          <select id="f-sector"><option value="">Selecciona...</option><option>Agroalimentario</option><option>Vitivinícola</option><option>Manufactura</option><option>Turismo</option><option>Servicios</option><option>Otros</option></select>
+        </div>
+      </div>
+      <div class="fr"><label>Área de ayuda</label>
+        <select id="f-area"><option value="">Selecciona...</option><option>Eficiencia Operativa</option><option>Sistemas de Información</option><option>Experiencia del Cliente</option><option>Digitalización e IT</option><option>Talento y Liderazgo</option><option>Imagen de Marca</option><option>No sé / necesito orientación</option></select>
+      </div>
+      <div class="fr"><textarea id="f-msg" placeholder="¿Cuál es el principal reto que queréis resolver?"></textarea></div>
+      <button class="fbtn" id="fbtn-submit" onclick="mostrarResumen()">Solicitar diagnóstico gratuito</button>
+      <div class="fnote">✓ Gratis y sin compromiso · Respuesta en &lt;24h</div>
+      <div style="margin-top:.75rem;background:#f0f4ff;border:1px solid #c7d4f0;border-radius:7px;padding:.6rem .85rem;display:flex;gap:.5rem;align-items:flex-start">
+        <span style="font-size:14px;flex-shrink:0">🔒</span>
+        <p style="font-size:11.5px;color:#4b5563;line-height:1.5;margin:0">Tus datos se usarán solo para enviarte el informe y ofrecerte ayuda personalizada. Cumplimos el <strong>RGPD</strong>. No compartimos tu información con terceros.</p>
+      </div>
+      <div id="fbox-success" style="display:none;margin-top:1rem;background:#eaf3de;border:1px solid var(--vd);border-radius:10px;padding:1.25rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.5rem">✅</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--vd);margin-bottom:.25rem">¡Mensaje enviado con éxito!</div>
+        <p style="font-size:13.5px;color:var(--gr)">Pablo te responderá en menos de 24h. Revisa también tu bandeja de spam.</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem">
+      <div class="citem"><div class="cico">📞</div><div><a href="tel:+34659681684" style="color:var(--az);text-decoration:none"><strong>+34 659 681 684</strong></a><p>Llama o escribe por WhatsApp</p></div></div>
+      <div class="citem"><div class="cico">✉️</div><div><a href="https://mail.google.com/mail/?view=cm&to=levantalamancha@levanta.email&su=[LEVANTA]%20Contacto%20desde%20la%20web" target="_blank" style="color:var(--az);text-decoration:none"><strong>levantalamancha@levanta.email</strong></a><p>Respuesta en menos de 24h</p></div></div>
+      <div class="citem"><div class="cico">📍</div><div><strong>La Mancha, España</strong><p>Atención presencial y online</p></div></div>
+      <div class="citem"><div class="cico" style="font-size:11px;font-weight:700;color:var(--az)">in</div><div><a href="https://www.linkedin.com/in/pablo-prensa" target="_blank" style="color:var(--az);text-decoration:none"><strong>LinkedIn: Pablo Prensa</strong></a><p>Consulta mi trayectoria profesional</p></div></div>
+    </div>
+  </div>
+</section>
+
+<a class="wa-btn" href="https://wa.me/34659681684?text=Hola%20Pablo%2C%20me%20interesa%20el%20diagn%C3%B3stico%20gratuito%20de%20LEVANTA" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<section class="ni-sec" id="ainews">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="ni-badge"><span></span>Actualizado diariamente con IA</div>
+    <h2 class="stit" style="color:#e8f0fe;margin-bottom:.4rem">IA News · Lo que afecta a tu empresa hoy</h2>
+    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-bottom:2rem;max-width:580px">Noticias seleccionadas cada día por inteligencia artificial sobre los 6 pilares que más impactan en la rentabilidad de las PYMEs de La Mancha.</p>
+
+    <div id="ni-error-box" style="display:none" class="ni-error">
+      ⚠️ No se han podido cargar las noticias de hoy. <a href="#" onclick="niRetry()" style="color:#fca5a5;font-weight:700">Reintentar</a> · o escríbeme a <strong>levantalamancha@levanta.email</strong>
+    </div>
+
+    <div id="ni-grid-wrap" class="ni-grid">
+      <!-- Skeleton cards while loading -->
+      <div class="ni-card ni-skeleton" id="ni-sk-0"><div class="ni-card-head"><div class="ni-ico">⚙️</div><div class="ni-svc">Eficiencia Operativa</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+      <div class="ni-card ni-skeleton" id="ni-sk-1"><div class="ni-card-head"><div class="ni-ico">📊</div><div class="ni-svc">Información y Datos</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+      <div class="ni-card ni-skeleton" id="ni-sk-2"><div class="ni-card-head"><div class="ni-ico">⭐</div><div class="ni-svc">Experiencia del Cliente</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+      <div class="ni-card ni-skeleton" id="ni-sk-3"><div class="ni-card-head"><div class="ni-ico">💻</div><div class="ni-svc">Digitalización e IT</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+      <div class="ni-card ni-skeleton" id="ni-sk-4"><div class="ni-card-head"><div class="ni-ico">🤝</div><div class="ni-svc">Talento y Liderazgo</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+      <div class="ni-card ni-skeleton" id="ni-sk-5"><div class="ni-card-head"><div class="ni-ico">🎯</div><div class="ni-svc">Imagen de Marca</div></div><div class="ni-titular">Cargando noticia...</div><div class="ni-resumen">Buscando las últimas noticias relevantes para tu empresa...</div></div>
+    </div>
+
+    <div id="ni-hist-wrap" style="display:none">
+      <div class="ni-hist-label">📅 Historial — últimos 15 días</div>
+      <div class="ni-days" id="ni-days"></div>
+      <div id="ni-hist-grid" class="ni-grid"></div>
+    </div>
+
+    <!-- Suscripción newsletter -->
+    <div style="margin-top:2.5rem;background:linear-gradient(135deg,#112240 0%,#1a3a5c 100%);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter diario gratuito</div>
+          <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias del día en tu correo</h3>
+          <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada mañana a las 7h, las 6 noticias más relevantes para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Gratis para siempre</span>
+            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Sin spam · baja cuando quieras</span>
+            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Noticias reales buscadas en internet cada día</span>
+          </div>
+        </div>
+        <div id="ni-sub-wrap">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+            <input id="ni-nombre" type="text" placeholder="Tu nombre *" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
+            <input id="ni-empresa" type="text" placeholder="Tu empresa" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
+          </div>
+          <input id="ni-email" type="email" placeholder="tu@email.com *" style="width:100%;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit;box-sizing:border-box;margin-bottom:.5rem" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
+          <select id="ni-sector" style="width:100%;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:#112240;color:rgba(255,255,255,.7);outline:none;font-family:inherit;box-sizing:border-box;margin-bottom:.75rem">
+            <option value="">Sector (opcional)</option>
+            <option>Agroalimentario</option>
+            <option>Vitivinícola</option>
+            <option>Manufactura</option>
+            <option>Turismo</option>
+            <option>Servicios</option>
+            <option>Otros</option>
+          </select>
+          <button id="ni-sub-btn" onclick="niSubscribe()" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
+            📧 Suscribirme a las noticias diarias
+          </button>
+          <p style="color:rgba(255,255,255,.3);font-size:11px;text-align:center;margin:.5rem 0 0">RGPD · Tus datos solo se usan para enviarte las noticias</p>
+        </div>
+      </div>
+      <!-- Baja newsletter -->
+      <div style="margin-top:1.25rem;border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;text-align:center">
+        <span style="color:rgba(255,255,255,.3);font-size:12px">¿Ya estás suscrito y quieres darte de baja? </span>
+        <button onclick="toggleUnsub()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:12px;text-decoration:underline;cursor:pointer;font-family:inherit">Cancelar suscripción</button>
+        <div id="unsub-wrap" style="display:none;margin-top:.85rem">
+          <div style="display:flex;gap:.5rem;justify-content:center;max-width:380px;margin:0 auto">
+            <input id="unsub-email" type="email" placeholder="tu@email.com" style="flex:1;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:8px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit;min-width:0"/>
+            <button onclick="niUnsubscribe()" style="background:#dc2626;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Darme de baja</button>
+          </div>
+          <div id="unsub-msg" style="margin-top:.6rem;font-size:12px;color:rgba(255,255,255,.5)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><strong>LEVANTA – Consultoría de Desarrollo Local · La Mancha</strong><br/>levantalamancha@levanta.email · +34 659 681 684</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mmenu').classList.toggle('open');}
+function navTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});document.getElementById('mmenu').classList.remove('open');}
+
+(function(){
+  var pp=document.getElementById('pablo-photo');
+  pp.src='https://i.postimg.cc/Vv1sNDff/Chat-GPT-Image-Jan-15-2026-05-48-06-PM.jpg';
+  pp.style.display='block';
+  var nl=document.getElementById('nav-logo-img');
+  nl.src='https://i.postimg.cc/5NgyXdFv/Logo-LEVANTA.png';
+  nl.style.display='block';
+  nl.onerror=function(){this.style.display='none';};
+  var hl=document.getElementById('hero-logo-img');
+  hl.src='https://i.postimg.cc/5NgyXdFv/Logo-LEVANTA.png';
+  hl.style.display='block';
+  hl.onerror=function(){this.style.display='none';};
+  document.getElementById('hero-logo-txt').style.display='none';
+
+  // Fotos manchegas - archivos locales
+  var imgs = {
+    'pablo-mancha':   'netlify/foto-molinos.jpg',
+    'foto-atardecer': 'netlify/foto-atardecer.jpg'
+  };
+  Object.keys(imgs).forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.src=imgs[id];
+    el.style.display='block';
+    el.onerror=function(){this.style.display='none';};
+  });
+
+  // Ocultar placeholder atardecer si la foto carga
+  var at=document.getElementById('foto-atardecer');
+  var ph=document.getElementById('foto-atardecer-placeholder');
+  if(at&&ph){
+    at.onload=function(){ph.style.display='none';};
+    at.onerror=function(){at.style.display='none';ph.style.display='block';};
+  }
+})();
+
+var tipEl=document.createElement('div');
+tipEl.style.cssText='display:none;position:fixed;z-index:9999;background:#1e2a1e;color:#fff;font-size:13px;line-height:1.6;padding:.75rem 1rem;border-radius:10px;max-width:280px;box-shadow:0 6px 24px rgba(0,0,0,.4);pointer-events:none';
+document.body.appendChild(tipEl);
+document.querySelectorAll('.tip').forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    tipEl.textContent=el.getAttribute('data-tip');
+    tipEl.style.display='block';
+    var x=e.clientX,y=e.clientY,w=tipEl.offsetWidth,h=tipEl.offsetHeight;
+    var top=y-h-14;if(top<8)top=y+24;
+    var left=x-w/2;if(left<8)left=8;if(left+w>window.innerWidth-8)left=window.innerWidth-w-8;
+    tipEl.style.top=top+'px';tipEl.style.left=left+'px';
+  });
+});
+document.addEventListener('click',function(){tipEl.style.display='none';});
+document.addEventListener('scroll',function(){tipEl.style.display='none';},{passive:true});
+
+var scores={};
+document.querySelectorAll('.qstars').forEach(function(container){
+  var qid=container.getAttribute('data-q');
+  for(var v=1;v<=5;v++){
+    (function(qkey,val){
+      var btn=document.createElement('button');
+      btn.textContent=val;
+      btn.addEventListener('click',function(){
+        scores[qkey]=val;
+        container.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});
+        btn.classList.add('on');
+        recalc();
+      });
+      container.appendChild(btn);
+    })(qid,v);
+  }
+});
+
+function getSecTotals(){
+  var out=[];
+  for(var s=1;s<=6;s++){var t=0;for(var q=1;q<=4;q++){if(scores[s+'_'+q])t+=scores[s+'_'+q];}out.push({idx:s-1,val:t});}
+  return out;
+}
+
+function recalc(){
+  var totals=getSecTotals(),grand=0;
+  totals.forEach(function(s){document.getElementById('sc'+(s.idx+1)).textContent=s.val;grand+=s.val;});
+  document.getElementById('sctotal').textContent=grand;
+  var txt='';
+  if(grand>=90)txt='✅ Madurez alta. Puedes optimizar con proyectos selectivos de alto ROI.';
+  else if(grand>=60)txt='📈 Madurez media. Hay oportunidades claras de crecimiento rápido.';
+  else if(grand>=30)txt='⚠️ Madurez baja. Aquí es donde más valor podemos crear juntos.';
+  else if(grand>0)txt='🚨 Situación crítica de competitividad. Necesitas un plan urgente.';
+  document.getElementById('qinterp').textContent=txt;
+  renderRecom(totals);
+  renderBmark(totals);
+}
+
+var SNAMES=['Eficiencia Operativa y Finanzas','Información y Datos','Atención al Cliente','Tecnología y Digitalización','Equipo y Liderazgo','Imagen de Marca y Online'];
+var ICONS=['⚙️','📊','⭐','💻','🤝','🎯'];
+var RECOM=[
+  {msg:'Mapear procesos de facturación y pagos, identificar los 3 mayores focos de gasto innecesario y aplicar mejoras que no requieren inversión, solo método.',cta:'Potencial de ahorro: hasta 30% en gastos operativos en 6-12 meses.'},
+  {msg:'Crear un cuadro de mando con 5-8 indicadores clave: ventas, margen, clientes activos y morosidad. Con Google Sheets puedes tenerlo listo en días.',cta:'Con datos en tiempo real, las decisiones se toman más rápido y con menos errores.'},
+  {msg:'Implantar un protocolo de seguimiento postventa: un mensaje a los 7 días de cada servicio, y medir satisfacción con una pregunta simple.',cta:'Mejorar la fidelización puede aumentar tus ingresos un 15-25% sin gastar en publicidad.'},
+  {msg:'Diagnóstico de herramientas actuales y valorar si un programa de gestión básico resuelve los principales cuellos de botella, siempre por fases.',cta:'La tecnología correcta puede liberar 5-10 horas semanales de trabajo manual.'},
+  {msg:'Definir roles por escrito, establecer objetivos medibles y hacer una reunión semanal de 30 minutos de seguimiento con tu equipo.',cta:'Delegar bien puede darte 10-15 horas semanales libres para hacer crecer el negocio.'},
+  {msg:'Actualizar perfil de Google Business (gratis), asegurar que tu web se ve bien en el móvil y publicar en redes sociales al menos una vez por semana.',cta:'Una presencia digital bien trabajada puede abrirte mercados fuera de La Mancha.'}
+];
+
+function renderRecom(totals){
+  if(Object.keys(scores).length<4){document.getElementById('recom-wrap').style.display='none';return;}
+  var sorted=totals.slice().sort(function(a,b){return a.val-b.val;});
+  var html='';
+  sorted.slice(0,3).forEach(function(s,idx){
+    var r=RECOM[s.idx];
+    var pct=Math.round((s.val/20)*100);
+    var col=pct<=35?'#dc2626':pct<=60?'#d97706':'#16a34a';
+    html+='<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;padding:1.25rem;border-left:4px solid '+col+'">'
+      +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem">'
+      +'<span style="font-size:1.3rem">'+ICONS[s.idx]+'</span>'
+      +'<div style="flex:1"><div style="font-size:11px;font-weight:700;color:'+col+';text-transform:uppercase;letter-spacing:1px">Prioridad '+(idx+1)+'</div>'
+      +'<div style="font-size:.9rem;font-weight:700;color:var(--az)">'+SNAMES[s.idx]+' — '+s.val+'/20</div></div>'
+      +'<div style="width:42px;height:42px;border-radius:50%;border:3px solid '+col+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+col+';flex-shrink:0">'+pct+'%</div>'
+      +'</div>'
+      +'<p style="font-size:13px;color:var(--gr);line-height:1.65;margin-bottom:.6rem">'+r.msg+'</p>'
+      +'<div style="background:var(--cr);border-radius:7px;padding:.5rem .75rem;font-size:12.5px;color:var(--vd);font-weight:600">💡 '+r.cta+'</div>'
+      +'</div>';
+  });
+  document.getElementById('recom-list').innerHTML=html;
+  document.getElementById('recom-wrap').style.display='block';
+}
+
+var BM=[8,7,7,7,9,7],BE=[10,9,9,10,11,9],TOP25=[17,17,16,18,17,15];
+var BLBLS=['Eficiencia<br>Operativa','Sistemas de<br>Información','Experiencia<br>del Cliente','Digitalización<br>e IT','Talento y<br>Liderazgo','Imagen<br>de Marca'];
+function renderBmark(totals){
+  var wrap=document.getElementById('bmark-wrap');if(!wrap)return;
+  var maxH=160,html='<div style="display:flex;align-items:flex-end;border-bottom:2px solid #ddd">';
+  for(var i=0;i<6;i++){
+    var mv=totals[i].val,mh=Math.round((mv/20)*maxH),bh=Math.round((BM[i]/20)*maxH),eh=Math.round((BE[i]/20)*maxH),t25h=Math.round((TOP25[i]/20)*maxH);
+    html+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;position:relative">'
+      +'<div style="display:flex;align-items:flex-end;gap:2px;height:'+maxH+'px;justify-content:center;width:100%;position:relative">'
+      +'<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:'+maxH+'px"><span style="font-size:8px;font-weight:700;color:#1a4f82;margin-bottom:1px">'+(mv>0?mv:'')+'</span><div style="width:13px;height:'+(mh>0?mh:2)+'px;background:'+(mv>0?'#1a4f82':'#d1dff0')+';border-radius:3px 3px 0 0"></div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:'+maxH+'px"><span style="font-size:8px;color:#c8a84b;margin-bottom:1px">'+BM[i]+'</span><div style="width:13px;height:'+bh+'px;background:#c8a84b;border-radius:3px 3px 0 0"></div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:'+maxH+'px"><span style="font-size:8px;color:#4a6e1a;margin-bottom:1px">'+BE[i]+'</span><div style="width:13px;height:'+eh+'px;background:#4a6e1a;border-radius:3px 3px 0 0"></div></div>'
+      +'</div>'
+      +'<div style="position:absolute;bottom:'+t25h+'px;left:4px;right:4px;border-top:2.5px dashed #d4a017;z-index:2"></div>'
+      +'<span style="position:absolute;bottom:'+(t25h+3)+'px;right:4px;font-size:7px;color:#d4a017;font-weight:700">'+TOP25[i]+'</span>'
+      +'<div style="font-size:9.5px;color:#6b7280;text-align:center;line-height:1.3;margin-top:5px;padding:0 2px">'+BLBLS[i]+'</div></div>';
+  }
+  wrap.innerHTML=html+'</div>';
+}
+document.addEventListener('DOMContentLoaded',function(){renderBmark(getSecTotals());niFetch();});
+
+function buildResultText(){
+  var n=document.getElementById('q-nombre').value||'Sin nombre',e=document.getElementById('q-empresa').value||'Sin empresa',tot=0;
+  var lines=['Diagnóstico Express LEVANTA','Nombre: '+n,'Empresa: '+e,'','PUNTUACIONES:'];
+  for(var s=1;s<=6;s++){var t=0;for(var q=1;q<=4;q++){if(scores[s+'_'+q])t+=scores[s+'_'+q];}tot+=t;lines.push(SNAMES[s-1]+': '+t+'/20');}
+  lines.push('','TOTAL: '+tot+'/120');
+  return lines.join('\n');
+}
+function enviarWA(){
+  var a=document.createElement('a');a.href='https://wa.me/34659681684?text='+encodeURIComponent(buildResultText());a.target='_blank';document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function prepEmail(){
+  var n=document.getElementById('q-nombre').value||'Sin nombre',e=document.getElementById('q-empresa').value||'Sin empresa',tot=0,totals=[];
+  var rows=[['DIAGNÓSTICO EXPRESS LEVANTA'],['Nombre:',n],['Empresa:',e],[''],['Sección','Puntuación','/ 20']];
+  for(var s=0;s<6;s++){var t=0;for(var q=1;q<=4;q++){if(scores[(s+1)+'_'+q])t+=scores[(s+1)+'_'+q];}totals.push(t);tot+=t;rows.push([SNAMES[s],t,20]);}
+  rows.push(['','',''],['TOTAL',tot,120]);
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+(c+'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='Diagnostico_LEVANTA.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  var body='Asunto: [LEVANTA] Diagnóstico Express – '+n+' ('+e+')\n\nHola Pablo,\n\nTe adjunto mi Diagnóstico Express.\n\nResumen:\n';
+  for(var i=0;i<6;i++)body+='• '+SNAMES[i]+': '+totals[i]+'/20\n';
+  body+='\nTOTAL: '+tot+'/120\n\nSaludos,\n'+n;
+  document.getElementById('email-txt').value=body;
+  var w=document.getElementById('email-wrap');w.style.display='block';w.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function copiarEmail(){
+  var t=document.getElementById('email-txt');t.select();
+  navigator.clipboard.writeText(t.value).then(function(){var ok=document.getElementById('copy-ok');ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}).catch(function(){document.execCommand('copy');});
+}
+
+function mostrarResumen(){
+  var n=document.getElementById('f-nombre').value.trim(),em=document.getElementById('f-email').value.trim();
+  var emp=document.getElementById('f-empleados').value,sec=document.getElementById('f-sector').value;
+  if(!n||!em||!emp||!sec){alert('Por favor, completa los campos obligatorios: nombre, email, nº de empleados y sector.');return;}
+  var e=document.getElementById('f-empresa').value.trim(),t=document.getElementById('f-tel').value.trim();
+  var a=document.getElementById('f-area').value,m=document.getElementById('f-msg').value.trim();
+  var btn=document.getElementById('fbtn-submit');
+  btn.disabled=true;btn.textContent='Enviando...';
+  fetch('https://formspree.io/f/mojyaggo',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({nombre:n,empresa:e||'No indicada',telefono:t||'No indicado',email:em,empleados:emp,sector:sec,servicio:a||'No indicado',mensaje:m||'Sin mensaje adicional',_subject:'[LEVANTA] Solicitud de diagnóstico – '+n,_replyto:em})
+  }).then(function(r){
+    if(r.ok){document.getElementById('fbox-success').style.display='block';document.getElementById('fbox-success').scrollIntoView({behavior:'smooth',block:'center'});}
+    else{alert('Ha habido un error. Por favor, escríbeme directamente a levantalamancha@levanta.email');}
+    btn.disabled=false;btn.textContent='Solicitar diagnóstico gratuito';
+  }).catch(function(){
+    alert('Error de conexión. Por favor, escríbeme a levantalamancha@levanta.email');
+    btn.disabled=false;btn.textContent='Solicitar diagnóstico gratuito';
+  });
+}
+function copiarResumen(){
+  var t=document.getElementById('fresumen-txt');t.select();
+  navigator.clipboard.writeText(t.value).then(function(){var ok=document.getElementById('fcopyok');ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}).catch(function(){document.execCommand('copy');});
+}
+
+var SYS=`Eres Pablo Prensa, fundador de LEVANTA, consultoría para PYMEs de La Mancha (Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara). Respondes SIEMPRE en primera persona.
+
+QUIÉN SOY:
+Soy manchego de pura cepa. Llevo 20 años trabajando en multinacionales como CHEP y Pegasus Solutions como Senior Director de Transformación Empresarial, en Londres, Mánchester y Madrid. He conseguido cosas reales: reducir costes operativos un 30% sin despedir a nadie, rescatar migraciones informáticas que estaban a punto de hundir la empresa, mejorar la experiencia del cliente y digitalizar procesos en equipos de más de 130 personas. Ahora he vuelto a La Mancha para ayudar a empresas como la tuya: pequeñas y medianas, muchas familiares, del campo, la industria o los servicios.
+
+MI LEMA: "Experiencia global al servicio de tu negocio local, sin perder la esencia manchega."
+
+REGLAS ESTRICTAS:
+1. NUNCA inventes datos, casos, precios ni nada que no esté en este prompt. Si no sabes algo, di: "Eso te lo cuento mejor en persona, ¿hablamos?"
+2. Usa lenguaje muy cercano, como si hablaras con un vecino en la plaza del pueblo o en la bodega. Usa "tú", "te", "vamos a ver", "te cuento", "sin complicaciones".
+3. NADA de palabras raras, jerga corporativa ni inglés.
+4. Frases cortas. Máximo 4-5 frases por respuesta.
+5. Sé honesto: si algo es nuevo o no lo sabes, lo dices. Nunca exageres.
+6. Siempre termina ofreciendo el siguiente paso: diagnóstico gratuito, llamada rápida o videollamada sin compromiso.
+7. Nunca suenes como una consultora de Madrid o Barcelona. Suena como un manchego serio que quiere ayudar de verdad.
+
+LO QUE HE CONSEGUIDO (solo usa estos datos, nunca inventes otros):
+- Reducciones de costes de hasta el 30% sin contratar ni despedir a nadie
+- Más de 20 millones de dólares de beneficio recurrente generado en mi carrera
+- Mejoré la satisfacción de clientes un 20%
+- Gestioné equipos de más de 130 personas y presupuestos de 9 millones de dólares
+- Rescaté una migración informática que estaba en crisis
+- Trabajé con más de 200.000 clientes y operaciones en 29 países
+
+QUÉ OFREZCO EN LEVANTA:
+1. EFICIENCIA OPERATIVA: Encontramos dónde se pierde dinero y lo arreglamos. Hasta un 30% de ahorro.
+2. INFORMACIÓN Y DATOS: Un "salpicadero" con los números clave de tu negocio, para saber siempre cómo va todo.
+3. EXPERIENCIA DEL CLIENTE: Que tus clientes estén contentos, repitan y te recomienden.
+4. DIGITALIZACIÓN: Modernizamos tus herramientas sin líos ni sorpresas, a tu ritmo.
+5. TALENTO Y LIDERAZGO: Que tu equipo funcione solo y tú puedas desconectar sin que todo se pare.
+6. IMAGEN DE MARCA: Que te conozcan más allá de tu pueblo o comarca.
+
+CÓMO TRABAJO:
+Primero, un diagnóstico gratuito de 30 minutos, por videollamada o tomando un café aquí en La Mancha. Sin compromiso. Luego, si tiene sentido, un plan adaptado a tu empresa y tu bolsillo. El objetivo es que notes resultados desde el primer trimestre.
+
+CONTACTO: +34 659 681 684 | levantalamancha@levanta.email | Agenda en: calendly.com/pprensas`;
+var hist=[];
+async function sendMsg(){
+  var inp=document.getElementById('chat-in'),msg=inp.value.trim();if(!msg)return;
+  addMsg(msg,'usr');inp.value='';
+  document.getElementById('csend').disabled=true;document.getElementById('chips').style.display='none';
+  addTyping();hist.push({role:'user',content:msg});
+  try{
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});
+    var d=await r.json();removeTyping();
+    var rep=d.content&&d.content[0]?d.content[0].text:'Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email';
+    addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
+  }catch(e){removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');}
+  document.getElementById('csend').disabled=false;
+}
+function sendChip(el){document.getElementById('chat-in').value=el.textContent;sendMsg();}
+function addMsg(t,tp){var m=document.getElementById('msgs'),d=document.createElement('div');d.className='msg '+tp;d.innerHTML=t.replace(/\n/g,'<br/>');m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function addTyping(){var m=document.getElementById('msgs'),d=document.createElement('div');d.className='msg typ';d.id='typing';d.textContent='Escribiendo...';m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function removeTyping(){var t=document.getElementById('typing');if(t)t.remove();}
+
+function generarPDF(){
+  var n=document.getElementById('q-nombre').value||'Tu empresa',e=document.getElementById('q-empresa').value||'';
+  var totals=getSecTotals(),grand=totals.reduce(function(a,b){return a+b.val;},0);
+  var interp=grand>=90?'Madurez alta.':grand>=60?'Madurez media. Oportunidades claras de crecimiento.':grand>=30?'Madurez baja. Gran potencial de mejora.':'Situación inicial. ¡El camino empieza aquí!';
+  var sorted=totals.slice().sort(function(a,b){return a.val-b.val;});
+  var photoHtml='<img src="https://i.postimg.cc/Vv1sNDff/Chat-GPT-Image-Jan-15-2026-05-48-06-PM.jpg" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #4a6e1a;flex-shrink:0"/>';
+  var RMSG=['Mapear procesos de facturación y pagos e identificar los 3 mayores focos de gasto innecesario. Potencial: hasta 30% de ahorro.','Crear cuadro de mando con 5-8 indicadores clave. Con herramientas gratuitas, listo en días.','Protocolo de seguimiento postventa. Puede aumentar ingresos un 15-25% sin publicidad.','Diagnóstico de herramientas actuales y ERP/CRM básico por fases. Libera 5-10h/semana.','Definir roles, objetivos medibles y reunión semanal de 30 min. Resultado: 10-15h libres para crecer.','Actualizar Google Business, optimizar web móvil y publicar en redes semanalmente.'];
+  var rows='';
+  totals.forEach(function(s,i){
+    var pct=Math.round((s.val/20)*100),col=pct<=35?'#dc2626':pct<=60?'#d97706':'#16a34a';
+    rows+='<tr style="border-bottom:1px solid #e2e8d8"><td style="padding:.5rem;font-size:12px;font-weight:600;white-space:nowrap">'+ICONS[i]+' '+SNAMES[i]+'</td><td style="padding:.5rem"><div style="display:flex;align-items:center;gap:6px"><div style="width:'+Math.round((s.val/20)*160)+'px;height:9px;background:'+col+';border-radius:4px;min-width:2px"></div><b style="font-size:11px;color:'+col+'">'+s.val+'/20</b></div><div style="font-size:10px;color:#888;margin-top:2px">▪ La Mancha: '+BM[i]+' &nbsp;▪ España: '+BE[i]+'</div></td></tr>';
+  });
+  var recos='';
+  sorted.slice(0,3).forEach(function(s,idx){
+    var pct=Math.round((s.val/20)*100),col=pct<=35?'#dc2626':pct<=60?'#d97706':'#16a34a';
+    recos+='<div style="border-left:4px solid '+col+';background:#f8f6f0;padding:.8rem 1rem;border-radius:0 8px 8px 0;margin-bottom:.6rem"><div style="font-size:10px;font-weight:700;color:'+col+';text-transform:uppercase;letter-spacing:1px;margin-bottom:.2rem">Prioridad '+(idx+1)+' · '+SNAMES[s.idx]+'</div><p style="font-size:12px;color:#374151;line-height:1.6;margin:0">'+ICONS[s.idx]+' '+RMSG[s.idx]+'</p></div>';
+  });
+  var overlay=document.createElement('div');
+  overlay.id='pdf-overlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;overflow-y:auto;padding:2rem;font-family:"Segoe UI",sans-serif';
+  overlay.innerHTML='<div class="pdf-noprint" style="display:flex;gap:.75rem;justify-content:flex-end;margin-bottom:1rem">'
+    +'<button onclick="window.print()" style="background:#1a4f82;color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer">🖨️ Guardar como PDF</button>'
+    +'<button onclick="document.getElementById(\'pdf-overlay\').remove()" style="background:#f8f6f0;border:1px solid #e2e8d8;padding:10px 18px;border-radius:7px;font-size:14px;cursor:pointer">✕ Cerrar</button>'
+    +'</div><div style="max-width:760px;margin:0 auto">'
+    +'<div style="background:linear-gradient(135deg,#1a4f82 0%,#0d3360 65%,#2a4a10 100%);color:#fff;padding:1.5rem;border-radius:12px;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">'
+    +'<div><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.35rem"><img src="https://i.postimg.cc/5NgyXdFv/Logo-LEVANTA.png" style="height:50px;width:auto"/><div><div style="font-size:1.8rem;font-weight:800;letter-spacing:3px">LEVANTA</div><div style="font-size:.75rem;color:rgba(255,255,255,.8)">Consultoría de Desarrollo Local · La Mancha</div></div></div><div style="margin-top:.5rem;font-size:.95rem;font-weight:600">Diagnóstico Express de Madurez Empresarial</div></div>'
+    +'<div style="text-align:right"><div style="font-size:.75rem;color:rgba(255,255,255,.7)">Preparado para</div><div style="font-size:.95rem;font-weight:700">'+n+(e?' · '+e:'')+'</div><div style="font-size:.75rem;color:rgba(255,255,255,.7)">'+new Date().toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'})+'</div></div></div>'
+    +'<div style="display:flex;gap:1rem;background:#f8f6f0;border:1px solid #e2e8d8;border-radius:10px;padding:1rem;margin-bottom:1rem;align-items:center">'
+    +'<div style="text-align:center;min-width:65px"><div style="font-size:2.6rem;font-weight:800;color:#1a4f82;line-height:1">'+grand+'</div><div style="font-size:.7rem;color:#6b7280">/ 120</div></div>'
+    +'<div style="border-left:2px solid #e2e8d8;padding-left:1rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a6e1a;margin-bottom:.2rem">Resultado</div><div style="font-size:.9rem;font-weight:600">'+interp+'</div></div></div>'
+    +'<h2 style="font-size:.9rem;font-weight:700;color:#1a4f82;margin:0 0 .6rem">📊 Puntuaciones por área y comparativa</h2>'
+    +'<table style="width:100%;border-collapse:collapse;margin-bottom:.5rem"><tbody>'+rows+'</tbody></table>'
+    +'<div style="font-size:10px;color:#9ca3af;margin-bottom:1rem">* Benchmarks orientativos, informes PYME España 2023-2024.</div>'
+    +'<h2 style="font-size:.9rem;font-weight:700;color:#1a4f82;margin:0 0 .6rem">🎯 Tus 3 prioridades de mejora</h2>'+recos
+    +'<div style="background:#1a4f82;color:#fff;border-radius:10px;padding:1rem;display:flex;gap:1rem;align-items:center;margin-top:1rem">'
+    +photoHtml
+    +'<div><div style="font-weight:700;font-size:.9rem">Pablo Prensa · Fundador LEVANTA</div>'
+    +'<div style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.7;margin-top:.2rem">Senior Director Internacional · CHEP · Pegasus Solutions · +20 años<br/>'
+    +'📞 <a href="tel:+34659681684" style="color:rgba(255,255,255,.8);text-decoration:none">+34 659 681 684</a> &nbsp;·&nbsp; '
+    +'✉️ <a href="https://mail.google.com/mail/?view=cm&to=levantalamancha@levanta.email" target="_blank" style="color:rgba(255,255,255,.8);text-decoration:none">levantalamancha@levanta.email</a></div>'
+    +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;margin-top:.5rem;background:#4a6e1a;padding:4px 11px;border-radius:5px;font-size:.75rem;font-weight:700;color:#fff;text-decoration:none">📅 Agenda gratis: calendly.com/pprensas</a>'
+    +'</div></div></div>';
+  var old=document.getElementById('pdf-overlay');if(old)old.remove();
+  document.body.appendChild(overlay);
+  window.scrollTo(0,0);
+}
+
+// ── IA NEWS ─────────────────────────────────────────────────────────────────
+var NI_KEY='levanta_news_v2',NI_MAX=15;
+var NI_SVCS=[
+  {id:1,ico:'⚙️',svc:'Eficiencia Operativa y Finanzas'},
+  {id:2,ico:'📊',svc:'Información y Datos'},
+  {id:3,ico:'⭐',svc:'Experiencia del Cliente'},
+  {id:4,ico:'💻',svc:'Digitalización e IT'},
+  {id:5,ico:'🤝',svc:'Talento y Liderazgo'},
+  {id:6,ico:'🎯',svc:'Imagen de Marca y Presencia Online'}
+];
+
+function niGetHistory(){try{return JSON.parse(localStorage.getItem(NI_KEY)||'{}');}catch(e){return {};}}
+function niSaveHistory(h){try{localStorage.setItem(NI_KEY,JSON.stringify(h));}catch(e){}}
+function niToday(){return new Date().toISOString().split('T')[0];}
+
+function niCardHtml(n,minimal){
+  var fuenteHtml=(n.url&&n.url.startsWith('http'))
+    ?'<a class="ni-fuente ni-fuente-link" href="'+n.url+'" target="_blank" rel="noopener noreferrer">'+n.fuente+' ↗</a>'
+    :'<span class="ni-fuente">'+n.fuente+'</span>';
+  return '<div class="ni-card">'
+    +'<div class="ni-card-head"><span class="ni-ico">'+n.icono+'</span><span class="ni-svc">'+n.servicio+'</span></div>'
+    +'<div class="ni-titular">'+n.titular+'</div>'
+    +'<div class="ni-resumen">'+n.resumen+'</div>'
+    +'<div class="ni-meta">'+fuenteHtml+'<span class="ni-fecha">'+n.fecha+'</span></div>'
+    +(minimal?''
+      :'<button class="ni-cta" onclick="navTo(\'contacto\')">'+n.cta+' → Habla con Pablo</button>')
+    +'</div>';
+}
+
+function niRenderGrid(news,wrap,minimal){
+  wrap.innerHTML=news.map(function(n){return niCardHtml(n,minimal);}).join('');
+}
+
+function niRenderHistory(history){
+  var today=niToday();
+  var days=Object.keys(history).filter(function(d){return d!==today;}).sort().reverse().slice(0,NI_MAX-1);
+  if(!days.length){document.getElementById('ni-hist-wrap').style.display='none';return;}
+  document.getElementById('ni-hist-wrap').style.display='block';
+  var daysEl=document.getElementById('ni-days');
+  daysEl.innerHTML=days.map(function(d,i){
+    var label=new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'});
+    return '<button class="ni-day'+(i===0?' active':'')+(d===today?' today':'')+'" onclick="niShowDay(\''+d+'\')" id="ni-day-'+d+'">'+label+'</button>';
+  }).join('');
+  if(days[0])niShowDay(days[0],true);
+}
+
+function niShowDay(date,skipActive){
+  if(!skipActive){
+    document.querySelectorAll('.ni-day').forEach(function(b){b.classList.remove('active');});
+    var btn=document.getElementById('ni-day-'+date);
+    if(btn)btn.classList.add('active');
+  }
+  var history=niGetHistory();
+  var news=history[date];
+  var wrap=document.getElementById('ni-hist-grid');
+  if(!news||!news.length){wrap.innerHTML='<div class="ni-empty">Sin datos para este día.</div>';return;}
+  niRenderGrid(news,wrap,true);
+}
+
+function niRetry(){
+  var history=niGetHistory();
+  delete history[niToday()];
+  niSaveHistory(history);
+  document.getElementById('ni-error-box').style.display='none';
+  niFetch();
+}
+
+async function niFetch(){
+  var today=niToday();
+  var history=niGetHistory();
+  if(history[today]&&history[today].length===6){
+    niRenderGrid(history[today],document.getElementById('ni-grid-wrap'),false);
+    niRenderHistory(history);
+    return;
+  }
+
+  // Primero intenta leer las noticias del servidor (instantáneo si ya están generadas)
+  try{
+    var r=await fetch('/.netlify/functions/get-news');
+    var d=await r.json();
+    if(d.news&&Array.isArray(d.news)&&d.news.length===6){
+      history[today]=d.news;
+      niSaveHistory(history);
+      niRenderGrid(d.news,document.getElementById('ni-grid-wrap'),false);
+      niRenderHistory(history);
+      return;
+    }
+  }catch(e){}
+
+  // Fallback: genera en el cliente (más lento, ~30s)
+  document.getElementById('ni-grid-wrap').innerHTML=
+    NI_SVCS.map(function(s){
+      return '<div class="ni-card ni-skeleton"><div class="ni-card-head"><span class="ni-ico">'+s.ico+'</span><span class="ni-svc">'+s.svc+'</span></div>'
+        +'<div class="ni-titular">Generando noticias del día...</div>'
+        +'<div class="ni-resumen">La IA está buscando noticias relevantes para tu empresa. Puede tardar hasta 30 segundos.</div></div>';
+    }).join('');
+
+  var fechaEs=new Date().toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var prompt='Hoy es '+fechaEs+'. Genera 6 noticias relevantes de esta semana para el dueño de una PYME de La Mancha.\nUna por servicio: 1.Eficiencia Operativa 2.Información y Datos 3.Experiencia del Cliente 4.Digitalización e IT 5.Talento y Liderazgo 6.Imagen de Marca.\nRESPONDE SOLO con array JSON sin markdown:\n[{"id":1,"servicio":"nombre","icono":"emoji","titular":"max 85 chars","resumen":"2 frases.","fuente":"medio","url":"URL EXACTA encontrada con web_search o cadena vacía si no la tienes verificada. NUNCA inventes URLs.","fecha":"16 abr 2026","cta":"pregunta directa"}]\nCRÍTICO: el campo url solo puede contener URLs verificadas por web_search, nunca construidas.';
+
+  async function niCallAPI(withSearch){
+    var body={model:'claude-sonnet-4-20250514',max_tokens:2500,messages:[{role:'user',content:prompt}]};
+    if(withSearch)body.tools=[{"type":"web_search_20250305","name":"web_search"}];
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    var d=await r.json();
+    if(d.error)throw new Error(d.error.message||'API error');
+    var text=(d.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+    var match=text.match(/\[[\s\S]*?\]/s)||text.match(/\[[\s\S]*/);
+    if(!match)throw new Error('No JSON');
+    var raw=match[0];
+    if(raw.indexOf(']')===-1)raw=raw+']';
+    return JSON.parse(raw);
+  }
+
+  try{
+    var news;
+    try{news=await niCallAPI(true);}
+    catch(e1){news=await niCallAPI(false);}
+    if(!Array.isArray(news)||news.length<6)throw new Error('Bad data');
+    history[today]=news;
+    var allDays=Object.keys(history).sort().reverse();
+    if(allDays.length>NI_MAX)allDays.slice(NI_MAX).forEach(function(k){delete history[k];});
+    niSaveHistory(history);
+    niRenderGrid(news,document.getElementById('ni-grid-wrap'),false);
+    niRenderHistory(history);
+  }catch(e){
+    document.getElementById('ni-error-box').style.display='block';
+    document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.4);grid-column:1/-1">Las noticias se cargarán en breve.</div>';
+  }
+}
+
+
+
+// ── BAJA NEWSLETTER ──────────────────────────────────────────────────────────
+function toggleUnsub(){
+  var w=document.getElementById('unsub-wrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+}
+async function niUnsubscribe(){
+  var email=document.getElementById('unsub-email').value.trim();
+  var msg=document.getElementById('unsub-msg');
+  if(!email||!email.includes('@')){msg.textContent='Introduce un email válido.';msg.style.color='#fca5a5';return;}
+  msg.textContent='Procesando...';msg.style.color='rgba(255,255,255,.5)';
+  try{
+    var r=await fetch('/.netlify/functions/unsubscribe-request',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email})
+    });
+    var d=await r.json();
+    if(d.ok){
+      msg.textContent='✅ Te hemos enviado un email de confirmación de baja.';
+      msg.style.color='#86c94a';
+    }else{
+      msg.textContent=d.error||'Error. Escríbenos a levantalamancha@levanta.email';
+      msg.style.color='#fca5a5';
+    }
+  }catch(e){
+    msg.textContent='Error de conexión. Escríbenos a levantalamancha@levanta.email';
+    msg.style.color='#fca5a5';
+  }
+}
+
+// ── SUSCRIPCIÓN NEWSLETTER ───────────────────────────────────────────────────
+async function niSubscribe(){
+  var name=document.getElementById('ni-nombre').value.trim();
+  var email=document.getElementById('ni-email').value.trim();
+  var company=document.getElementById('ni-empresa').value.trim();
+  var sector=document.getElementById('ni-sector').value;
+  if(!name){alert('Por favor introduce tu nombre.');return;}
+  if(!email||!email.includes('@')){alert('Por favor introduce un email válido.');return;}
+  var btn=document.getElementById('ni-sub-btn');
+  btn.disabled=true;btn.textContent='Enviando...';
+  try{
+    var r=await fetch('/.netlify/functions/register',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:name,email:email,company:company,sector:sector})
+    });
+    var d=await r.json();
+    if(d.ok){
+      document.getElementById('ni-sub-wrap').innerHTML=
+        '<div style="text-align:center;padding:1.5rem 1rem">'
+        +'<div style="font-size:2.5rem;margin-bottom:.6rem">✅</div>'
+        +'<div style="color:#86c94a;font-weight:700;font-size:1.1rem;margin-bottom:.4rem">¡Suscripción confirmada!</div>'
+        +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Revisa tu correo — te he enviado un email de bienvenida.<br/>Mañana a las 7h recibirás tus primeras noticias.</p>'
+        +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
+        +'</div>';
+    }else{
+      btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+      alert(d.error||'Error al suscribirse. Inténtalo de nuevo.');
+    }
+  }catch(e){
+    btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+    alert('Error de conexión. Inténtalo de nuevo.');
+  }
+}
+
+</script>
+</body>
+</html>
