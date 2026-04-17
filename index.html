@@ -130,6 +130,8 @@ footer strong{color:#fff}
 .ni-day.today{border-color:var(--vd);color:var(--vd2)}
 .ni-day.today.active{background:var(--vd);color:#fff}
 .ni-empty{text-align:center;padding:2rem;color:rgba(255,255,255,.3);font-size:14px}
+.ni-hoy{display:inline-flex;align-items:center;gap:4px;background:rgba(74,110,26,.25);border:1px solid rgba(134,201,74,.4);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:#86c94a;letter-spacing:.5px;margin-bottom:.4rem}
+.ni-hoy span{width:5px;height:5px;background:#86c94a;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
 .ni-error{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:10px;padding:1rem;color:#fca5a5;font-size:13px;text-align:center;margin-bottom:1rem}
 @media(max-width:768px){.ni-grid{grid-template-columns:1fr}.ni-days{gap:.35rem}
   #ni-sub-wrap,.ni-sub-grid{grid-template-columns:1fr !important}
@@ -500,13 +502,13 @@ footer strong{color:#fff}
     <div style="margin-top:2.5rem;background:linear-gradient(135deg,#112240 0%,#1a3a5c 100%);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
         <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter diario gratuito</div>
-          <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias del día en tu correo</h3>
-          <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada mañana a las 7h, las 6 noticias más relevantes para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter semanal gratuito</div>
+          <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias de la semana en tu correo</h3>
+          <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada lunes a primera hora, las 6 noticias más relevantes de la semana para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
           <div style="display:flex;flex-direction:column;gap:.4rem">
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Gratis para siempre</span>
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Sin spam · baja cuando quieras</span>
-            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Noticias reales buscadas en internet cada día</span>
+            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Noticias reales de medios españoles cada semana</span>
           </div>
         </div>
         <div id="ni-sub-wrap">
@@ -525,7 +527,7 @@ footer strong{color:#fff}
             <option>Otros</option>
           </select>
           <button id="ni-sub-btn" onclick="niSubscribe()" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
-            📧 Suscribirme a las noticias diarias
+            📧 Suscribirme a las noticias semanales
           </button>
           <p style="color:rgba(255,255,255,.3);font-size:11px;text-align:center;margin:.5rem 0 0">RGPD · Tus datos solo se usan para enviarte las noticias</p>
         </div>
@@ -874,12 +876,15 @@ function niToday(){return new Date().toISOString().split('T')[0];}
 function niCardHtml(n,minimal){
   var fuenteHtml=(n.url&&n.url.startsWith('http'))
     ?'<a class="ni-fuente ni-fuente-link" href="'+n.url+'" target="_blank" rel="noopener noreferrer">'+n.fuente+' ↗</a>'
-    :'<span class="ni-fuente">'+n.fuente+'</span>';
+    :(n.fuente?'<span class="ni-fuente">'+n.fuente+'</span>':'');
+  var hoyBadge=n.isToday?'<div class="ni-hoy"><span></span>HOY</div>':'';
+  var fechaHtml=n.fecha?'<span class="ni-fecha">'+n.fecha+'</span>':'';
   return '<div class="ni-card">'
     +'<div class="ni-card-head"><span class="ni-ico">'+n.icono+'</span><span class="ni-svc">'+n.servicio+'</span></div>'
+    +hoyBadge
     +'<div class="ni-titular">'+n.titular+'</div>'
     +'<div class="ni-resumen">'+n.resumen+'</div>'
-    +'<div class="ni-meta">'+fuenteHtml+'<span class="ni-fecha">'+n.fecha+'</span></div>'
+    +'<div class="ni-meta">'+fuenteHtml+fechaHtml+'</div>'
     +(minimal?''
       :'<button class="ni-cta" onclick="navTo(\'contacto\')">'+n.cta+' → Habla con Pablo</button>')
     +'</div>';
@@ -1042,15 +1047,15 @@ async function niSubscribe(){
         '<div style="text-align:center;padding:1.5rem 1rem">'
         +'<div style="font-size:2.5rem;margin-bottom:.6rem">✅</div>'
         +'<div style="color:#86c94a;font-weight:700;font-size:1.1rem;margin-bottom:.4rem">¡Suscripción confirmada!</div>'
-        +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Revisa tu correo — te he enviado un email de bienvenida.<br/>Mañana a las 7h recibirás tus primeras noticias.</p>'
+        +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Revisa tu correo — te he enviado un email de bienvenida.<br/>El próximo lunes recibirás tu primera edición.</p>'
         +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
         +'</div>';
     }else{
-      btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+      btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
       alert(d.error||'Error al suscribirse. Inténtalo de nuevo.');
     }
   }catch(e){
-    btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+    btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
     alert('Error de conexión. Inténtalo de nuevo.');
   }
 }
