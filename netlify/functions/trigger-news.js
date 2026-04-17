@@ -95,17 +95,26 @@ export default async (req) => {
     const articulosPorServicio = [];
 
     for (const svc of SERVICIOS) {
-      // Búsqueda 1: La Mancha + keywords (prioridad)
+      const kw = svc.keywords.split(' ')[0];
+
+      // Búsqueda 1: REGIÓN — Castilla-La Mancha / La Mancha (prioridad)
       const manchaQuery = `("castilla la mancha" OR "la mancha") (${svc.keywords})`;
       const manchaResults = await buscarNoticias(manchaQuery, NEWS_API_KEY, 3);
 
-      // Búsqueda 2: España nacional (fallback)
-      const nacionalQuery = `(${svc.keywords}) españa`;
+      // Búsqueda 2: PROVINCIA — Toledo, Guadalajara, Cuenca, Albacete, Ciudad Real (solo si no hay regional)
+      let provinciaResults = [];
+      if (!manchaResults.length) {
+        const provinciaQuery = `(Toledo OR Guadalajara OR Cuenca OR Albacete OR "Ciudad Real") (${svc.keywords})`;
+        provinciaResults = await buscarNoticias(provinciaQuery, NEWS_API_KEY, 3);
+      }
+
+      // Búsqueda 3: NACIONAL — España (fallback final)
+      const nacionalQuery = `${kw} empresa españa`;
       const nacionalResults = await buscarNoticias(nacionalQuery, NEWS_API_KEY, 5);
 
-      // Combinar: La Mancha primero, luego nacional (sin duplicados por URL)
+      // Combinar: Región → Provincia → Nacional (sin duplicados)
       const seen = new Set();
-      const combinados = [...manchaResults, ...nacionalResults].filter(a => {
+      const combinados = [...manchaResults, ...provinciaResults, ...nacionalResults].filter(a => {
         if (seen.has(a.url)) return false;
         seen.add(a.url);
         return true;
@@ -114,19 +123,24 @@ export default async (req) => {
       articulosPorServicio.push({
         servicio: svc,
         articulos: combinados,
-        tieneLaMancha: manchaResults.length > 0,
+        tieneProvincia: provinciaResults.length > 0,
+        tieneLaMancha: manchaResults.length > 0 || provinciaResults.length > 0,
       });
     }
 
     // ── PASO 2: Formatear artículos para el prompt de Claude ─────────────────
-    const resumenArticulos = articulosPorServicio.map(({ servicio, articulos, tieneLaMancha }) => {
+    const resumenArticulos = articulosPorServicio.map(({ servicio, articulos, tieneProvincia, tieneLaMancha }) => {
       if (!articulos.length) {
         return `SERVICIO ${servicio.id} - ${servicio.nombre}: Sin artículos disponibles en los últimos 30 días.`;
       }
       const lista = articulos.map((a, i) =>
         `  [${i + 1}] Fuente: ${a.source.name} | Título: ${a.title} | URL: ${a.url} | Fecha: ${a.publishedAt?.slice(0, 10)}`
       ).join('\n');
-      const nota = tieneLaMancha ? '⭐ Hay artículos de La Mancha' : '(sin resultados de La Mancha, usar mejor nacional)';
+      const nota = tieneLaMancha && !tieneProvincia
+        ? '⭐⭐ Hay artículos de La Mancha (región)'
+        : tieneProvincia
+          ? '⭐ Hay artículos de PROVINCIA (Toledo/Guadalajara/Cuenca/Albacete/Ciudad Real)'
+          : '(sin resultados locales, usar mejor nacional)';
       return `SERVICIO ${servicio.id} - ${servicio.nombre} ${nota}:\n${lista}`;
     }).join('\n\n');
 
@@ -140,8 +154,8 @@ REGLAS CRÍTICAS:
 - El campo "url" debe ser EXACTAMENTE la URL del artículo elegido, sin modificarla.
 - El campo "fuente" debe ser EXACTAMENTE el nombre de la fuente del artículo elegido.
 - El campo "fechaArticulo" debe ser EXACTAMENTE la fecha del artículo elegido (formato YYYY-MM-DD), sin modificarla.
-- Si hay artículos de La Mancha (marcados con ⭐), priorízalos.
-- Si no hay artículos disponibles para un servicio, pon url vacío, fuente vacío y fechaArticulo vacío.
+- Prioridad: ⭐⭐ provincia específica > ⭐ región La Mancha > nacional. Usa siempre el artículo de mayor prioridad disponible.
+- Si no hay artículos disponibles para un servicio, pon url:"", fuente:"" y fechaArticulo:"" (cadena vacía, NO pongas la fecha de hoy).
 
 ARTÍCULOS DISPONIBLES:
 ${resumenArticulos}
@@ -193,6 +207,7 @@ RESPONDE SOLO con array JSON sin markdown:
       ok: true,
       date: today,
       count: cleanNews.length,
+      provinciaHits: articulosPorServicio.filter(a => a.tieneProvincia).length,
       manchaHits: articulosPorServicio.filter(a => a.tieneLaMancha).length,
       todayHits: cleanNews.filter(n => n.isToday).length,
     }), { headers: { 'Content-Type': 'application/json' } });
