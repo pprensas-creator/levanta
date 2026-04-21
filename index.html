@@ -867,16 +867,54 @@ Primero, un diagnóstico gratuito de 30 minutos, por videollamada o tomando un c
 
 CONTACTO: +34 659 681 684 | levantalamancha@levanta.email | Agenda en: calendly.com/pprensas`;
 var hist=[];
+var chatMessageCount = 0;
+
+// Rate limiting: 3 mensajes por IP por día
+function getChatLimit() {
+  var today = new Date().toISOString().split('T')[0];
+  var stored = localStorage.getItem('chat_limit');
+  if (!stored) return { date: today, count: 0 };
+  try {
+    var data = JSON.parse(stored);
+    // Reset si es un día diferente
+    if (data.date !== today) return { date: today, count: 0 };
+    return data;
+  } catch(e) {
+    return { date: today, count: 0 };
+  }
+}
+
+function incrementChatLimit() {
+  var limit = getChatLimit();
+  limit.count++;
+  localStorage.setItem('chat_limit', JSON.stringify(limit));
+  return limit.count;
+}
+
 async function sendMsg(){
   var inp=document.getElementById('chat-in'),msg=inp.value.trim();if(!msg)return;
+  
+  // Verificar límite de mensajes
+  var limit = getChatLimit();
+  if (limit.count >= 3) {
+    addMsg('Has alcanzado el límite de 3 mensajes por día. Para continuar nuestra conversación, llámame al +34 659 681 684 o escríbeme a levantalamancha@levanta.email', 'bot');
+    inp.value = '';
+    return;
+  }
+  
   addMsg(msg,'usr');inp.value='';
   document.getElementById('csend').disabled=true;document.getElementById('chips').style.display='none';
   addTyping();hist.push({role:'user',content:msg});
   
+  // Incrementar contador
+  chatMessageCount++;
+  var currentCount = incrementChatLimit();
+  
   // Track chat interaction
   if(typeof gtag !== 'undefined'){
     gtag('event', 'chat_message_sent', {
-      'event_category': 'engagement'
+      'event_category': 'engagement',
+      'message_number': currentCount
     });
   }
   
@@ -884,6 +922,12 @@ async function sendMsg(){
     var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});
     var d=await r.json();removeTyping();
     var rep=d.content&&d.content[0]?d.content[0].text:'Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email';
+    
+    // En el segundo mensaje, añadir invitación a llamar
+    if(currentCount === 2) {
+      rep += '\n\nSi quieres profundizar más, llámame al +34 659 681 684 o agenda una videollamada en calendly.com/pprensas. Así hablamos con más calma.';
+    }
+    
     addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
   }catch(e){removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');}
   document.getElementById('csend').disabled=false;
@@ -951,7 +995,7 @@ function generarPDF(){
 }
 
 // ── IA NEWS ─────────────────────────────────────────────────────────────────
-var NI_KEY='levanta_news_v2',NI_MAX=7;
+var NI_KEY='levanta_news_v2',NI_MAX=28; // 4 semanas
 var NI_SVCS=[
   {id:1,ico:'⚙️',svc:'Eficiencia Operativa y Finanzas'},
   {id:2,ico:'📊',svc:'Información y Datos'},
@@ -966,21 +1010,21 @@ function niSaveHistory(h){try{localStorage.setItem(NI_KEY,JSON.stringify(h));}ca
 function niToday(){return new Date().toISOString().split('T')[0];}
 
 function niCardHtml(n,minimal){
-  var isToday = n.fecha === niToday();
   var daysAgo = 0;
-  if(!isToday && n.fecha){
+  if(n.fecha){
     var now = new Date();
     var then = new Date(n.fecha+'T00:00:00');
     daysAgo = Math.floor((now - then)/(1000*60*60*24));
   }
   
   var fechaDisplay = '';
-  if(isToday){
-    fechaDisplay = '<span class="ni-fecha" style="color:#86c94a;font-weight:600">🆕 Hoy</span>';
-  }else if(daysAgo === 1){
-    fechaDisplay = '<span class="ni-fecha">Hace 1 día</span>';
-  }else if(daysAgo > 1 && daysAgo <= 7){
-    fechaDisplay = '<span class="ni-fecha">Hace '+daysAgo+' días</span>';
+  // Badge "Nuevo" solo para noticias de los últimos 7 días
+  if(daysAgo <= 7){
+    fechaDisplay = '<span class="ni-fecha" style="color:#86c94a;font-weight:600">🆕 Nuevo</span>';
+  }else if(daysAgo > 7 && daysAgo <= 14){
+    fechaDisplay = '<span class="ni-fecha">Hace '+Math.floor(daysAgo/7)+' semana'+(daysAgo>13?'s':'')+'</span>';
+  }else if(daysAgo > 14 && daysAgo <= 28){
+    fechaDisplay = '<span class="ni-fecha">Hace '+Math.floor(daysAgo/7)+' semanas</span>';
   }else{
     fechaDisplay = '<span class="ni-fecha">'+n.fecha+'</span>';
   }
@@ -1000,15 +1044,21 @@ function niCardHtml(n,minimal){
 function niRenderGrid(news,wrap,minimal){
   wrap.innerHTML=news.map(function(n){return niCardHtml(n,minimal);}).join('');
   
-  // Actualizar badge con contador de noticias de hoy
-  var today = niToday();
-  var todayCount = news.filter(function(n){return n.fecha === today;}).length;
+  // Actualizar badge con contador de noticias de la última semana
+  var lastWeekDate = new Date();
+  lastWeekDate.setDate(lastWeekDate.getDate() - 7);
+  var lastWeekStr = lastWeekDate.toISOString().split('T')[0];
+  
+  var recentCount = news.filter(function(n){
+    return n.fecha >= lastWeekStr;
+  }).length;
+  
   var badge = document.getElementById('ni-badge');
   if(badge){
-    if(todayCount > 0){
-      badge.innerHTML = '<span></span>Noticias de hoy: <strong>'+todayCount+'</strong>';
+    if(recentCount > 0){
+      badge.innerHTML = '<span></span>Noticias de esta semana: <strong>'+recentCount+'</strong>';
     } else {
-      badge.innerHTML = '<span></span>Actualizado diariamente con IA';
+      badge.innerHTML = '<span></span>Actualizado semanalmente con IA';
     }
   }
 }
@@ -1043,10 +1093,10 @@ async function niFetch(){
   var today=niToday();
   var history=niGetHistory();
   
-  // Limpiar noticias antiguas (más de 7 días) de TODAS las fechas
+  // Limpiar noticias antiguas (más de 28 días = 4 semanas) de TODAS las fechas
   var allDays=Object.keys(history);
   var cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - 7);
+  cutoffDate.setDate(cutoffDate.getDate() - 28);
   allDays.forEach(function(date){
     var newsDate = new Date(date+'T00:00:00');
     if(newsDate < cutoffDate){
@@ -1055,7 +1105,7 @@ async function niFetch(){
   });
   niSaveHistory(history);
   
-  // Construir el estado actual: última noticia de cada sección de los últimos 7 días
+  // Construir el estado actual: última noticia de cada sección de los últimos 28 días
   var currentNews = {}; // {1: noticia, 2: noticia, ...}
   var sortedDays = Object.keys(history).sort(); // De más antigua a más reciente
   
@@ -1077,11 +1127,15 @@ async function niFetch(){
   if(newsToShow.length > 0){
     niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
   } else {
-    document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.7);grid-column:1/-1;text-align:center;padding:3rem 1rem;font-size:1rem;line-height:1.6"><div style="font-size:2.5rem;margin-bottom:1rem">📰</div><strong style="display:block;margin-bottom:.5rem;font-size:1.1rem">No hay noticias relevantes en los últimos 7 días</strong><p style="color:rgba(255,255,255,.5);font-size:.9rem;margin:0">Vuelve mañana para ver las últimas actualizaciones del sector agroalimentario en La Mancha</p></div>';
+    document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.7);grid-column:1/-1;text-align:center;padding:3rem 1rem;font-size:1rem;line-height:1.6"><div style="font-size:2.5rem;margin-bottom:1rem">📰</div><strong style="display:block;margin-bottom:.5rem;font-size:1.1rem">No hay noticias relevantes en las últimas 4 semanas</strong><p style="color:rgba(255,255,255,.5);font-size:.9rem;margin:0">Las noticias se actualizan cada lunes con las últimas novedades del sector</p></div>';
   }
   
-  // Si ya buscamos hoy, no buscar de nuevo
-  if(history[today]){
+  // SOLO buscar noticias nuevas los LUNES
+  var isMonday = new Date().getDay() === 1;
+  var lastMonday = getLastMonday();
+  
+  // Si ya buscamos este lunes, no buscar de nuevo
+  if(history[lastMonday] || !isMonday){
     niRenderHistory(history);
     return;
   }
@@ -1101,6 +1155,23 @@ async function niFetch(){
       return;
     }
   }catch(e){}
+
+  // Fallback: genera en el cliente
+  document.getElementById('ni-grid-wrap').innerHTML=
+    NI_SVCS.map(function(s){
+      return '<div class="ni-card ni-skeleton"><div class="ni-card-head"><span class="ni-ico">'+s.ico+'</span><span class="ni-svc">'+s.svc+'</span></div>'
+        +'<div class="ni-titular">Buscando noticias actuales...</div>'
+        +'<div class="ni-resumen">Estoy buscando noticias reales de esta semana. Puede tardar hasta 30 segundos.</div></div>';
+    }).join('');
+
+function getLastMonday() {
+  var today = new Date();
+  var day = today.getDay();
+  var diff = day === 0 ? 6 : day - 1;
+  var lastMonday = new Date(today);
+  lastMonday.setDate(today.getDate() - diff);
+  return lastMonday.toISOString().split('T')[0];
+}
 
   // Fallback: genera en el cliente
   document.getElementById('ni-grid-wrap').innerHTML=
