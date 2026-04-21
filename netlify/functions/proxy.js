@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
   // CORS headers
   const headers = {
@@ -37,7 +35,7 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // Call Anthropic API
+    // Call Anthropic API using native fetch
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
