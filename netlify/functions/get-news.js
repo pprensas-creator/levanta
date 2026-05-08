@@ -5,26 +5,39 @@ export default async (req) => {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
-
   try {
     const store = getStore({ name: 'levanta-news', consistency: 'strong' });
     const today = new Date().toISOString().split('T')[0];
     const cached = await store.get(today);
 
     if (cached) {
-      return new Response(cached, {
-        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600', ...cors }
+      const data = JSON.parse(cached);
+
+      // Añadir URL si la noticia no la tiene (compatibilidad con noticias antiguas)
+      if (Array.isArray(data.news)) {
+        data.news = data.news.map(n => ({
+          ...n,
+          url: n.url || `https://news.google.com/search?q=${encodeURIComponent(n.keywords || n.titular)}&hl=es&gl=ES&ceid=ES:es`
+        }));
+      }
+
+      return new Response(JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=3600',
+          ...cors
+        }
       });
     }
 
-    // Si no hay noticias del día todavía, devuelve null
     return new Response(JSON.stringify({ news: null, date: today }), {
       headers: { 'Content-Type': 'application/json', ...cors }
     });
 
   } catch(e) {
     return new Response(JSON.stringify({ error: e.message }), {
-      status: 500, headers: { 'Content-Type': 'application/json', ...cors }
+      status: 500,
+      headers: { 'Content-Type': 'application/json', ...cors }
     });
   }
 };
