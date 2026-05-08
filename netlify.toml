@@ -2,11 +2,8 @@
   publish = "."
   functions = "netlify/functions"
 
-[[redirects]]
-  from = "/api/proxy"
-  to = "/.netlify/functions/proxy"
-  status = 200
-  force = true
+[edge_functions]
+  directory = "edge-functions"
 
 [functions."weekly-newsletter"]
   schedule = "0 7 * * 1"
