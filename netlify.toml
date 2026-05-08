@@ -1,8 +1,15 @@
 [build]
   publish = "."
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/api/proxy"
   to = "/.netlify/functions/proxy"
   status = 200
   force = true
+
+[functions."daily-news"]
+  schedule = "0 5 * * *"
+
+[functions."weekly-newsletter"]
+  schedule = "0 7 * * 1"
