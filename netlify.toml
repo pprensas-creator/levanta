@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[edge_functions]
+  directory = "edge-functions"
+
+[functions."weekly-newsletter"]
+  schedule = "0 7 * * 1"
