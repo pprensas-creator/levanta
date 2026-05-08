@@ -8,8 +8,5 @@
   status = 200
   force = true
 
-[functions."daily-news"]
-  schedule = "0 5 * * *"
-
 [functions."weekly-newsletter"]
   schedule = "0 7 * * 1"
