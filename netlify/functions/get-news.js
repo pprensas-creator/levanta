@@ -12,15 +12,6 @@ export default async (req) => {
 
     if (cached) {
       const data = JSON.parse(cached);
-
-      // Añadir URL si la noticia no la tiene (compatibilidad con noticias antiguas)
-      if (Array.isArray(data.news)) {
-        data.news = data.news.map(n => ({
-          ...n,
-          url: n.url || `https://news.google.com/search?q=${encodeURIComponent(n.keywords || n.titular)}&hl=es&gl=ES&ceid=ES:es`
-        }));
-      }
-
       return new Response(JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
