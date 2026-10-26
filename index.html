@@ -900,12 +900,18 @@ async function sendMsg(){
   }
   
   try{
-    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:1000,system:SYS,messages:hist})});
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:1500,system:SYS,messages:hist})});
     var d=await r.json();removeTyping();
     if(!r.ok||d.error){console.error('Chat API error',r.status,d.error);}
-    var rep=d.content&&d.content[0]?d.content[0].text:'Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email';
-    addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
-  }catch(e){removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');}
+    // El modelo puede devolver primero bloques "thinking": nos quedamos solo con los de texto
+    var rep=(d.content||[]).filter(function(b){return b&&b.type==='text';}).map(function(b){return b.text;}).join('').trim();
+    if(rep){
+      addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
+    }else{
+      addMsg('Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email','bot');
+      hist.pop();   // no guardamos los errores en el historial
+    }
+  }catch(e){console.error('Chat error',e);removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');hist.pop();}
   document.getElementById('csend').disabled=false;
 }
 function sendChip(el){
