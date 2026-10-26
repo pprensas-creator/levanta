@@ -9,7 +9,12 @@ export function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-const hmac = (msg) => createHmac('sha256', process.env.TRIGGER_KEY || '').update(msg).digest('hex');
+// Sin TRIGGER_KEY los tokens serían calculables por cualquiera: mejor fallar que firmar con una clave vacía.
+const hmac = (msg) => {
+  const key = process.env.TRIGGER_KEY;
+  if (!key) throw new Error('TRIGGER_KEY no está configurada en Netlify');
+  return createHmac('sha256', key).update(msg).digest('hex');
+};
 const norm = (email) => String(email || '').toLowerCase().trim();
 
 // Token de baja (el mismo que ya usaban los emails enviados hasta ahora)

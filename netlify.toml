@@ -18,3 +18,41 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     # Política de seguridad de contenido (aplicada). Probada sin avisos en navegador real (Chromium).
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://stats.g.doubleclick.net; connect-src 'self' https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io"
+
+# No servir el código del backend ni los ficheros del proyecto (la web se publica desde la raíz).
+# Las funciones siguen funcionando: Netlify las despliega aparte, en /.netlify/functions/ y /api/proxy.
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.gitignore"
+  to = "/404.html"
+  status = 404
+  force = true
