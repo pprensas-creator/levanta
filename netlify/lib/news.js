@@ -82,6 +82,26 @@ function isToday(isoDate) {
   return isoDate.slice(0, 10) === today;
 }
 
+// Extrae las noticias del texto de la IA. Si la respuesta llegó cortada, recupera
+// los objetos completos que sí llegaron (cada objeto es plano, sin llaves anidadas).
+function parsePicks(text) {
+  const full = text.match(/\[[\s\S]*\]/);
+  if (full) {
+    try {
+      const arr = JSON.parse(full[0]);
+      if (Array.isArray(arr)) return arr;
+    } catch { /* se intenta la recuperación */ }
+  }
+  const out = [];
+  for (const m of text.matchAll(/\{[^{}]*\}/g)) {
+    try {
+      const o = JSON.parse(m[0]);
+      if (o && o.id != null && o.elegido != null) out.push(o);
+    } catch { /* objeto incompleto, se ignora */ }
+  }
+  return out;
+}
+
 // ── FUNCIÓN PRINCIPAL: renovación SEMANAL ───────────────────────────────────
 // Reglas:
 //  1. Solo se publican noticias REALES: título/fuente/URL/fecha salen del artículo de NewsAPI
@@ -183,16 +203,16 @@ RESPONDE SOLO con un array JSON sin markdown:
       signal: AbortSignal.timeout(20000),
       body: JSON.stringify({
         model: process.env.NEWS_MODEL || 'claude-haiku-5-5',
-        max_tokens: 2500,
+        max_tokens: 8000,   // margen para el razonamiento interno del modelo + las 6 noticias
         messages: [{ role: 'user', content: prompt }]
       })
     });
     const claudeData = await claudeResp.json();
     if (claudeData.error) throw new Error('Claude error: ' + claudeData.error.message);
     const text = (claudeData.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-    const match = text.match(/\[[\s\S]*\]/);
-    if (!match) throw new Error('Claude no devolvió JSON válido. Raw: ' + text.slice(0, 300));
-    picks = JSON.parse(match[0]);
+    if (claudeData.stop_reason === 'max_tokens') console.warn('news: respuesta cortada por max_tokens, se intentará recuperar');
+    picks = parsePicks(text);
+    if (!picks.length) throw new Error('Claude no devolvió JSON válido. Raw: ' + text.slice(0, 300));
   }
 
   // ── PASO 3: fusionar con lo existente ───────────────────────────────────────
