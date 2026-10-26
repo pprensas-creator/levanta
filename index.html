@@ -886,8 +886,32 @@ Primero, un diagnóstico gratuito de 30 minutos, por videollamada o tomando un c
 
 CONTACTO: +34 659 681 684 | levantalamancha@levanta.email | Agenda en: calendly.com/pprensas`;
 var hist=[];
+// ── Límite de preguntas: tras 3 preguntas se invita a agendar una llamada ──
+var CHAT_MAX=3, chatSent=0;
+function chatDay(){return new Date().toISOString().slice(0,10);}
+function chatStored(){try{var o=JSON.parse(localStorage.getItem('levanta_chat_n')||'{}');return o.d===chatDay()?(o.n||0):0;}catch(e){return 0;}}
+function chatCount(){return Math.max(chatSent,chatStored());}
+function chatInc(){chatSent=chatCount()+1;try{localStorage.setItem('levanta_chat_n',JSON.stringify({d:chatDay(),n:chatSent}));}catch(e){}}
+function chatReached(){return chatCount()>=CHAT_MAX;}
+function chatLimitReached(){
+  if(document.getElementById('chat-limit'))return;
+  var m=document.getElementById('msgs'),d=document.createElement('div');
+  d.className='msg bot';d.id='chat-limit';
+  d.innerHTML='Has llegado al límite de preguntas de este asistente. Para seguir hablando de tu negocio, agenda una llamada gratuita conmigo:<br/>'
+    +'📅 <a href="https://calendly.com/pprensas" target="_blank" rel="noopener">calendly.com/pprensas</a><br/>'
+    +'📞 <a href="tel:+34659681684">+34 659 681 684</a><br/>'
+    +'✉️ <a href="mailto:levantalamancha@levanta.email">levantalamancha@levanta.email</a>';
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
+  var inp=document.getElementById('chat-in'),btn=document.getElementById('csend'),ch=document.getElementById('chips');
+  if(inp){inp.disabled=true;inp.placeholder='Agenda una llamada para seguir…';}
+  if(btn)btn.disabled=true;
+  if(ch)ch.style.display='none';
+}
+document.addEventListener('DOMContentLoaded',function(){if(chatReached())chatLimitReached();});
 async function sendMsg(){
   var inp=document.getElementById('chat-in'),msg=inp.value.trim();if(!msg)return;
+  if(chatReached()){chatLimitReached();return;}
+  chatInc();
   addMsg(msg,'usr');inp.value='';
   document.getElementById('csend').disabled=true;document.getElementById('chips').style.display='none';
   addTyping();hist.push({role:'user',content:msg});
@@ -913,6 +937,7 @@ async function sendMsg(){
     }
   }catch(e){console.error('Chat error',e);removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');hist.pop();}
   document.getElementById('csend').disabled=false;
+  if(chatReached())chatLimitReached();
 }
 function sendChip(el){
   // Track quick reply click
