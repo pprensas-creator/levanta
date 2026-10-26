@@ -171,7 +171,7 @@ RESPONDE SOLO con array JSON sin markdown:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5',
         max_tokens: 2500,
         messages: [{ role: 'user', content: prompt }]
       })

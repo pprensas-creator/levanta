@@ -899,8 +899,9 @@ async function sendMsg(){
   }
   
   try{
-    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:1000,system:SYS,messages:hist})});
     var d=await r.json();removeTyping();
+    if(!r.ok||d.error){console.error('Chat API error',r.status,d.error);}
     var rep=d.content&&d.content[0]?d.content[0].text:'Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email';
     addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
   }catch(e){removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');}
@@ -1170,7 +1171,7 @@ async function niFetch(){
     +'- NUNCA inventes URLs ni noticias';
 
   async function niCallAPI(withSearch){
-    var body={model:'claude-sonnet-4-20250514',max_tokens:2500,messages:[{role:'user',content:prompt}]};
+    var body={max_tokens:2500,messages:[{role:'user',content:prompt}]};
     if(withSearch)body.tools=[{"type":"web_search_20250305","name":"web_search"}];
     var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error('HTTP '+r.status);
