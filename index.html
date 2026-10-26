@@ -209,9 +209,13 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 .ni-day.today.active{background:var(--vd);color:#fff}
 .ni-empty{text-align:center;padding:2rem;color:rgba(255,255,255,.3);font-size:14px}
 .ni-error{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:10px;padding:1rem;color:#fca5a5;font-size:13px;text-align:center;margin-bottom:1rem}
+.ni-sub-grid>*,.sobre-in>*{min-width:0}
+#ni-form input:not([type=checkbox]),#ni-form select{width:100%;min-width:0;box-sizing:border-box}
 @media(max-width:768px){.ni-grid{grid-template-columns:1fr}.ni-days{gap:.35rem}
   #ni-sub-wrap,.ni-sub-grid{grid-template-columns:1fr !important}
   .ni-sub-grid{grid-template-columns:1fr !important}
+  .ni-sub-card{padding:1.25rem !important}
+  .av-pair{justify-content:center}.av-pair>div{flex:0 1 150px !important;width:auto !important;height:auto !important;aspect-ratio:1;margin:0 !important}
   .ni-sub-2col{grid-template-columns:1fr !important;display:grid}
   #ni-sub-wrap > div:first-child{grid-template-columns:1fr !important}
   .ni-sec{padding-bottom:80px}
@@ -275,7 +279,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
   <div class="sobre-in">
     <div>
       <!-- Dos fotos lado a lado -->
-      <div style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start">
+      <div class="av-pair" style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start">
         <div class="av" style="flex-shrink:0"><img id="pablo-photo" src="/pablo.jpg" alt="Pablo Prensa" width="400" height="400"/></div>
         <div style="flex-shrink:0;width:190px;height:190px;border-radius:50%;overflow:hidden;border:4px solid var(--az);box-shadow:0 4px 20px rgba(26,79,130,.15)">
           <img id="pablo-mancha" src="/netlify/foto-molinos.jpg" alt="Pablo en los molinos de La Mancha" width="800" height="600" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" onerror="this.style.display='none'"/>
@@ -585,7 +589,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
     </div>
 
     <!-- Suscripción newsletter -->
-    <div style="margin-top:2.5rem;background:linear-gradient(135deg,#112240 0%,#1a3a5c 100%);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem">
+    <div class="ni-sub-card" style="margin-top:2.5rem;background:linear-gradient(135deg,#112240 0%,#1a3a5c 100%);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem">
       <div class="ni-sub-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
         <div>
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter semanal gratuito</div>
