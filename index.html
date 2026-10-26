@@ -514,6 +514,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <h3>Solicita tu diagnóstico gratuito</h3>
       <p>Cuéntame sobre tu empresa y te respondo en menos de 24h.</p>
       <form id="contact-form" novalidate onsubmit="return mostrarResumen(event)">
+        <input type="text" id="f-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"/>
       <div class="fg">
         <div class="fr"><label for="f-nombre">Nombre *</label><input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" autocomplete="name" required aria-describedby="e-f-nombre"/><span class="ferr" id="e-f-nombre" role="alert"></span></div>
         <div class="fr"><label for="f-empresa">Empresa *</label><input id="f-empresa" name="empresa" type="text" placeholder="Tu empresa" autocomplete="organization" required aria-describedby="e-f-empresa"/><span class="ferr" id="e-f-empresa" role="alert"></span></div>
@@ -603,6 +604,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
         </div>
         <div id="ni-sub-wrap">
 <form id="ni-form" novalidate onsubmit="return niSubscribe(event)">
+<input type="text" id="ni-web" name="web" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"/>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
             <input id="ni-nombre" name="nombre" aria-describedby="e-ni-nombre" required autocomplete="name" type="text" placeholder="Tu nombre *" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
             <input id="ni-empresa" type="text" placeholder="Tu empresa" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
@@ -896,7 +898,7 @@ function mostrarResumen(ev){
   fetch('https://formspree.io/f/mojyaggo',{
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({nombre:n,empresa:e,telefono:t||'No indicado',email:em,empleados:emp,sector:sec,servicio:a||'No indicado',mensaje:m||'Sin mensaje adicional',_subject:'[LEVANTA] Solicitud de diagnóstico – '+n,_replyto:em})
+    body:JSON.stringify({nombre:n,empresa:e,telefono:t||'No indicado',email:em,empleados:emp,sector:sec,servicio:a||'No indicado',mensaje:m||'Sin mensaje adicional',_subject:'[LEVANTA] Solicitud de diagnóstico – '+n,_replyto:em,_gotcha:document.getElementById('f-gotcha').value})
   }).then(function(r){
     if(r.ok){
       // Track successful contact
@@ -1202,7 +1204,7 @@ async function niSubscribe(ev){
     var r=await fetch('/.netlify/functions/register',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:name,email:email,company:company,sector:sector})
+      body:JSON.stringify({name:name,email:email,company:company,sector:sector,web:document.getElementById('ni-web').value})
     });
     var d=await r.json();
     if(d.ok){

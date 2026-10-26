@@ -1,5 +1,5 @@
 import { getStore } from "@netlify/blobs";
-import { SITE, OWNER, esc, confirmUrl, isActive, isValidEmail, sendMail, mailShell } from "../lib/subs.js";
+import { SITE, OWNER, esc, confirmUrl, isActive, isValidEmail, sendMail, mailShell, overIpLimit } from "../lib/subs.js";
 
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), {
   status, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': SITE, 'Vary': 'Origin' },
@@ -7,17 +7,21 @@ const json = (obj, status = 200) => new Response(JSON.stringify(obj), {
 
 // Alta en dos pasos (doble opt-in): se guarda como "pending" y solo pasa a "confirmed"
 // cuando la persona pulsa el enlace del email (ver confirm.js).
-export default async (req) => {
+export default async (req, context) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: { 'Access-Control-Allow-Origin': SITE, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
   if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405);
 
   try {
     const body = await req.json();
+    if (body.web) return json({ ok: true });   // campo trampa para bots: se ignora en silencio
     const name = String(body.name || '').trim().slice(0, 100);
     const company = String(body.company || '').trim().slice(0, 150);
     const sector = String(body.sector || '').trim().slice(0, 60);
     const emailClean = String(body.email || '').toLowerCase().trim();
     if (!name || !isValidEmail(emailClean)) return json({ error: 'Revisa tu nombre y tu email.' }, 400);
+
+    // Antispam: 5 altas por IP y día, 60 en total (el plan gratuito de Resend admite 100 emails/día)
+    if (await overIpLimit('register', context && context.ip, 5, 60)) return json({ error: 'Demasiados intentos hoy. Inténtalo mañana o escríbeme a levantalamancha@levanta.email.' }, 429);
 
     const store = getStore({ name: 'levanta-subs', consistency: 'strong' });
     const prev = await store.get(emailClean, { type: 'json' }).catch(() => null);
