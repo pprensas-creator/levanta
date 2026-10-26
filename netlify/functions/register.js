@@ -42,7 +42,7 @@ export default async (req) => {
       body: JSON.stringify({
         from: FROM,
         to: emailClean,
-        subject: '✅ Ya recibirás las noticias de LEVANTA cada mañana',
+        subject: '✅ Ya recibirás las noticias de LEVANTA cada semana',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
           <div style="background:linear-gradient(135deg,#1a4f82,#0d3360,#2a4a10);padding:32px;text-align:center;border-radius:12px 12px 0 0">
             <div style="font-size:28px;font-weight:800;letter-spacing:4px;color:#fff">LEVANTA</div>
