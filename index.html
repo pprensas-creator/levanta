@@ -989,7 +989,22 @@ function sendChip(el){
   document.getElementById('chat-in').value=el.textContent;
   sendMsg();
 }
-function addMsg(t,tp){var m=document.getElementById('msgs'),d=document.createElement('div');d.className='msg '+tp;d.innerHTML=t.replace(/\n/g,'<br/>');m.appendChild(d);m.scrollTop=m.scrollHeight;}
+// Pinta un mensaje sin usar innerHTML: el texto del usuario y del asistente nunca se interpreta como HTML.
+// Solo se da formato a **negrita** y se convierten en enlace las URL http(s), creando los nodos a mano.
+function addMsg(t,tp){
+  var m=document.getElementById('msgs'),d=document.createElement('div');d.className='msg '+tp;
+  String(t).split('\n').forEach(function(line,i){
+    if(i)d.appendChild(document.createElement('br'));
+    line.split(/(\*\*[^*]+\*\*)/).forEach(function(part){
+      if(/^\*\*[^*]+\*\*$/.test(part)){var b=document.createElement('strong');b.textContent=part.slice(2,-2);d.appendChild(b);return;}
+      part.split(/(https?:\/\/[^\s<>"')]+)/).forEach(function(seg){
+        if(/^https?:\/\//.test(seg)){var a=document.createElement('a');a.href=seg;a.textContent=seg;a.target='_blank';a.rel='noopener noreferrer';d.appendChild(a);}
+        else if(seg)d.appendChild(document.createTextNode(seg));
+      });
+    });
+  });
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
 function addTyping(){var m=document.getElementById('msgs'),d=document.createElement('div');d.className='msg typ';d.id='typing';d.textContent='Escribiendo...';m.appendChild(d);m.scrollTop=m.scrollHeight;}
 function removeTyping(){var t=document.getElementById('typing');if(t)t.remove();}
 
