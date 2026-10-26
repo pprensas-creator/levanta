@@ -25,6 +25,6 @@ export default async () => {
     return new Response(JSON.stringify({ news, updated: data.updated }), { headers });
   } catch (e) {
     console.error('get-news:', e && e.message);
-    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { ...headers, 'Cache-Control': 'no-cache' } });
+    return new Response(JSON.stringify({ error: 'No se pudieron cargar las noticias' }), { status: 500, headers: { ...headers, 'Cache-Control': 'no-cache' } });
   }
 };

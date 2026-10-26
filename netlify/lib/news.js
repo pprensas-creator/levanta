@@ -10,14 +10,29 @@ const MEDIOS = {
   'rtve.es': 'RTVE', 'lasexta.com': 'laSexta', 'antena3.com': 'Antena 3', 'cope.es': 'COPE',
   'eldiario.es': 'elDiario.es', 'libertaddigital.com': 'Libertad Digital', 'xataka.com': 'Xataka',
   'genbeta.com': 'Genbeta', 'hoy.es': 'Diario HOY', 'lanzadigital.com': 'La Voz de Castilla-La Mancha',
+  'wwwhatsnew.com': "WWWhat's new", 'computerhoy.20minutos.es': 'Computer Hoy', 'computerhoy.com': 'Computer Hoy',
+  'hipertextual.com': 'Hipertextual', 'elespanol.com': 'El Español',
+  'businessinsider.es': 'Business Insider España', 'forbes.es': 'Forbes España', 'cincodias.com': 'Cinco Días',
+  'elperiodicodelaenergia.com': 'El Periódico de la Energía', 'eldigitalcastillalamancha.es': 'El Digital Castilla-La Mancha',
+  'encastillalamancha.es': 'encastillalamancha.es', 'latribunadetoledo.es': 'La Tribuna de Toledo',
+  'latribunadeciudadreal.es': 'La Tribuna de Ciudad Real',
+  'eldiadecuenca.es': 'El Día de Cuenca', 'enclm.es': 'ENCLM', 'muyinteresante.es': 'Muy Interesante',
+  'muycomputerpro.com': 'MuyComputerPRO', 'muycomputer.com': 'MuyComputer', 'theobjective.com': 'The Objective',
+  'vozpopuli.com': 'Vozpópuli', 'okdiario.com': 'OKDIARIO', 'publico.es': 'Público', 'elconfidencialdigital.com': 'El Confidencial Digital',
+  'emprendedores.es': 'Emprendedores', 'pymesyautonomos.com': 'Pymes y Autónomos', 'agronewscastillayleon.com': 'Agronews',
+  'agroinformacion.com': 'Agroinformación', 'vinetur.com': 'Vinetur', 'efeagro.com': 'EFEAgro', 'efe.com': 'EFE',
 };
+// También por la etiqueta sin dominio, porque algunas noticias guardadas ya tienen "Wwwhatsnew"
+const POR_ETIQUETA = Object.fromEntries(Object.entries(MEDIOS).map(([d, n]) => [d.split('.').slice(0, -1).pop(), n]));
 export function cleanSource(name) {
   let n = String(name || '').trim();
   if (!n) return 'Medio';
-  if (/\s/.test(n) || !/\./.test(n)) return n;              // ya es un nombre ("El País", "Expansión")
+  if (/\s/.test(n)) return n;                                // ya es un nombre ("El País", "Expansión")
   const host = n.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
   if (MEDIOS[host]) return MEDIOS[host];
-  const label = host.split('.').slice(0, -1).pop() || host;   // "diariodenavarra.es" → "diariodenavarra"
+  const label = host.includes('.') ? (host.split('.').slice(0, -1).pop() || host) : host;   // "diariodenavarra.es" → "diariodenavarra"
+  if (POR_ETIQUETA[label]) return POR_ETIQUETA[label];
+  if (!n.includes('.')) return n;                             // nombre de una palabra que no conocemos ("Xataka")
   return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
