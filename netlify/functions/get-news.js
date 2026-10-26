@@ -1,34 +1,29 @@
 import { getStore } from "@netlify/blobs";
 
-export default async (req) => {
-  const cors = {
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+export default async () => {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'public, max-age=3600',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
   try {
     const store = getStore({ name: 'levanta-news', consistency: 'strong' });
-    const today = new Date().toISOString().split('T')[0];
-    const cached = await store.get(today);
-
-    if (cached) {
-      const data = JSON.parse(cached);
-      return new Response(JSON.stringify(data), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=3600',
-          ...cors
-        }
-      });
+    const raw = await store.get('current');
+    if (!raw) {
+      return new Response(JSON.stringify({ news: null }), { headers: { ...headers, 'Cache-Control': 'no-cache' } });
     }
-
-    return new Response(JSON.stringify({ news: null, date: today }), {
-      headers: { 'Content-Type': 'application/json', ...cors }
-    });
-
-  } catch(e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', ...cors }
-    });
+    const data = JSON.parse(raw);
+    const now = Date.now();
+    // Una noticia es "NEW" si se añadió en los últimos 7 días
+    const news = (data.news || [])
+      .filter(n => n && n.url && /^https?:\/\//.test(n.url))
+      .map(n => ({ ...n, isNew: !!n.addedAt && now - new Date(n.addedAt).getTime() < WEEK_MS }));
+    return new Response(JSON.stringify({ news, updated: data.updated }), { headers });
+  } catch (e) {
+    console.error('get-news:', e && e.message);
+    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { ...headers, 'Cache-Control': 'no-cache' } });
   }
 };

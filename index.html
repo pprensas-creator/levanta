@@ -140,6 +140,7 @@ footer strong{color:#fff}
 .ni-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.1rem;margin-bottom:2rem}
 .ni-card{background:#112240;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.35rem;display:flex;flex-direction:column;gap:.65rem;transition:border-color .2s,transform .2s;cursor:default;position:relative}
 .ni-card.has-link{cursor:pointer}
+.ni-new{position:absolute;top:12px;right:12px;z-index:2;background:#86c94a;color:#0a1a33;font-size:10px;font-weight:800;letter-spacing:1.4px;padding:3px 9px;border-radius:20px;text-transform:uppercase}
 .ni-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
 .ni-card-link{position:absolute;inset:0;border-radius:14px;z-index:1}
 .ni-card-head{display:flex;align-items:center;gap:.6rem}
@@ -509,12 +510,12 @@ footer strong{color:#fff}
 
 <section class="ni-sec" id="ainews">
   <div style="max-width:1100px;margin:0 auto">
-    <div class="ni-badge" id="ni-badge"><span></span>Actualizado diariamente con IA</div>
+    <div class="ni-badge" id="ni-badge"><span></span>Actualizado semanalmente</div>
     <h2 class="stit" style="color:#e8f0fe;margin-bottom:.4rem">IA News · Lo que afecta a tu empresa hoy</h2>
-    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-bottom:2rem;max-width:580px">Noticias seleccionadas cada día por inteligencia artificial sobre los 6 pilares que más impactan en la rentabilidad de las PYMEs de La Mancha.</p>
+    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-bottom:2rem;max-width:580px">Noticias reales seleccionadas cada semana por inteligencia artificial sobre los 6 pilares que más impactan en la rentabilidad de las PYMEs de La Mancha.</p>
 
     <div id="ni-error-box" style="display:none" class="ni-error">
-      ⚠️ No se han podido cargar las noticias de hoy. <a href="#" onclick="niRetry()" style="color:#fca5a5;font-weight:700">Reintentar</a> · o escríbeme a <strong>levantalamancha@levanta.email</strong>
+      ⚠️ No se han podido cargar las noticias. <a href="#" onclick="niRetry()" style="color:#fca5a5;font-weight:700">Reintentar</a> · o escríbeme a <strong>levantalamancha@levanta.email</strong>
     </div>
 
     <div id="ni-grid-wrap" class="ni-grid">
@@ -537,13 +538,13 @@ footer strong{color:#fff}
     <div style="margin-top:2.5rem;background:linear-gradient(135deg,#112240 0%,#1a3a5c 100%);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem">
       <div class="ni-sub-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
         <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter diario gratuito</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter semanal gratuito</div>
           <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias del día en tu correo</h3>
           <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada mañana a las 7h, las 6 noticias más relevantes para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
           <div style="display:flex;flex-direction:column;gap:.4rem">
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Gratis para siempre</span>
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Sin spam · baja cuando quieras</span>
-            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Noticias reales buscadas en internet cada día</span>
+            <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Noticias reales con enlace a la fuente, cada semana</span>
           </div>
         </div>
         <div id="ni-sub-wrap">
@@ -562,7 +563,7 @@ footer strong{color:#fff}
             <option>Otros</option>
           </select>
           <button id="ni-sub-btn" onclick="niSubscribe()" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
-            📧 Suscribirme a las noticias diarias
+            📧 Suscribirme a las noticias semanales
           </button>
           <p style="color:rgba(255,255,255,.3);font-size:11px;text-align:center;margin:.5rem 0 0">RGPD · Tus datos solo se usan para enviarte las noticias</p>
         </div>
@@ -899,8 +900,9 @@ async function sendMsg(){
   }
   
   try{
-    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:1000,system:SYS,messages:hist})});
     var d=await r.json();removeTyping();
+    if(!r.ok||d.error){console.error('Chat API error',r.status,d.error);}
     var rep=d.content&&d.content[0]?d.content[0].text:'Lo siento, ha habido un error. Contacta a levantalamancha@levanta.email';
     addMsg(rep,'bot');hist.push({role:'assistant',content:rep});
   }catch(e){removeTyping();addMsg('Error de conexión. Llámame al +34 659 681 684.','bot');}
@@ -983,51 +985,33 @@ function niGetHistory(){try{return JSON.parse(localStorage.getItem(NI_KEY)||'{}'
 function niSaveHistory(h){try{localStorage.setItem(NI_KEY,JSON.stringify(h));}catch(e){}}
 function niToday(){return new Date().toISOString().split('T')[0];}
 
+function niEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function niSafeUrl(u){return /^https?:\/\//.test(u||'')?u:'#';}
+
 function niCardHtml(n,minimal){
-  var isToday = n.fecha === niToday();
-  var daysAgo = 0;
-  if(!isToday && n.fecha){
-    var now = new Date();
-    var then = new Date(n.fecha+'T00:00:00');
-    daysAgo = Math.floor((now - then)/(1000*60*60*24));
-  }
-  
-  var fechaDisplay = '';
-  if(isToday){
-    fechaDisplay = '<span class="ni-fecha" style="color:#86c94a;font-weight:600">🆕 Hoy</span>';
-  }else if(daysAgo === 1){
-    fechaDisplay = '<span class="ni-fecha">Hace 1 día</span>';
-  }else if(daysAgo > 1 && daysAgo <= 7){
-    fechaDisplay = '<span class="ni-fecha">Hace '+daysAgo+' días</span>';
-  }else{
-    fechaDisplay = '<span class="ni-fecha">'+n.fecha+'</span>';
-  }
-  
-  // Todas las noticias reales tienen URL, así que siempre mostramos el link
-  var fuenteHtml = '<a class="ni-fuente ni-fuente-link" href="'+n.url+'" target="_blank" rel="noopener noreferrer" style="position:relative;z-index:2">'+n.fuente+' ↗</a>';
-    
+  var url=niEsc(niSafeUrl(n.url));
+  var fechaDisplay = n.fecha ? '<span class="ni-fecha">'+niEsc(n.fecha)+'</span>' : '';
+  var fuenteHtml = '<a class="ni-fuente ni-fuente-link" href="'+url+'" target="_blank" rel="noopener noreferrer" style="position:relative;z-index:2">'+niEsc(n.fuente)+' ↗</a>';
+  var newBanner = n.isNew ? '<span class="ni-new">New</span>' : '';
+
   return '<div class="ni-card has-link">'
-    +'<a href="'+n.url+'" target="_blank" rel="noopener noreferrer" class="ni-card-link" aria-label="Leer noticia completa"></a>'
-    +'<div class="ni-card-head"><span class="ni-ico">'+n.icono+'</span><span class="ni-svc">'+n.servicio+'</span></div>'
-    +'<div class="ni-titular">'+n.titular+'</div>'
-    +'<div class="ni-resumen">'+n.resumen+'</div>'
+    +newBanner
+    +'<a href="'+url+'" target="_blank" rel="noopener noreferrer" class="ni-card-link" aria-label="Leer noticia completa"></a>'
+    +'<div class="ni-card-head"><span class="ni-ico">'+niEsc(n.icono)+'</span><span class="ni-svc">'+niEsc(n.servicio)+'</span></div>'
+    +'<div class="ni-titular">'+niEsc(n.titular)+'</div>'
+    +'<div class="ni-resumen">'+niEsc(n.resumen)+'</div>'
     +'<div class="ni-meta">'+fuenteHtml+fechaDisplay+'</div>'
     +'</div>';
 }
 
 function niRenderGrid(news,wrap,minimal){
   wrap.innerHTML=news.map(function(n){return niCardHtml(n,minimal);}).join('');
-  
-  // Actualizar badge con contador de noticias de hoy
-  var today = niToday();
-  var todayCount = news.filter(function(n){return n.fecha === today;}).length;
+  var newCount = news.filter(function(n){return n.isNew;}).length;
   var badge = document.getElementById('ni-badge');
   if(badge){
-    if(todayCount > 0){
-      badge.innerHTML = '<span></span>Noticias de hoy: <strong>'+todayCount+'</strong>';
-    } else {
-      badge.innerHTML = '<span></span>Actualizado diariamente con IA';
-    }
+    badge.innerHTML = newCount > 0
+      ? '<span></span>Nuevas esta semana: <strong>'+newCount+'</strong>'
+      : '<span></span>Actualizado semanalmente';
   }
 }
 
@@ -1050,170 +1034,24 @@ function niShowDay(date,skipActive){
 }
 
 function niRetry(){
-  var history=niGetHistory();
-  delete history[niToday()];
-  niSaveHistory(history);
   document.getElementById('ni-error-box').style.display='none';
   niFetch();
 }
 
 async function niFetch(){
-  var today=niToday();
-  var history=niGetHistory();
-  
-  // Limpiar noticias antiguas (más de 7 días) de TODAS las fechas
-  var allDays=Object.keys(history);
-  var cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - 7);
-  allDays.forEach(function(date){
-    var newsDate = new Date(date+'T00:00:00');
-    if(newsDate < cutoffDate){
-      delete history[date];
-    }
-  });
-  niSaveHistory(history);
-  
-  // Construir el estado actual: última noticia de cada sección de los últimos 7 días
-  var currentNews = {}; // {1: noticia, 2: noticia, ...}
-  var sortedDays = Object.keys(history).sort(); // De más antigua a más reciente
-  
-  sortedDays.forEach(function(date){
-    var dayNews = history[date];
-    if(Array.isArray(dayNews)){
-      dayNews.forEach(function(n){
-        currentNews[n.id] = n; // Sobrescribe con la más reciente
-      });
-    }
-  });
-  
-  // Convertir a array para mostrar
-  var newsToShow = Object.keys(currentNews).map(function(id){
-    return currentNews[id];
-  }).sort(function(a,b){return a.id - b.id;});
-  
-  // Mostrar noticias actuales (aunque no estén las 6 secciones)
-  if(newsToShow.length > 0){
-    niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
-  } else {
-    document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.7);grid-column:1/-1;text-align:center;padding:3rem 1rem;font-size:1rem;line-height:1.6"><div style="font-size:2.5rem;margin-bottom:1rem">📰</div><strong style="display:block;margin-bottom:.5rem;font-size:1.1rem">No hay noticias relevantes en los últimos 7 días</strong><p style="color:rgba(255,255,255,.5);font-size:.9rem;margin:0">Vuelve mañana para ver las últimas actualizaciones del sector agroalimentario en La Mancha</p></div>';
-  }
-  
-  // Si ya buscamos hoy Y tenemos noticias, no buscar de nuevo
-  if(history[today] && history[today].length > 0){
-    niRenderHistory(history);
-    return;
-  }
-
-  // Primero intenta leer las noticias del servidor
+  var wrap=document.getElementById('ni-grid-wrap');
   try{
     var r=await fetch('/.netlify/functions/get-news');
     var d=await r.json();
     if(d.news&&Array.isArray(d.news)&&d.news.length>0){
-      history[today]=d.news;
-      niSaveHistory(history);
-      // Actualizar vista con las nuevas noticias
-      d.news.forEach(function(n){currentNews[n.id] = n;});
-      newsToShow = Object.keys(currentNews).map(function(id){return currentNews[id];}).sort(function(a,b){return a.id - b.id;});
-      niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
-      niRenderHistory(history);
+      niRenderGrid(d.news,wrap,false);
+      document.getElementById('ni-error-box').style.display='none';
       return;
     }
-  }catch(e){}
-
-  // Fallback: genera en el cliente
-  document.getElementById('ni-grid-wrap').innerHTML=
-    NI_SVCS.map(function(s){
-      return '<div class="ni-card ni-skeleton"><div class="ni-card-head"><span class="ni-ico">'+s.ico+'</span><span class="ni-svc">'+s.svc+'</span></div>'
-        +'<div class="ni-titular">Buscando noticias actuales...</div>'
-        +'<div class="ni-resumen">Estoy buscando noticias reales de esta semana. Puede tardar hasta 30 segundos.</div></div>';
-    }).join('');
-
-  var fechaEs=new Date().toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  var prompt='Hoy es '+fechaEs+'. Eres un buscador de noticias para PYMEs de La Mancha.\n\n'
-    +'PROCESO DE BÚSQUEDA (2 LOOPS):\n\n'
-    +'LOOP 1 - BÚSQUEDA LOCAL (La Mancha):\n'
-    +'Busca noticias de los últimos 7 días usando web_search con estas ubicaciones:\n'
-    +'- La Mancha, Castilla-La Mancha\n'
-    +'- Provincias: Toledo, Ciudad Real, Cuenca, Albacete, Guadalajara\n'
-    +'- Localidades: Quintanar de la Orden, Alcázar de San Juan, Tomelloso, Valdepeñas, Manzanares, Daimiel, El Toboso\n\n'
-    +'LOOP 2 - BÚSQUEDA NACIONAL (si Loop 1 no encuentra suficientes):\n'
-    +'Si no encuentras noticias locales, amplía a:\n'
-    +'- España, nacional\n'
-    +'- Comunidades: Andalucía, Aragón, Asturias, Baleares, Canarias, Cantabria, Castilla y León, Cataluña, Valencia, Extremadura, Galicia, Madrid, Murcia, Navarra, País Vasco, La Rioja\n'
-    +'- Provincias principales: Barcelona, Madrid, Valencia, Sevilla, Málaga, Zaragoza, Bilbao, Murcia, etc.\n\n'
-    +'SECCIONES Y KEYWORDS:\n\n'
-    +'1. Eficiencia Operativa y Finanzas (id:1, icono:💰)\n'
-    +'Keywords: costes operativos, reducción costes, ahorro energético, financiación PYME, créditos ICO, subvenciones, optimización procesos, lean, precio luz, precio gas, IVA, impuestos, fiscalidad\n\n'
-    +'2. Información y Datos (id:2, icono:📊)\n'
-    +'Keywords: digitalización, transformación digital, ERP, software gestión, trazabilidad, blockchain, facturación electrónica, SII, cuadros de mando, business intelligence, KPI, RGPD, protección datos, ciberseguridad\n\n'
-    +'3. Experiencia del Cliente (id:3, icono:⭐)\n'
-    +'Keywords: reseñas Google, valoraciones clientes, reputación online, experiencia cliente, fidelización, servicio postventa, atención cliente, quejas, packaging, etiquetado, delivery, reparto, venta online\n\n'
-    +'4. Digitalización e IT (id:4, icono:💻)\n'
-    +'Keywords: inteligencia artificial PYME, IA, ChatGPT empresa, automatización procesos, industria 4.0, cloud computing, software nube, e-commerce, tienda online, marketplace, 5G, conectividad, fibra óptica\n\n'
-    +'5. Talento y Liderazgo (id:5, icono:👥)\n'
-    +'Keywords: escasez talento, falta trabajadores, contratación, salarios, convenio colectivo, SMI, formación trabajadores, FUNDAE, relevo generacional, sucesión empresa familiar, retención talento, rotación\n\n'
-    +'6. Imagen de Marca y Presencia Online (id:6, icono:🌐)\n'
-    +'Keywords: marca España, exportación, marketing digital, redes sociales empresa, Instagram negocio, ferias, certificaciones, sellos calidad, DO, IGP, storytelling, branding PYME\n\n'
-    +'INSTRUCCIONES:\n'
-    +'- Busca noticias REALES con URLs verificadas mediante web_search\n'
-    +'- Prioriza noticias de La Mancha (Loop 1) sobre nacionales (Loop 2)\n'
-    +'- Intenta encontrar UNA noticia por cada sección (1-6)\n'
-    +'- Si no encuentras para alguna sección, omítela del resultado\n'
-    +'- Relevancia para CUALQUIER PYME (no solo agroalimentario)\n'
-    +'- Fecha de hoy: '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})+'\n\n'
-    +'RESPONDE SOLO con array JSON sin markdown:\n'
-    +'[{"id":1,"servicio":"Eficiencia Operativa y Finanzas","icono":"💰","titular":"max 85 chars","resumen":"2 frases explicando relevancia para PYMEs.","fuente":"nombre del medio","url":"URL EXACTA encontrada","fecha":"'+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})+'","cta":"¿pregunta que conecte noticia con necesidad empresarial?"}]\n\n'
-    +'CRÍTICO:\n'
-    +'- URLs deben ser reales y verificadas\n'
-    +'- Si encuentras 2-3 noticias relevantes, devuelve solo esas\n'
-    +'- Si no encuentras ninguna, devuelve []\n'
-    +'- NUNCA inventes URLs ni noticias';
-
-  async function niCallAPI(withSearch){
-    var body={model:'claude-sonnet-4-20250514',max_tokens:2500,messages:[{role:'user',content:prompt}]};
-    if(withSearch)body.tools=[{"type":"web_search_20250305","name":"web_search"}];
-    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    var d=await r.json();
-    if(d.error)throw new Error(d.error.message||'API error');
-    var text=(d.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-    var match=text.match(/\[[\s\S]*?\]/s)||text.match(/\[[\s\S]*/);
-    if(!match)throw new Error('No JSON');
-    var raw=match[0];
-    if(raw.indexOf(']')===-1)raw=raw+']';
-    return JSON.parse(raw);
-  }
-
-  try{
-    var news;
-    try{news=await niCallAPI(true);}
-    catch(e1){news=await niCallAPI(false);}
-    
-    // Guardar las nuevas noticias de hoy (sean las que sean)
-    if(Array.isArray(news)&&news.length>0){
-      history[today]=news;
-      niSaveHistory(history);
-      // Actualizar la vista combinada
-      news.forEach(function(n){currentNews[n.id] = n;});
-      newsToShow = Object.keys(currentNews).map(function(id){return currentNews[id];}).sort(function(a,b){return a.id - b.id;});
-      niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
-    } else {
-      if(newsToShow.length > 0){
-        niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
-      } else {
-        document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.7);grid-column:1/-1;text-align:center;padding:3rem 1rem;font-size:1rem;line-height:1.6"><div style="font-size:2.5rem;margin-bottom:1rem">📰</div><strong style="display:block;margin-bottom:.5rem;font-size:1.1rem">No hay noticias relevantes en los últimos 7 días</strong><p style="color:rgba(255,255,255,.5);font-size:.9rem;margin:0">Vuelve mañana para ver las últimas actualizaciones del sector agroalimentario en La Mancha</p></div>';
-      }
-    }
-    niRenderHistory(history);
-    document.getElementById('ni-error-box').style.display='none';
+    wrap.innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.7);grid-column:1/-1;text-align:center;padding:3rem 1rem;font-size:1rem;line-height:1.6">Estamos preparando las primeras noticias. Vuelve en unos días.</div>';
   }catch(e){
     document.getElementById('ni-error-box').style.display='block';
-    // En caso de error, al menos mostramos lo que teníamos
-    if(newsToShow.length > 0){
-      niRenderGrid(newsToShow, document.getElementById('ni-grid-wrap'), false);
-    } else {
-      document.getElementById('ni-grid-wrap').innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.4);grid-column:1/-1">Error al cargar noticias. Intenta de nuevo.</div>';
-    }
+    wrap.innerHTML='<div class="ni-empty" style="color:rgba(255,255,255,.4);grid-column:1/-1">Error al cargar noticias. Intenta de nuevo.</div>';
   }
 }
 
@@ -1291,11 +1129,11 @@ async function niSubscribe(){
         +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
         +'</div>';
     }else{
-      btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+      btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
       alert(d.error||'Error al suscribirse. Inténtalo de nuevo.');
     }
   }catch(e){
-    btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias diarias';
+    btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
     alert('Error de conexión. Inténtalo de nuevo.');
   }
 }
