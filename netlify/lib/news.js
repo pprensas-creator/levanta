@@ -1,5 +1,26 @@
 import { getStore } from "@netlify/blobs";
 
+// ── NOMBRE DEL MEDIO ─────────────────────────────────────────────────────────
+// NewsAPI a veces devuelve el dominio ("Www.abc.es") en lugar del nombre del medio.
+const MEDIOS = {
+  'abc.es': 'ABC', 'elpais.com': 'El País', 'cincodias.elpais.com': 'Cinco Días', 'elmundo.es': 'El Mundo',
+  'expansion.com': 'Expansión', 'lavanguardia.com': 'La Vanguardia', 'eleconomista.es': 'elEconomista',
+  'larazon.es': 'La Razón', 'elconfidencial.com': 'El Confidencial', 'europapress.es': 'Europa Press',
+  'lavozdegalicia.es': 'La Voz de Galicia', 'elperiodico.com': 'El Periódico', '20minutos.es': '20minutos',
+  'rtve.es': 'RTVE', 'lasexta.com': 'laSexta', 'antena3.com': 'Antena 3', 'cope.es': 'COPE',
+  'eldiario.es': 'elDiario.es', 'libertaddigital.com': 'Libertad Digital', 'xataka.com': 'Xataka',
+  'genbeta.com': 'Genbeta', 'hoy.es': 'Diario HOY', 'lanzadigital.com': 'La Voz de Castilla-La Mancha',
+};
+export function cleanSource(name) {
+  let n = String(name || '').trim();
+  if (!n) return 'Medio';
+  if (/\s/.test(n) || !/\./.test(n)) return n;              // ya es un nombre ("El País", "Expansión")
+  const host = n.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
+  if (MEDIOS[host]) return MEDIOS[host];
+  const label = host.split('.').slice(0, -1).pop() || host;   // "diariodenavarra.es" → "diariodenavarra"
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
 // ── CONFIGURACIÓN DE SERVICIOS ────────────────────────────────────────────────
 const SERVICIOS = [
   {
@@ -230,7 +251,7 @@ RESPONDE SOLO con un array JSON sin markdown:
         titular: String(pick.titular).slice(0, 140),
         resumen: String(pick.resumen).slice(0, 500),
         cta: String(pick.cta || '').slice(0, 200),
-        fuente: art.source.name,               // siempre del artículo real
+        fuente: cleanSource(art.source.name), // siempre del artículo real
         url: art.url,                          // siempre del artículo real
         fechaArticulo: (art.publishedAt || '').slice(0, 10),
         fecha: formatFecha(art.publishedAt),

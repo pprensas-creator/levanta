@@ -35,7 +35,7 @@ function htmlPage(title, emoji, heading, body, color = '#1a4f82') {
   <span class="emoji">${emoji}</span>
   <h1>${heading}</h1>
   <p>${body}</p>
-  <a href="https://levanta-lamancha.netlify.app" class="btn">Volver a LEVANTA</a>
+  <a href="https://levanta-lamancha.es" class="btn">Volver a LEVANTA</a>
   <div class="footer">levantalamancha@levanta.email · +34 659 681 684</div>
 </div>
 </body>

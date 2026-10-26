@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Consultoría para PYMEs en La Mancha | LEVANTA</title>
+<title>Consultoría para pymes en La Mancha | LEVANTA</title>
 <meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 
 <!-- Google Analytics 4: solo se carga si el visitante acepta las cookies analíticas -->
@@ -20,28 +21,42 @@
     gtag('js', new Date());
     gtag('config', 'G-TQV03DJDR1', {'send_page_view': true, 'anonymize_ip': true});
   };
+  // Si el visitante rechaza (o retira su consentimiento): se detiene GA y se borran sus cookies _ga y _ga_*
+  window.levantaDeleteGA = function(){
+    window['ga-disable-G-TQV03DJDR1'] = true;
+    var host = location.hostname, parts = host.split('.'), domains = ['', host, '.' + host];
+    if(parts.length > 2) domains.push('.' + parts.slice(-2).join('.'));
+    if(parts.length > 1) domains.push('.' + parts.slice(-2).join('.'));
+    document.cookie.split(';').forEach(function(c){
+      var name = c.split('=')[0].trim();
+      if(name === '_ga' || name.indexOf('_ga_') === 0 || name === '_gid' || name.indexOf('_gat') === 0){
+        domains.forEach(function(d){
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+        });
+      }
+    });
+  };
 </script>
 
 <!-- Google Search Console Verification -->
 <meta name="google-site-verification" content="Fo2sS6CGsG2Pymc-4LMOfEaH1vo8ki9N75sLXb2EpqI" />
 
 <!-- SEO & Open Graph -->
-<meta name="description" content="Consultoría para PYMEs en Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara. 20 años de experiencia internacional en eficiencia, digitalización y datos. Diagnóstico gratuito."/>
-<meta name="keywords" content="consultoría PYME La Mancha, transformación digital, eficiencia operativa, Castilla La Mancha, consultor empresarial Toledo"/>
-<meta property="og:title" content="LEVANTA – Consultoría para PYMEs de La Mancha"/>
-<meta property="og:description" content="Aplico 20 años de experiencia internacional al servicio de las PYMEs de La Mancha. Diagnóstico gratuito sin compromiso."/>
+<meta name="description" content="Consultoría para pymes en Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara. 20 años de experiencia internacional en eficiencia, digitalización y datos. Diagnóstico gratuito."/>
+<meta property="og:title" content="LEVANTA – Consultoría para pymes de La Mancha"/>
+<meta property="og:description" content="Aplico 20 años de experiencia internacional al servicio de las pymes de La Mancha. Diagnóstico gratuito sin compromiso."/>
 <meta property="og:image" content="https://levanta-lamancha.es/og-image.jpg"/>
 <meta property="og:url" content="https://levanta-lamancha.es"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="es_ES"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="LEVANTA – Consultoría para PYMEs de La Mancha"/>
-<meta name="twitter:description" content="Aplico 20 años de experiencia internacional al servicio de las PYMEs de La Mancha."/>
+<meta name="twitter:title" content="LEVANTA – Consultoría para pymes de La Mancha"/>
+<meta name="twitter:description" content="Aplico 20 años de experiencia internacional al servicio de las pymes de La Mancha."/>
 <meta name="twitter:image" content="https://levanta-lamancha.es/og-image.jpg"/>
 <link rel="canonical" href="https://levanta-lamancha.es/"/>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"LEVANTA – Consultoría de Desarrollo Local","url":"https://levanta-lamancha.es",
-"description":"Consultoría para PYMEs de La Mancha: eficiencia operativa, datos, experiencia de cliente, digitalización, talento e imagen de marca.",
+"description":"Consultoría para pymes de La Mancha: eficiencia operativa, datos, experiencia de cliente, digitalización, talento e imagen de marca.",
 "telephone":"+34659681684","email":"levantalamancha@levanta.email","founder":{"@type":"Person","name":"Pablo Prensa"},
 "areaServed":[{"@type":"AdministrativeArea","name":"Toledo"},{"@type":"AdministrativeArea","name":"Ciudad Real"},{"@type":"AdministrativeArea","name":"Cuenca"},{"@type":"AdministrativeArea","name":"Albacete"},{"@type":"AdministrativeArea","name":"Guadalajara"},{"@type":"AdministrativeArea","name":"Castilla-La Mancha"}],
 "knowsLanguage":"es","sameAs":["https://www.linkedin.com/in/pprensas"]}
@@ -148,12 +163,17 @@ footer{background:#0d1f35;color:rgba(255,255,255,.6);text-align:center;padding:1
 footer strong{color:#fff}
 .fconsent{display:flex;gap:.5rem;align-items:flex-start;font-size:12px;color:#4b5563;line-height:1.45;margin:.5rem 0 .6rem;cursor:pointer}
 .fconsent input{margin-top:3px}
+.nierr{color:#fca5a5!important;margin-bottom:.4rem}
+.fr input.invalid,input.invalid{border-color:#dc2626!important}
+.ferr{display:block;color:#b91c1c;font-size:11.5px;min-height:0;margin-top:3px}
+.fr input.invalid,.fr select.invalid,.fr textarea.invalid{border-color:#dc2626;background:#fef2f2}
+@media(max-width:560px){.dgrid{grid-template-columns:1fr!important}}
 .fconsent a{color:var(--az)}
 #cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;max-width:760px;margin:0 auto;background:#0d1f35;color:#fff;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 8px 30px rgba(0,0,0,.35);font-size:13px;line-height:1.5;display:none}
 #cookie-banner a{color:#86c94a}
 #cookie-banner .cb-btns{display:flex;gap:.6rem;margin-top:.75rem;flex-wrap:wrap}
-#cookie-banner button{border:1px solid #fff;background:transparent;color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-#cookie-banner button.cb-ok{background:#4a6e1a;border-color:#4a6e1a}
+#cookie-banner button{border:1px solid #fff;background:#fff;color:#0d1f35;border-radius:8px;padding:9px 22px;min-width:120px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+#cookie-banner button:hover{background:#e8eef5}
 footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 
 /* IA News */
@@ -242,10 +262,10 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
   <div id="hero-logo-txt" style="margin-bottom:1.25rem"><div style="font-size:2.4rem;font-weight:800;letter-spacing:4px;color:#fff">LEVANTA</div><div style="font-size:.9rem;color:rgba(255,255,255,.8);letter-spacing:2px">Consultoría de Desarrollo Local · La Mancha</div></div>
   <div class="hbadge">📍 Consultoría Local · Experiencia Global</div>
   <h1>Tu empresa de La Mancha, con estándares de multinacional</h1>
-  <p class="hsub">Aplico 20 años de experiencia internacional en logística, finanzas y transformación digital al servicio de las PYMEs de La Mancha.</p>
+  <p class="hsub">Aplico 20 años de experiencia internacional en logística, finanzas y transformación digital al servicio de las pymes de La Mancha.</p>
   <div class="hstats">
     <div><span class="sn">+30%</span><span class="sl">Ahorro operativo</span></div>
-    <div><span class="sn">$20M</span><span class="sl">EBIT generado</span></div>
+    <div><span class="sn">20 M€</span><span class="sl">EBIT generado</span></div>
     <div><span class="sn">20+</span><span class="sl">Años experiencia</span></div>
     <div><span class="sn">130+</span><span class="sl">Personas lideradas</span></div>
   </div>
@@ -265,12 +285,12 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       </div>
       <div class="stag" style="margin-top:.75rem">¿Quién soy?</div>
       <h2 class="stit" style="margin-bottom:.9rem">Pablo Prensa,<br/>el consultor manchego<br/>de vuelta a casa</h2>
-      <p style="color:var(--gr);font-size:14.5px;line-height:1.7;margin-bottom:.9rem">Manchego de origen. Senior Director internacional en CHEP y Pegasus Solutions durante más de 20 años. He liderado transformaciones en logística, finanzas, IT y experiencia de cliente en múltiples países. Ahora aplico todo ese conocimiento a escala de PYME, con cercanía y sin letra pequeña.</p>
+      <p style="color:var(--gr);font-size:14.5px;line-height:1.7;margin-bottom:.9rem">Manchego de origen. Senior Director internacional en CHEP y Pegasus Solutions durante más de 20 años. He liderado transformaciones en logística, finanzas, IT y experiencia de cliente en múltiples países. Ahora aplico todo ese conocimiento a escala de pyme, con cercanía y sin letra pequeña.</p>
       <p style="color:var(--gr);font-size:14.5px;line-height:1.7;margin-bottom:1.25rem">Me crié entre gente que madruga, que trabaja la tierra y que quiere dejar un negocio fuerte para sus hijos. Por eso mi forma de trabajar es cercana: primero un café, luego un plan claro y paso a paso.</p>
       <div class="cred"><span class="ic">✓</span> Senior Director en CHEP (multinacional global)</div>
-      <div class="cred"><span class="ic">✓</span> Gestión de presupuestos de $9M</div>
+      <div class="cred"><span class="ic">✓</span> Gestión de presupuestos de unos 8 M€</div>
       <div class="cred"><span class="ic">✓</span> Equipos de más de 130 personas</div>
-      <div class="cred"><span class="ic">✓</span> Lean / Six Sigma aplicado a PYMEs</div>
+      <div class="cred"><span class="ic">✓</span> Lean / Six Sigma aplicado a pymes</div>
     </div>
     <div>
       <!-- Cita + Atardecer lado a lado -->
@@ -287,16 +307,16 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
         </div>
       </div>
       <!-- Cards -->
-      <div class="scard"><div class="num">$20M</div><strong>EBIT recurrente generado</strong><p>Optimización de costes y mejora de modelos operativos en entornos corporativos internacionales.</p></div>
+      <div class="scard"><div class="num">20 M€</div><strong>EBIT recurrente generado</strong><p>Optimización de costes y mejora de modelos operativos en entornos corporativos internacionales.</p></div>
       <div class="scard"><div class="num">1<sup style="font-size:.6em">er</sup> trim.</div><strong>ROI desde el primer trimestre</strong><p>Soluciones modulares diseñadas para generar impacto desde las primeras semanas.</p></div>
-      <div class="scard"><div class="num">0€</div><strong>Diagnóstico inicial sin coste</strong><p>Analizo tu facturación, operaciones, IT y equipos y te digo dónde pierdes dinero, sin compromiso.</p></div>
+      <div class="scard"><div class="num">0 €</div><strong>Diagnóstico inicial sin coste</strong><p>Analizo tu facturación, operaciones, IT y equipos y te digo dónde pierdes dinero, sin compromiso.</p></div>
     </div>
   </div>
 </section>
 
 <section class="sec" id="servicios">
   <div class="stag">Servicios</div>
-  <h2 class="stit">Todo lo que tu PYME necesita para crecer</h2>
+  <h2 class="stit">Todo lo que tu pyme necesita para crecer</h2>
   <p class="sdesc">Prácticas de grandes multinacionales, adaptadas a tu realidad y tu bolsillo.</p>
   <div class="sgrid">
     <div class="svcard"><div class="sico a">⚙️</div><h3>Eficiencia Operativa</h3><p>Lean/Six Sigma aplicado a tu modelo operativo y finanzas. Mejoras en administración, facturación y pagos.</p><span class="svtag">Hasta +30% de ahorro</span></div>
@@ -397,7 +417,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 
     <div id="recom-wrap" style="display:none;margin-top:1.25rem">
       <div style="font-size:1rem;font-weight:700;color:var(--az);margin-bottom:.25rem">🎯 Tus 3 prioridades de mejora</div>
-      <p style="font-size:12.5px;color:var(--gr);margin-bottom:1rem">Basadas en tus puntuaciones más bajas. Aquí es donde más valor podemos crear juntos.</p>
+      <p style="font-size:12.5px;color:var(--gr);margin-bottom:1rem">Basadas en tus puntuaciones más bajas. Aquí es donde más valor podemos crear juntos, tú y yo.</p>
       <div id="recom-list" style="display:flex;flex-direction:column;gap:.85rem"></div>
     </div>
 
@@ -407,11 +427,11 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <div id="bmark-wrap"></div>
       <div class="bmark-legend">
         <span><i style="background:#1a4f82"></i>Tu empresa</span>
-        <span><i style="background:#c8a84b"></i>PYME media La Mancha</span>
-        <span><i style="background:#4a6e1a"></i>PYME media España</span>
-        <span><i style="background:#d4a017;height:2.5px;border-radius:0;width:18px"></i>Top 25% España</span>
+        <span><i style="background:#c8a84b"></i>Estimación LEVANTA: pyme media La Mancha</span>
+        <span><i style="background:#4a6e1a"></i>Estimación LEVANTA: pyme media España</span>
+        <span><i style="background:#d4a017;height:2.5px;border-radius:0;width:18px"></i>Estimación LEVANTA: top 25 % España</span>
       </div>
-      <p style="font-size:10px;color:#aaa;text-align:center;margin-top:.6rem">* Benchmarks orientativos basados en informes de digitalización PYME España 2023-2024.</p>
+      <p style="font-size:10px;color:#aaa;text-align:center;margin-top:.6rem">* Valores de referencia: estimación LEVANTA basada en mi experiencia con pymes. No proceden de un estudio estadístico y son solo orientativos.</p>
     </div>
 
     <div style="background:linear-gradient(135deg,var(--vd) 0%,#2a4a10 100%);border-radius:16px;padding:2rem;text-align:center;margin-top:1.25rem">
@@ -419,7 +439,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <h3 style="color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;line-height:1.4">¿Quieres saber exactamente dónde está perdiendo dinero tu empresa?</h3>
       <p style="color:rgba(255,255,255,.85);font-size:14px;margin-bottom:1.25rem;line-height:1.6">Agenda una sesión gratuita de 30 minutos conmigo — por videollamada o tomando un café en La Mancha.</p>
       <a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#fff;color:var(--vd);padding:16px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:.75rem;line-height:1.4">
-        📅 Agenda tu Diagnóstico Gratuito con Pablo Prensa<br/>
+        📅 Agenda tu diagnóstico gratuito conmigo<br/>
         <span style="font-size:12.5px;font-weight:500;color:var(--az)">30 min · Videollamada o café en La Mancha</span>
       </a>
       <div style="color:rgba(255,255,255,.7);font-size:12px">✓ Totalmente gratuito &nbsp;·&nbsp; ✓ Sin compromiso &nbsp;·&nbsp; ✓ Elige el horario que te venga bien</div>
@@ -432,21 +452,24 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <p style="font-size:11.5px;color:var(--gr);margin-top:.5rem">Incluye puntuación, comparativa con el mercado y recomendaciones personalizadas</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.25rem">
-      <div class="fr"><label>Tu nombre</label><input id="q-nombre" type="text" placeholder="Nombre y apellidos"/></div>
-      <div class="fr"><label>Tu empresa</label><input id="q-empresa" type="text" placeholder="Nombre de la empresa"/></div>
-    </div>
-    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem">
-      <button class="fbtn" style="flex:1;min-width:200px;background:var(--vd)" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
-      <button class="fbtn" style="flex:1;min-width:200px;background:var(--az)" onclick="prepEmail()">📊 Descargar Excel + Email</button>
-    </div>
-    <div id="email-wrap" style="display:none;margin-top:1rem;background:var(--cr);border:1px solid var(--bd);border-radius:10px;padding:1rem">
-      <p style="font-size:13px;font-weight:600;color:var(--az);margin-bottom:.5rem">✅ Excel descargado. Envía el email:</p>
-      <p style="font-size:12.5px;color:var(--gr);margin-bottom:.6rem">Adjunta el archivo y copia este texto a <strong style="color:var(--az)">levantalamancha@levanta.email</strong></p>
-      <textarea id="email-txt" readonly style="width:100%;height:110px;font-size:12px;border:1px solid var(--bd);border-radius:6px;padding:8px;font-family:monospace;resize:none;background:#fff"></textarea>
-      <button onclick="copiarEmail()" style="margin-top:.5rem;width:100%;padding:9px;background:var(--az);color:#fff;border:none;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer">📋 Copiar texto</button>
-      <div id="copy-ok" style="display:none;font-size:12px;color:var(--vd);font-weight:600;text-align:center;margin-top:.4rem">✓ ¡Copiado!</div>
-    </div>
+    <form id="diag-form" novalidate onsubmit="return enviarDiagnostico(event)" style="margin-top:1.25rem;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:1.1rem">
+      <div style="font-size:1rem;font-weight:700;color:var(--az);margin-bottom:.2rem">📩 Recibe tu informe en PDF por email</div>
+      <p style="font-size:12.5px;color:var(--gr);margin-bottom:.8rem">Cuando termines el test, dime a quién envío el informe. Te lo mando en PDF y recibo una copia para poder prepararme si hablamos.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem" class="dgrid">
+        <div class="fr"><label for="q-nombre">Tu nombre *</label><input id="q-nombre" name="nombre" type="text" placeholder="Nombre y apellidos" autocomplete="name" required aria-describedby="e-q-nombre"/><span class="ferr" id="e-q-nombre" role="alert"></span></div>
+        <div class="fr"><label for="q-empresa">Tu empresa *</label><input id="q-empresa" name="empresa" type="text" placeholder="Nombre de la empresa" autocomplete="organization" required aria-describedby="e-q-empresa"/><span class="ferr" id="e-q-empresa" role="alert"></span></div>
+      </div>
+      <div class="fr" style="margin-top:.5rem"><label for="q-email">Tu email *</label><input id="q-email" name="email" type="email" placeholder="tu@email.com" autocomplete="email" required aria-describedby="e-q-email"/><span class="ferr" id="e-q-email" role="alert"></span></div>
+      <input type="text" id="q-web" name="web" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"/>
+      <label class="fconsent"><input type="checkbox" id="q-consent" required aria-describedby="e-q-consent"/> <span>He leído la <a href="/politica-privacidad" target="_blank" rel="noopener">Política de privacidad</a>. *</span></label>
+      <span class="ferr" id="e-q-consent" role="alert"></span>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.6rem">
+        <button class="fbtn" id="diag-btn" type="submit" style="flex:1;min-width:200px;background:var(--az)">📩 Enviarme el informe en PDF</button>
+        <button class="fbtn" type="button" style="flex:1;min-width:200px;background:var(--vd)" onclick="enviarWA()">📲 Enviarme los resultados por WhatsApp</button>
+      </div>
+      <div id="diag-ok" role="status" style="display:none;margin-top:.9rem;background:#eaf3de;border:1px solid var(--vd);border-radius:10px;padding:.9rem;font-size:13.5px;color:var(--vd);font-weight:600"></div>
+      <div id="diag-err" role="alert" style="display:none;margin-top:.9rem;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:.9rem;font-size:13px;color:#b91c1c"></div>
+    </form>
   </div>
 </section>
 
@@ -454,13 +477,13 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
   <div style="max-width:720px;margin:0 auto">
     <div style="color:#fff;text-align:center;margin-bottom:1.75rem">
       <div class="stag" style="color:rgba(255,255,255,.7)">Asistente IA</div>
-      <h2 class="stit" style="color:#fff">Habla directamente conmigo</h2>
-      <p style="color:rgba(255,255,255,.75);font-size:14px">Mi asistente responde como yo lo haría — con honestidad y al grano.</p>
+      <h2 class="stit" style="color:#fff">Pregunta a mi asistente con IA</h2>
+      <p style="color:rgba(255,255,255,.75);font-size:14px">Es una inteligencia artificial: responde como yo lo haría, con honestidad y al grano.</p>
     </div>
     <div class="chatbox">
       <div class="ctop">
         <div class="cav">IA</div>
-        <div><div class="cname">Asistente virtual de LEVANTA</div><div class="cstat"><span class="cdot"></span>Inteligencia artificial · habla en nombre de Pablo</div></div>
+        <div><div class="cname">Asistente virtual de LEVANTA</div><div class="cstat"><span class="cdot"></span>Inteligencia artificial · responde en mi nombre</div></div>
       </div>
       <div class="msgs" id="msgs">
         <div class="msg bot">¡Hola! Soy el asistente virtual de LEVANTA, una inteligencia artificial que responde en nombre de Pablo Prensa, su fundador, con más de 20 años de experiencia internacional en transformación empresarial. Mis respuestas son orientativas y no sustituyen una conversación con Pablo. ¿En qué puedo ayudarte?</div>
@@ -488,28 +511,31 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
     <div class="fbox">
       <h3>Solicita tu diagnóstico gratuito</h3>
       <p>Cuéntame sobre tu empresa y te respondo en menos de 24h.</p>
+      <form id="contact-form" novalidate onsubmit="return mostrarResumen(event)">
       <div class="fg">
-        <div class="fr"><label>Nombre *</label><input id="f-nombre" type="text" placeholder="Tu nombre"/></div>
-        <div class="fr"><label>Empresa *</label><input id="f-empresa" type="text" placeholder="Tu empresa"/></div>
+        <div class="fr"><label for="f-nombre">Nombre *</label><input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" autocomplete="name" required aria-describedby="e-f-nombre"/><span class="ferr" id="e-f-nombre" role="alert"></span></div>
+        <div class="fr"><label for="f-empresa">Empresa *</label><input id="f-empresa" name="empresa" type="text" placeholder="Tu empresa" autocomplete="organization" required aria-describedby="e-f-empresa"/><span class="ferr" id="e-f-empresa" role="alert"></span></div>
       </div>
       <div class="fg">
-        <div class="fr"><label>Teléfono</label><input id="f-tel" type="tel" placeholder="+34 600 000 000"/></div>
-        <div class="fr"><label>Email *</label><input id="f-email" type="email" placeholder="tu@email.com"/></div>
+        <div class="fr"><label for="f-tel">Teléfono</label><input id="f-tel" name="telefono" type="tel" placeholder="+34 600 000 000" autocomplete="tel"/></div>
+        <div class="fr"><label for="f-email">Email *</label><input id="f-email" name="email" type="email" placeholder="tu@email.com" autocomplete="email" required aria-describedby="e-f-email"/><span class="ferr" id="e-f-email" role="alert"></span></div>
       </div>
       <div class="fg">
-        <div class="fr"><label>Empleados *</label>
-          <select id="f-empleados"><option value="">Selecciona...</option><option>1-5</option><option>6-15</option><option>16-50</option><option>51-100</option><option>+100</option></select>
+        <div class="fr"><label for="f-empleados">Empleados *</label>
+          <select id="f-empleados" name="empleados" required aria-describedby="e-f-empleados"><option value="">Selecciona...</option><option>1-5</option><option>6-15</option><option>16-50</option><option>51-100</option><option>+100</option></select><span class="ferr" id="e-f-empleados" role="alert"></span>
         </div>
-        <div class="fr"><label>Sector *</label>
-          <select id="f-sector"><option value="">Selecciona...</option><option>Agroalimentario</option><option>Vitivinícola</option><option>Manufactura</option><option>Turismo</option><option>Servicios</option><option>Otros</option></select>
+        <div class="fr"><label for="f-sector">Sector *</label>
+          <select id="f-sector" name="sector" required aria-describedby="e-f-sector"><option value="">Selecciona...</option><option>Agroalimentario</option><option>Vitivinícola</option><option>Manufactura</option><option>Turismo</option><option>Servicios</option><option>Otros</option></select><span class="ferr" id="e-f-sector" role="alert"></span>
         </div>
       </div>
-      <div class="fr"><label>Área de ayuda</label>
-        <select id="f-area"><option value="">Selecciona...</option><option>Eficiencia Operativa</option><option>Sistemas de Información</option><option>Experiencia del Cliente</option><option>Digitalización e IT</option><option>Talento y Liderazgo</option><option>Imagen de Marca</option><option>No sé / necesito orientación</option></select>
+      <div class="fr"><label for="f-area">Área de ayuda</label>
+        <select id="f-area" name="area"><option value="">Selecciona...</option><option>Eficiencia Operativa</option><option>Sistemas de Información</option><option>Experiencia del Cliente</option><option>Digitalización e IT</option><option>Talento y Liderazgo</option><option>Imagen de Marca</option><option>No sé / necesito orientación</option></select>
       </div>
-      <div class="fr"><textarea id="f-msg" placeholder="¿Cuál es el principal reto que queréis resolver?"></textarea></div>
-      <label class="fconsent"><input type="checkbox" id="f-consent"/> <span>He leído y acepto la <a href="/politica-privacidad" target="_blank" rel="noopener">Política de privacidad</a> y autorizo el tratamiento de mis datos para responder a mi solicitud. *</span></label>
-      <button class="fbtn" id="fbtn-submit" onclick="mostrarResumen()">Solicitar diagnóstico gratuito</button>
+      <div class="fr"><label for="f-msg">Mensaje</label><textarea id="f-msg" name="mensaje" placeholder="¿Cuál es el principal reto que queréis resolver?"></textarea></div>
+      <label class="fconsent"><input type="checkbox" id="f-consent" required aria-describedby="e-f-consent"/> <span>He leído la <a href="/politica-privacidad" target="_blank" rel="noopener">Política de privacidad</a>. *</span></label>
+      <span class="ferr" id="e-f-consent" role="alert"></span>
+      <button class="fbtn" id="fbtn-submit" type="submit">Solicitar diagnóstico gratuito</button>
+      </form>
       <div class="fnote">✓ Gratis y sin compromiso · Respuesta en &lt;24h</div>
       <div style="margin-top:.75rem;background:#f0f4ff;border:1px solid #c7d4f0;border-radius:7px;padding:.6rem .85rem;display:flex;gap:.5rem;align-items:flex-start">
         <span style="font-size:14px;flex-shrink:0">🔒</span>
@@ -518,7 +544,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <div id="fbox-success" style="display:none;margin-top:1rem;background:#eaf3de;border:1px solid var(--vd);border-radius:10px;padding:1.25rem;text-align:center">
         <div style="font-size:2rem;margin-bottom:.5rem">✅</div>
         <div style="font-size:1rem;font-weight:700;color:var(--vd);margin-bottom:.25rem">¡Mensaje enviado con éxito!</div>
-        <p style="font-size:13.5px;color:var(--gr)">Pablo te responderá en menos de 24h. Revisa también tu bandeja de spam.</p>
+        <p style="font-size:13.5px;color:var(--gr)">Te responderé en menos de 24 h. Revisa también tu bandeja de spam.</p>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem">
@@ -538,7 +564,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
   <div style="max-width:1100px;margin:0 auto">
     <div class="ni-badge" id="ni-badge"><span></span>Actualizado semanalmente</div>
     <h2 class="stit" style="color:#e8f0fe;margin-bottom:.4rem">IA News · Lo que afecta a tu empresa hoy</h2>
-    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-bottom:2rem;max-width:580px">Noticias reales seleccionadas cada semana por inteligencia artificial sobre los 6 pilares que más impactan en la rentabilidad de las PYMEs de La Mancha.</p>
+    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-bottom:2rem;max-width:580px">Noticias reales seleccionadas cada semana por inteligencia artificial sobre los 6 pilares que más impactan en la rentabilidad de las pymes de La Mancha.</p>
 
     <div id="ni-error-box" style="display:none" class="ni-error">
       ⚠️ No se han podido cargar las noticias. <a href="#" onclick="niRetry()" style="color:#fca5a5;font-weight:700">Reintentar</a> · o escríbeme a <strong>levantalamancha@levanta.email</strong>
@@ -574,11 +600,13 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
           </div>
         </div>
         <div id="ni-sub-wrap">
+<form id="ni-form" novalidate onsubmit="return niSubscribe(event)">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
-            <input id="ni-nombre" type="text" placeholder="Tu nombre *" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
+            <input id="ni-nombre" name="nombre" aria-describedby="e-ni-nombre" required autocomplete="name" type="text" placeholder="Tu nombre *" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
             <input id="ni-empresa" type="text" placeholder="Tu empresa" style="border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
           </div>
-          <input id="ni-email" type="email" placeholder="tu@email.com *" style="width:100%;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit;box-sizing:border-box;margin-bottom:.5rem" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/>
+          <span class="ferr nierr" id="e-ni-nombre" role="alert"></span>
+          <input id="ni-email" name="email" aria-describedby="e-ni-email" required autocomplete="email" type="email" placeholder="tu@email.com *" style="width:100%;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none;font-family:inherit;box-sizing:border-box;margin-bottom:.5rem" onfocus="this.style.borderColor='#4a6e1a'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/><span class="ferr nierr" id="e-ni-email" role="alert"></span>
           <select id="ni-sector" style="width:100%;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:9px 12px;font-size:13px;background:#112240;color:rgba(255,255,255,.7);outline:none;font-family:inherit;box-sizing:border-box;margin-bottom:.75rem">
             <option value="">Sector (opcional)</option>
             <option>Agroalimentario</option>
@@ -588,11 +616,14 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
             <option>Servicios</option>
             <option>Otros</option>
           </select>
-          <label style="display:flex;gap:.5rem;align-items:flex-start;color:rgba(255,255,255,.55);font-size:11.5px;line-height:1.45;margin:0 0 .7rem;cursor:pointer"><input type="checkbox" id="ni-consent" style="margin-top:2px"/> <span>Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener" style="color:#86c94a">Política de privacidad</a> y quiero recibir la newsletter semanal. Puedo darme de baja en cualquier momento. *</span></label>
-          <button id="ni-sub-btn" onclick="niSubscribe()" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
+          <label style="display:flex;gap:.5rem;align-items:flex-start;color:rgba(255,255,255,.55);font-size:11.5px;line-height:1.45;margin:0 0 .7rem;cursor:pointer"><input type="checkbox" id="ni-consent" required aria-describedby="e-ni-consent" style="margin-top:2px"/> <span>Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener" style="color:#86c94a">Política de privacidad</a> y quiero recibir la newsletter semanal. Puedo darme de baja en cualquier momento. *</span></label>
+          <span class="ferr nierr" id="e-ni-consent" role="alert"></span>
+          <button id="ni-sub-btn" type="submit" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
             📧 Suscribirme a las noticias semanales
           </button>
-          <p style="color:rgba(255,255,255,.3);font-size:11px;text-align:center;margin:.5rem 0 0">RGPD · Tus datos solo se usan para enviarte las noticias</p>
+          <span class="ferr nierr" id="e-ni-form" role="alert" style="text-align:center"></span>
+          <p style="color:rgba(255,255,255,.3);font-size:11px;text-align:center;margin:.5rem 0 0">RGPD · Tus datos solo se usan para enviarte las noticias · Te pediré confirmar tu email</p>
+</form>
         </div>
       </div>
       <!-- Baja newsletter -->
@@ -615,8 +646,8 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 <a href="/aviso-legal">Aviso legal</a> · <a href="/politica-privacidad">Política de privacidad</a> · <a href="/politica-cookies">Política de cookies</a> · <a href="#" onclick="levantaCookieOpen();return false;">Configurar cookies</a></footer>
 
 <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-  <div>Usamos <strong>cookies analíticas de Google Analytics</strong> para saber cómo se usa la web y mejorarla. Solo se activan si las aceptas. Puedes cambiar tu decisión cuando quieras. Más información en la <a href="/politica-cookies">Política de cookies</a>.</div>
-  <div class="cb-btns"><button type="button" class="cb-ok" onclick="levantaCookieSet('granted')">Aceptar</button><button type="button" onclick="levantaCookieSet('denied')">Rechazar</button></div>
+  <div>Uso <strong>cookies analíticas de Google Analytics</strong> para saber cómo se usa la web y mejorarla. Solo se activan si las aceptas. Puedes cambiar tu decisión cuando quieras. Más información en la <a href="/politica-cookies">Política de cookies</a>.</div>
+  <div class="cb-btns"><button type="button" onclick="levantaCookieSet('granted')">Aceptar</button><button type="button" onclick="levantaCookieSet('denied')">Rechazar</button></div>
 </div>
 <script>
 (function(){
@@ -626,13 +657,14 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
   window.levantaCookieSet=function(v){
     try{localStorage.setItem(KEY,v);}catch(e){}
     show(false);
-    if(v==='granted'&&window.levantaLoadGA)window.levantaLoadGA();
-    if(v==='denied'&&window.__gaLoaded){location.reload();}   // detiene la analítica ya cargada
+    if(v==='granted'&&window.levantaLoadGA){window['ga-disable-G-TQV03DJDR1']=false;window.levantaLoadGA();}
+    if(v==='denied'&&window.levantaDeleteGA){window.levantaDeleteGA();}   // detiene la analítica y borra _ga y _ga_*
   };
   window.levantaCookieOpen=function(){show(true);};
   var c=get();
   if(c==='granted'){window.levantaLoadGA&&window.levantaLoadGA();}
-  else if(c!=='denied'){show(true);}
+  else if(c==='denied'){window.levantaDeleteGA&&window.levantaDeleteGA();}
+  else{show(true);}
 })();
 </script>
 
@@ -738,7 +770,7 @@ function recalc(){
   var txt='';
   if(grand>=90)txt='✅ Madurez alta. Puedes optimizar con proyectos selectivos de alto ROI.';
   else if(grand>=60)txt='📈 Madurez media. Hay oportunidades claras de crecimiento rápido.';
-  else if(grand>=30)txt='⚠️ Madurez baja. Aquí es donde más valor podemos crear juntos.';
+  else if(grand>=30)txt='⚠️ Madurez baja. Aquí es donde más valor podemos crear juntos, tú y yo.';
   else if(grand>0)txt='🚨 Situación crítica de competitividad. Necesitas un plan urgente.';
   document.getElementById('qinterp').textContent=txt;
   renderRecom(totals);
@@ -822,38 +854,58 @@ function enviarWA(){
   a.click();
   document.body.removeChild(a);
 }
-function prepEmail(){
-  // Track email download
-  if(typeof gtag !== 'undefined'){
-    gtag('event', 'diagnostico_download', {
-      'event_category': 'engagement',
-      'event_label': 'excel_csv'
-    });
-  }
-  var n=document.getElementById('q-nombre').value||'Sin nombre',e=document.getElementById('q-empresa').value||'Sin empresa',tot=0,totals=[];
-  var rows=[['DIAGNÓSTICO EXPRESS LEVANTA'],['Nombre:',n],['Empresa:',e],[''],['Sección','Puntuación','/ 20']];
-  for(var s=0;s<6;s++){var t=0;for(var q=1;q<=4;q++){if(scores[(s+1)+'_'+q])t+=scores[(s+1)+'_'+q];}totals.push(t);tot+=t;rows.push([SNAMES[s],t,20]);}
-  rows.push(['','',''],['TOTAL',tot,120]);
-  var csv=rows.map(function(r){return r.map(function(c){return '"'+(c+'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');a.href=url;a.download='Diagnostico_LEVANTA.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-  var body='Asunto: [LEVANTA] Diagnóstico Express – '+n+' ('+e+')\n\nHola Pablo,\n\nTe adjunto mi Diagnóstico Express.\n\nResumen:\n';
-  for(var i=0;i<6;i++)body+='• '+SNAMES[i]+': '+totals[i]+'/20\n';
-  body+='\nTOTAL: '+tot+'/120\n\nSaludos,\n'+n;
-  document.getElementById('email-txt').value=body;
-  var w=document.getElementById('email-wrap');w.style.display='block';w.scrollIntoView({behavior:'smooth',block:'start'});
+function enviarDiagnostico(ev){
+  if(ev)ev.preventDefault();
+  var n=document.getElementById('q-nombre').value.trim(),e=document.getElementById('q-empresa').value.trim(),em=document.getElementById('q-email').value.trim();
+  var ok=true;
+  ok=setErr('q-nombre',n?'':'Indícame tu nombre.')&&ok;
+  ok=setErr('q-empresa',e?'':'Indícame el nombre de tu empresa.')&&ok;
+  ok=setErr('q-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)?'':'Escribe un email válido.')&&ok;
+  ok=setErr('q-consent',document.getElementById('q-consent').checked?'':'Marca la casilla para poder enviarte el informe.')&&ok;
+  var ans=0;for(var k in scores){if(scores[k])ans++;}
+  var msg=document.getElementById('diag-err'),okb=document.getElementById('diag-ok');
+  okb.style.display='none';msg.style.display='none';
+  if(ans<24){msg.textContent='Responde primero las 24 preguntas del test (llevas '+ans+'). Así el informe será útil.';msg.style.display='block';ok=false;}
+  if(!ok){var f=document.querySelector('#diag-form .invalid');if(f)f.focus();return false;}
+  if(typeof gtag!=='undefined'){gtag('event','diagnostico_pdf_send',{'event_category':'engagement','event_label':'resend_pdf'});}
+  var btn=document.getElementById('diag-btn');btn.disabled=true;btn.textContent='Enviando…';
+  var sc={};for(var s=1;s<=6;s++)for(var q=1;q<=4;q++)sc[s+'_'+q]=scores[s+'_'+q]||0;
+  fetch('/.netlify/functions/send-diagnostico',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nombre:n,empresa:e,email:em,scores:sc,web:document.getElementById('q-web').value})})
+  .then(function(r){return r.json().catch(function(){return {};}).then(function(d){return {ok:r.ok&&d.ok,d:d};});})
+  .then(function(x){
+    if(x.ok){okb.textContent='✅ Listo: te he enviado el informe en PDF a '+em+'. Si no lo ves en unos minutos, revisa la carpeta de spam.';okb.style.display='block';}
+    else{msg.textContent=(x.d&&x.d.error)||'No he podido enviar el informe. Inténtalo de nuevo o escríbeme a levantalamancha@levanta.email.';msg.style.display='block';}
+    btn.disabled=false;btn.textContent='📩 Enviarme el informe en PDF';
+  }).catch(function(){
+    msg.textContent='Error de conexión. Inténtalo de nuevo o escríbeme a levantalamancha@levanta.email.';msg.style.display='block';
+    btn.disabled=false;btn.textContent='📩 Enviarme el informe en PDF';
+  });
+  return false;
 }
-function copiarEmail(){
-  var t=document.getElementById('email-txt');t.select();
-  navigator.clipboard.writeText(t.value).then(function(){var ok=document.getElementById('copy-ok');ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}).catch(function(){document.execCommand('copy');});
+// Mensajes de error junto a cada campo (en lugar de alert)
+function setErr(id,text){
+  var el=document.getElementById(id),er=document.getElementById('e-'+id);
+  if(er)er.textContent=text||'';
+  if(el){if(text){el.classList.add('invalid');el.setAttribute('aria-invalid','true');}else{el.classList.remove('invalid');el.removeAttribute('aria-invalid');}}
+  return !text;
 }
+document.addEventListener('input',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('invalid')){setErr(t.id,'');}});
+document.addEventListener('change',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('invalid')){setErr(t.id,'');}});
 
-function mostrarResumen(){
+function mostrarResumen(ev){
+  if(ev)ev.preventDefault();
   var n=document.getElementById('f-nombre').value.trim(),em=document.getElementById('f-email').value.trim();
   var emp=document.getElementById('f-empleados').value,sec=document.getElementById('f-sector').value;
-  if(!n||!em||!emp||!sec){alert('Por favor, completa los campos obligatorios: nombre, email, nº de empleados y sector.');return;}
-  if(!document.getElementById('f-consent').checked){alert('Para enviar el formulario debes aceptar la Política de privacidad.');return;}
+  var empresa=document.getElementById('f-empresa').value.trim();
+  var ok=true;
+  ok=setErr('f-nombre',n?'':'Indícame tu nombre.')&&ok;
+  ok=setErr('f-empresa',empresa?'':'Indícame el nombre de tu empresa.')&&ok;
+  ok=setErr('f-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)?'':'Escribe un email válido.')&&ok;
+  ok=setErr('f-empleados',emp?'':'Selecciona el número de empleados.')&&ok;
+  ok=setErr('f-sector',sec?'':'Selecciona tu sector.')&&ok;
+  ok=setErr('f-consent',document.getElementById('f-consent').checked?'':'Marca la casilla para poder enviar el formulario.')&&ok;
+  if(!ok){var first=document.querySelector('#contact-form .invalid');if(first)first.focus();return false;}
   var e=document.getElementById('f-empresa').value.trim(),t=document.getElementById('f-tel').value.trim();
   var a=document.getElementById('f-area').value,m=document.getElementById('f-msg').value.trim();
   
@@ -872,7 +924,7 @@ function mostrarResumen(){
   fetch('https://formspree.io/f/mojyaggo',{
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({nombre:n,empresa:e||'No indicada',telefono:t||'No indicado',email:em,empleados:emp,sector:sec,servicio:a||'No indicado',mensaje:m||'Sin mensaje adicional',_subject:'[LEVANTA] Solicitud de diagnóstico – '+n,_replyto:em})
+    body:JSON.stringify({nombre:n,empresa:e,telefono:t||'No indicado',email:em,empleados:emp,sector:sec,servicio:a||'No indicado',mensaje:m||'Sin mensaje adicional',_subject:'[LEVANTA] Solicitud de diagnóstico – '+n,_replyto:em})
   }).then(function(r){
     if(r.ok){
       // Track successful contact
@@ -886,13 +938,15 @@ function mostrarResumen(){
       document.getElementById('fbox-success').style.display='block';
       document.getElementById('fbox-success').scrollIntoView({behavior:'smooth',block:'center'});
     }
-    else{alert('Ha habido un error. Por favor, escríbeme directamente a levantalamancha@levanta.email');}
+    else{formMsg('Ha habido un error al enviar. Escríbeme directamente a levantalamancha@levanta.email');}
     btn.disabled=false;btn.textContent='Solicitar diagnóstico gratuito';
   }).catch(function(){
-    alert('Error de conexión. Por favor, escríbeme a levantalamancha@levanta.email');
+    formMsg('Error de conexión. Escríbeme a levantalamancha@levanta.email');
     btn.disabled=false;btn.textContent='Solicitar diagnóstico gratuito';
   });
+  return false;
 }
+function formMsg(t){setErr('f-consent',t);}
 function copiarResumen(){
   var t=document.getElementById('fresumen-txt');t.select();
   navigator.clipboard.writeText(t.value).then(function(){var ok=document.getElementById('fcopyok');ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}).catch(function(){document.execCommand('copy');});
@@ -977,7 +1031,7 @@ function generarPDF(){
   var rows='';
   totals.forEach(function(s,i){
     var pct=Math.round((s.val/20)*100),col=pct<=35?'#dc2626':pct<=60?'#d97706':'#16a34a';
-    rows+='<tr style="border-bottom:1px solid #e2e8d8"><td style="padding:.5rem;font-size:12px;font-weight:600;white-space:nowrap">'+ICONS[i]+' '+SNAMES[i]+'</td><td style="padding:.5rem"><div style="display:flex;align-items:center;gap:6px"><div style="width:'+Math.round((s.val/20)*160)+'px;height:9px;background:'+col+';border-radius:4px;min-width:2px"></div><b style="font-size:11px;color:'+col+'">'+s.val+'/20</b></div><div style="font-size:10px;color:#888;margin-top:2px">▪ La Mancha: '+BM[i]+' &nbsp;▪ España: '+BE[i]+'</div></td></tr>';
+    rows+='<tr style="border-bottom:1px solid #e2e8d8"><td style="padding:.5rem;font-size:12px;font-weight:600;white-space:nowrap">'+ICONS[i]+' '+SNAMES[i]+'</td><td style="padding:.5rem"><div style="display:flex;align-items:center;gap:6px"><div style="width:'+Math.round((s.val/20)*160)+'px;height:9px;background:'+col+';border-radius:4px;min-width:2px"></div><b style="font-size:11px;color:'+col+'">'+s.val+'/20</b></div><div style="font-size:10px;color:#888;margin-top:2px">▪ Est. LEVANTA La Mancha: '+BM[i]+' &nbsp;▪ Est. LEVANTA España: '+BE[i]+'</div></td></tr>';
   });
   var recos='';
   sorted.slice(0,3).forEach(function(s,idx){
@@ -999,7 +1053,7 @@ function generarPDF(){
     +'<div style="border-left:2px solid #e2e8d8;padding-left:1rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a6e1a;margin-bottom:.2rem">Resultado</div><div style="font-size:.9rem;font-weight:600">'+interp+'</div></div></div>'
     +'<h2 style="font-size:.9rem;font-weight:700;color:#1a4f82;margin:0 0 .6rem">📊 Puntuaciones por área y comparativa</h2>'
     +'<table style="width:100%;border-collapse:collapse;margin-bottom:.5rem"><tbody>'+rows+'</tbody></table>'
-    +'<div style="font-size:10px;color:#9ca3af;margin-bottom:1rem">* Benchmarks orientativos, informes PYME España 2023-2024.</div>'
+    +'<div style="font-size:10px;color:#9ca3af;margin-bottom:1rem">* Valores de referencia: estimación LEVANTA basada en la experiencia de Pablo Prensa con pymes. No proceden de un estudio estadístico.</div>'
     +'<h2 style="font-size:.9rem;font-weight:700;color:#1a4f82;margin:0 0 .6rem">🎯 Tus 3 prioridades de mejora</h2>'+recos
     +'<div style="background:#1a4f82;color:#fff;border-radius:10px;padding:1rem;display:flex;gap:1rem;align-items:center;margin-top:1rem">'
     +photoHtml
@@ -1132,14 +1186,18 @@ async function niUnsubscribe(){
 }
 
 // ── SUSCRIPCIÓN NEWSLETTER ───────────────────────────────────────────────────
-async function niSubscribe(){
+async function niSubscribe(ev){
+  if(ev)ev.preventDefault();
   var name=document.getElementById('ni-nombre').value.trim();
   var email=document.getElementById('ni-email').value.trim();
   var company=document.getElementById('ni-empresa').value.trim();
   var sector=document.getElementById('ni-sector').value;
-  if(!name){alert('Por favor introduce tu nombre.');return;}
-  if(!email||!email.includes('@')){alert('Por favor introduce un email válido.');return;}
-  if(!document.getElementById('ni-consent').checked){alert('Para suscribirte debes aceptar la Política de privacidad.');return;}
+  var ok=true;
+  ok=setErr('ni-nombre',name?'':'Indícame tu nombre.')&&ok;
+  ok=setErr('ni-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)?'':'Escribe un email válido.')&&ok;
+  ok=setErr('ni-consent',document.getElementById('ni-consent').checked?'':'Marca la casilla para poder suscribirte.')&&ok;
+  setErr('ni-form','');
+  if(!ok){var f=document.querySelector('#ni-form .invalid');if(f)f.focus();return false;}
   
   // Track newsletter subscription attempt
   if(typeof gtag !== 'undefined'){
@@ -1169,17 +1227,17 @@ async function niSubscribe(){
       document.getElementById('ni-sub-wrap').innerHTML=
         '<div style="text-align:center;padding:1.5rem 1rem">'
         +'<div style="font-size:2.5rem;margin-bottom:.6rem">✅</div>'
-        +'<div style="color:#86c94a;font-weight:700;font-size:1.1rem;margin-bottom:.4rem">¡Suscripción confirmada!</div>'
-        +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Revisa tu correo — te he enviado un email de bienvenida.<br/>Mañana a las 7h recibirás tus primeras noticias.</p>'
+        +'<div style="color:#86c94a;font-weight:700;font-size:1.1rem;margin-bottom:.4rem">¡Casi listo! Confirma tu email</div>'
+        +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Te he enviado un email con un enlace de confirmación. Pulsa el enlace para activar tu suscripción.<br/>Si no lo ves, revisa la carpeta de spam. El enlace caduca en 30 días.</p>'
         +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
         +'</div>';
     }else{
       btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
-      alert(d.error||'Error al suscribirse. Inténtalo de nuevo.');
+      setErr('ni-form',d.error||'Error al suscribirse. Inténtalo de nuevo.');
     }
   }catch(e){
     btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
-    alert('Error de conexión. Inténtalo de nuevo.');
+    setErr('ni-form','Error de conexión. Inténtalo de nuevo.');
   }
 }
 

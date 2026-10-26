@@ -32,7 +32,7 @@ export default async (req) => {
 
     // Generar link de baja seguro
     const token = generateToken(emailClean);
-    const unsubUrl = `https://levanta-lamancha.netlify.app/.netlify/functions/unsubscribe?email=${encodeURIComponent(emailClean)}&token=${token}`;
+    const unsubUrl = `https://levanta-lamancha.es/.netlify/functions/unsubscribe?email=${encodeURIComponent(emailClean)}&token=${token}`;
 
     // Enviar email de confirmación
     const KEY = process.env.RESEND_API_KEY;
