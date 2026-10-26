@@ -965,6 +965,8 @@ async function sendMsg(){
   try{
     var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist})});
     var d=await r.json();removeTyping();
+    // Límite del servidor alcanzado: mismo aviso que el límite del navegador
+    if(r.status===429){hist.pop();chatSent=CHAT_MAX;try{localStorage.setItem('levanta_chat_n',JSON.stringify({d:chatDay(),n:CHAT_MAX}));}catch(e){}chatLimitReached();document.getElementById('csend').disabled=true;return;}
     if(!r.ok||d.error){console.error('Chat API error',r.status,d.error);}
     // El modelo puede devolver primero bloques "thinking": nos quedamos solo con los de texto
     var rep=(d.content||[]).filter(function(b){return b&&b.type==='text';}).map(function(b){return b.text;}).join('').trim();
