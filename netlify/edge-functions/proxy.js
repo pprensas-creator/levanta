@@ -1,15 +1,21 @@
-// Proxy seguro para la API de Anthropic (chat de la web y noticias).
+// Proxy seguro para el chat de la web.
 // - La clave vive solo en Netlify (ANTHROPIC_API_KEY).
-// - El modelo y los límites se fijan en el servidor, no en el navegador.
+// - El modelo, las instrucciones del asistente y los límites los fija el servidor:
+//   el navegador solo envía los mensajes de la conversación.
+import SYSTEM_PROMPT from './chat-prompt.js';
+
 const MODEL = Deno.env.get('ANTHROPIC_MODEL') || 'claude-sonnet-5-5';
-const MAX_TOKENS_CAP = 3000;
+const MAX_TOKENS = 1500;
+const MAX_MESSAGES = 12;
+const MAX_CHARS = 2000;
 const ALLOWED_ORIGINS = [
   'https://levanta-lamancha.es',
   'https://www.levanta-lamancha.es',
 ];
 
 function cors(origin) {
-  const allowed = ALLOWED_ORIGINS.includes(origin) || /\.netlify\.app$/.test(new URL(origin || 'https://x.invalid').hostname);
+  let allowed = ALLOWED_ORIGINS.includes(origin);
+  try { allowed = allowed || /\.netlify\.app$/.test(new URL(origin).hostname); } catch { /* origen vacío */ }
   return {
     'Access-Control-Allow-Origin': allowed ? origin : ALLOWED_ORIGINS[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -48,23 +54,13 @@ export default async (request) => {
     return json({ error: { message: 'JSON no válido' } }, 400, origin);
   }
 
-  if (!Array.isArray(input.messages) || input.messages.length === 0 || input.messages.length > 40) {
+  // Solo se aceptan mensajes de texto de usuario/asistente, recortados.
+  const messages = (Array.isArray(input.messages) ? input.messages : [])
+    .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
+    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }))
+    .slice(-MAX_MESSAGES);
+  if (messages.length === 0 || messages[0].role !== 'user' || messages[messages.length - 1].role !== 'user') {
     return json({ error: { message: 'Mensajes no válidos' } }, 400, origin);
-  }
-
-  // Solo se aceptan los campos que necesitamos; el modelo lo decide el servidor.
-  const body = {
-    model: MODEL,
-    max_tokens: Math.min(Number(input.max_tokens) || 1000, MAX_TOKENS_CAP),
-    messages: input.messages,
-  };
-  if (typeof input.system === 'string') body.system = input.system.slice(0, 20000);
-  if (Array.isArray(input.tools)) {
-    // Solo se permite la búsqueda web (para la sección de noticias).
-    body.tools = input.tools
-      .filter((t) => t && t.name === 'web_search')
-      .map(() => ({ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }));
-    if (body.tools.length === 0) delete body.tools;
   }
 
   try {
@@ -75,7 +71,7 @@ export default async (request) => {
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, system: SYSTEM_PROMPT, messages }),
     });
     const data = await response.json();
     if (!response.ok) {

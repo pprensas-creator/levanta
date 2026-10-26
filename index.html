@@ -3,24 +3,30 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LEVANTA – Consultoría La Mancha</title>
+<title>Consultoría para PYMEs en La Mancha | LEVANTA</title>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TQV03DJDR1"></script>
+<!-- Google Analytics 4: solo se carga si el visitante acepta las cookies analíticas -->
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TQV03DJDR1', {
-    'send_page_view': true
-  });
+  window.gtag = function(){};   // no hace nada hasta que haya consentimiento
+  window.levantaLoadGA = function(){
+    if(window.__gaLoaded)return; window.__gaLoaded=true;
+    window.gtag = function(){dataLayer.push(arguments);};
+    var sc=document.createElement('script');sc.async=true;
+    sc.src='https://www.googletagmanager.com/gtag/js?id=G-TQV03DJDR1';
+    document.head.appendChild(sc);
+    gtag('js', new Date());
+    gtag('config', 'G-TQV03DJDR1', {'send_page_view': true, 'anonymize_ip': true});
+  };
 </script>
 
 <!-- Google Search Console Verification -->
 <meta name="google-site-verification" content="Fo2sS6CGsG2Pymc-4LMOfEaH1vo8ki9N75sLXb2EpqI" />
 
 <!-- SEO & Open Graph -->
-<meta name="description" content="Consultoría para PYMEs de La Mancha. Aplico 20 años de experiencia internacional en transformación empresarial, digitalización y datos. Diagnóstico gratuito."/>
+<meta name="description" content="Consultoría para PYMEs en Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara. 20 años de experiencia internacional en eficiencia, digitalización y datos. Diagnóstico gratuito."/>
 <meta name="keywords" content="consultoría PYME La Mancha, transformación digital, eficiencia operativa, Castilla La Mancha, consultor empresarial Toledo"/>
 <meta property="og:title" content="LEVANTA – Consultoría para PYMEs de La Mancha"/>
 <meta property="og:description" content="Aplico 20 años de experiencia internacional al servicio de las PYMEs de La Mancha. Diagnóstico gratuito sin compromiso."/>
@@ -32,7 +38,15 @@
 <meta name="twitter:title" content="LEVANTA – Consultoría para PYMEs de La Mancha"/>
 <meta name="twitter:description" content="Aplico 20 años de experiencia internacional al servicio de las PYMEs de La Mancha."/>
 <meta name="twitter:image" content="https://i.postimg.cc/5NgyXdFv/Logo-LEVANTA.png"/>
-<link rel="canonical" href="https://levanta-lamancha.es"/>
+<link rel="canonical" href="https://levanta-lamancha.es/"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"LEVANTA – Consultoría de Desarrollo Local","url":"https://levanta-lamancha.es",
+"description":"Consultoría para PYMEs de La Mancha: eficiencia operativa, datos, experiencia de cliente, digitalización, talento e imagen de marca.",
+"telephone":"+34659681684","email":"levantalamancha@levanta.email","founder":{"@type":"Person","name":"Pablo Prensa"},
+"areaServed":[{"@type":"AdministrativeArea","name":"Toledo"},{"@type":"AdministrativeArea","name":"Ciudad Real"},{"@type":"AdministrativeArea","name":"Cuenca"},{"@type":"AdministrativeArea","name":"Albacete"},{"@type":"AdministrativeArea","name":"Guadalajara"},{"@type":"AdministrativeArea","name":"Castilla-La Mancha"}],
+"knowsLanguage":"es","sameAs":["https://www.linkedin.com/in/pprensas"]}
+</script>
+
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -132,6 +146,16 @@ nav{background:#fff;border-bottom:1px solid var(--bd);padding:0 1.25rem;display:
 footer{background:#0d1f35;color:rgba(255,255,255,.6);text-align:center;padding:1.5rem 1.25rem 5.5rem;font-size:12.5px}
 @media(max-width:768px){footer{padding-bottom:80px}}
 footer strong{color:#fff}
+.fconsent{display:flex;gap:.5rem;align-items:flex-start;font-size:12px;color:#4b5563;line-height:1.45;margin:.5rem 0 .6rem;cursor:pointer}
+.fconsent input{margin-top:3px}
+.fconsent a{color:var(--az)}
+#cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;max-width:760px;margin:0 auto;background:#0d1f35;color:#fff;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 8px 30px rgba(0,0,0,.35);font-size:13px;line-height:1.5;display:none}
+#cookie-banner a{color:#86c94a}
+#cookie-banner .cb-btns{display:flex;gap:.6rem;margin-top:.75rem;flex-wrap:wrap}
+#cookie-banner button{border:1px solid #fff;background:transparent;color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+#cookie-banner button.cb-ok{background:#4a6e1a;border-color:#4a6e1a}
+footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
+
 /* IA News */
 .ni-sec{background:#0b1a2e;padding:60px 1.25rem}
 .ni-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(74,110,26,.2);border:1px solid rgba(74,110,26,.4);border-radius:20px;padding:4px 12px;font-size:11px;color:#86c94a;font-weight:600;margin-bottom:.5rem}
@@ -435,11 +459,11 @@ footer strong{color:#fff}
     </div>
     <div class="chatbox">
       <div class="ctop">
-        <div class="cav">PP</div>
-        <div><div class="cname">Pablo Prensa · LEVANTA</div><div class="cstat"><span class="cdot"></span>Disponible</div></div>
+        <div class="cav">IA</div>
+        <div><div class="cname">Asistente virtual de LEVANTA</div><div class="cstat"><span class="cdot"></span>Inteligencia artificial · habla en nombre de Pablo</div></div>
       </div>
       <div class="msgs" id="msgs">
-        <div class="msg bot">¡Hola! Soy Pablo Prensa, fundador de LEVANTA. Llevo más de 20 años trabajando en transformación empresarial a nivel internacional y ahora lo aplico a PYMEs de La Mancha. ¿En qué puedo ayudarte?</div>
+        <div class="msg bot">¡Hola! Soy el asistente virtual de LEVANTA, una inteligencia artificial que responde en nombre de Pablo Prensa, su fundador, con más de 20 años de experiencia internacional en transformación empresarial. Mis respuestas son orientativas y no sustituyen una conversación con Pablo. ¿En qué puedo ayudarte?</div>
       </div>
       <div class="chips" id="chips">
         <span class="chip" onclick="sendChip(this)">¿En qué consiste el diagnóstico gratuito?</span>
@@ -448,9 +472,10 @@ footer strong{color:#fff}
         <span class="chip" onclick="sendChip(this)">¿Cuál es tu experiencia?</span>
       </div>
       <div class="cinp">
-        <input id="chat-in" type="text" placeholder="Escríbeme..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <input id="chat-in" type="text" placeholder="Escribe tu pregunta..." maxlength="500" onkeydown="if(event.key==='Enter')sendMsg()"/>
         <button class="csend" id="csend" onclick="sendMsg()">Enviar</button>
       </div>
+      <div style="font-size:10.5px;color:#6b7280;text-align:center;padding:.4rem .75rem .6rem;line-height:1.4">Asistente con IA. No introduzcas datos personales sensibles. <a href="/politica-privacidad" style="color:#6b7280">Privacidad</a></div>
     </div>
   </div>
 </section>
@@ -483,11 +508,12 @@ footer strong{color:#fff}
         <select id="f-area"><option value="">Selecciona...</option><option>Eficiencia Operativa</option><option>Sistemas de Información</option><option>Experiencia del Cliente</option><option>Digitalización e IT</option><option>Talento y Liderazgo</option><option>Imagen de Marca</option><option>No sé / necesito orientación</option></select>
       </div>
       <div class="fr"><textarea id="f-msg" placeholder="¿Cuál es el principal reto que queréis resolver?"></textarea></div>
+      <label class="fconsent"><input type="checkbox" id="f-consent"/> <span>He leído y acepto la <a href="/politica-privacidad" target="_blank" rel="noopener">Política de privacidad</a> y autorizo el tratamiento de mis datos para responder a mi solicitud. *</span></label>
       <button class="fbtn" id="fbtn-submit" onclick="mostrarResumen()">Solicitar diagnóstico gratuito</button>
       <div class="fnote">✓ Gratis y sin compromiso · Respuesta en &lt;24h</div>
       <div style="margin-top:.75rem;background:#f0f4ff;border:1px solid #c7d4f0;border-radius:7px;padding:.6rem .85rem;display:flex;gap:.5rem;align-items:flex-start">
         <span style="font-size:14px;flex-shrink:0">🔒</span>
-        <p style="font-size:11.5px;color:#4b5563;line-height:1.5;margin:0">Tus datos se usarán solo para enviarte el informe y ofrecerte ayuda personalizada. Cumplimos el <strong>RGPD</strong>. No compartimos tu información con terceros.</p>
+        <p style="font-size:11.5px;color:#4b5563;line-height:1.5;margin:0">Tus datos se usarán solo para responder a tu solicitud. El formulario se envía mediante <strong>Formspree</strong> (proveedor de formularios, con servidores en EE. UU.), que actúa como encargado del tratamiento. No los cedemos a nadie más. Puedes ejercer tus derechos RGPD escribiendo a levantalamancha@levanta.email. Más información en la <a href="/politica-privacidad" style="color:#1a4f82">Política de privacidad</a>.</p>
       </div>
       <div id="fbox-success" style="display:none;margin-top:1rem;background:#eaf3de;border:1px solid var(--vd);border-radius:10px;padding:1.25rem;text-align:center">
         <div style="font-size:2rem;margin-bottom:.5rem">✅</div>
@@ -539,8 +565,8 @@ footer strong{color:#fff}
       <div class="ni-sub-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
         <div>
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#86c94a;margin-bottom:.5rem">📧 Newsletter semanal gratuito</div>
-          <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias del día en tu correo</h3>
-          <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada mañana a las 7h, las 6 noticias más relevantes para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
+          <h3 style="color:#e8f0fe;font-size:1.25rem;font-weight:700;margin:0 0 .6rem;line-height:1.3">Recibe las noticias de la semana en tu correo</h3>
+          <p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.7;margin:0 0 1rem">Cada lunes, las 6 noticias más relevantes para tu empresa, seleccionadas por IA. Gratis, sin spam y con un solo clic para contactarme.</p>
           <div style="display:flex;flex-direction:column;gap:.4rem">
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Gratis para siempre</span>
             <span style="color:rgba(255,255,255,.5);font-size:12px">✓ Sin spam · baja cuando quieras</span>
@@ -562,6 +588,7 @@ footer strong{color:#fff}
             <option>Servicios</option>
             <option>Otros</option>
           </select>
+          <label style="display:flex;gap:.5rem;align-items:flex-start;color:rgba(255,255,255,.55);font-size:11.5px;line-height:1.45;margin:0 0 .7rem;cursor:pointer"><input type="checkbox" id="ni-consent" style="margin-top:2px"/> <span>Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener" style="color:#86c94a">Política de privacidad</a> y quiero recibir la newsletter semanal. Puedo darme de baja en cualquier momento. *</span></label>
           <button id="ni-sub-btn" onclick="niSubscribe()" style="width:100%;background:linear-gradient(90deg,#4a6e1a,#638a28);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px">
             📧 Suscribirme a las noticias semanales
           </button>
@@ -584,7 +611,30 @@ footer strong{color:#fff}
   </div>
 </section>
 
-<footer><strong>LEVANTA – Consultoría de Desarrollo Local · La Mancha</strong><br/>levantalamancha@levanta.email · +34 659 681 684</footer>
+<footer><strong>LEVANTA – Consultoría de Desarrollo Local · La Mancha</strong><br/>levantalamancha@levanta.email · +34 659 681 684<br/>
+<a href="/aviso-legal">Aviso legal</a> · <a href="/politica-privacidad">Política de privacidad</a> · <a href="/politica-cookies">Política de cookies</a> · <a href="#" onclick="levantaCookieOpen();return false;">Configurar cookies</a></footer>
+
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+  <div>Usamos <strong>cookies analíticas de Google Analytics</strong> para saber cómo se usa la web y mejorarla. Solo se activan si las aceptas. Puedes cambiar tu decisión cuando quieras. Más información en la <a href="/politica-cookies">Política de cookies</a>.</div>
+  <div class="cb-btns"><button type="button" class="cb-ok" onclick="levantaCookieSet('granted')">Aceptar</button><button type="button" onclick="levantaCookieSet('denied')">Rechazar</button></div>
+</div>
+<script>
+(function(){
+  var KEY='levanta_cookie_consent';
+  function get(){try{return localStorage.getItem(KEY);}catch(e){return null;}}
+  function show(b){var el=document.getElementById('cookie-banner');if(el)el.style.display=b?'block':'none';}
+  window.levantaCookieSet=function(v){
+    try{localStorage.setItem(KEY,v);}catch(e){}
+    show(false);
+    if(v==='granted'&&window.levantaLoadGA)window.levantaLoadGA();
+    if(v==='denied'&&window.__gaLoaded){location.reload();}   // detiene la analítica ya cargada
+  };
+  window.levantaCookieOpen=function(){show(true);};
+  var c=get();
+  if(c==='granted'){window.levantaLoadGA&&window.levantaLoadGA();}
+  else if(c!=='denied'){show(true);}
+})();
+</script>
 
 <script>
 function toggleMenu(){document.getElementById('mmenu').classList.toggle('open');}
@@ -803,6 +853,7 @@ function mostrarResumen(){
   var n=document.getElementById('f-nombre').value.trim(),em=document.getElementById('f-email').value.trim();
   var emp=document.getElementById('f-empleados').value,sec=document.getElementById('f-sector').value;
   if(!n||!em||!emp||!sec){alert('Por favor, completa los campos obligatorios: nombre, email, nº de empleados y sector.');return;}
+  if(!document.getElementById('f-consent').checked){alert('Para enviar el formulario debes aceptar la Política de privacidad.');return;}
   var e=document.getElementById('f-empresa').value.trim(),t=document.getElementById('f-tel').value.trim();
   var a=document.getElementById('f-area').value,m=document.getElementById('f-msg').value.trim();
   
@@ -847,44 +898,6 @@ function copiarResumen(){
   navigator.clipboard.writeText(t.value).then(function(){var ok=document.getElementById('fcopyok');ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}).catch(function(){document.execCommand('copy');});
 }
 
-var SYS=`Eres Pablo Prensa, fundador de LEVANTA, consultoría para PYMEs de La Mancha (Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara). Respondes SIEMPRE en primera persona.
-
-QUIÉN SOY:
-Soy manchego de pura cepa. Llevo 20 años trabajando en multinacionales como CHEP y Pegasus Solutions como Senior Director de Transformación Empresarial, en Londres, Mánchester y Madrid. He conseguido cosas reales: reducir costes operativos un 30% sin despedir a nadie, rescatar migraciones informáticas que estaban a punto de hundir la empresa, mejorar la experiencia del cliente y digitalizar procesos en equipos de más de 130 personas. Ahora he vuelto a La Mancha para ayudar a empresas como la tuya: pequeñas y medianas, muchas familiares, del campo, la industria o los servicios.
-
-MI LEMA: "Experiencia global al servicio de tu negocio local, sin perder la esencia manchega."
-
-REGLAS ESTRICTAS:
-1. NUNCA inventes datos, casos, precios ni nada que no esté en este prompt. Si no sabes algo, di: "Eso te lo cuento mejor en persona, ¿hablamos?"
-2. Usa lenguaje muy cercano, como si hablaras con un vecino en la plaza del pueblo o en la bodega. Usa "tú", "te", "vamos a ver", "te cuento", "sin complicaciones".
-3. NADA de palabras raras, jerga corporativa ni inglés.
-4. Frases cortas. Máximo 4-5 frases por respuesta.
-5. Sé honesto: si algo es nuevo o no lo sabes, lo dices. Nunca exageres.
-6. Siempre termina ofreciendo el siguiente paso: diagnóstico gratuito, llamada rápida o videollamada sin compromiso.
-7. Si te preguntan por precios, di siempre: "Depende del tamaño de la empresa y del alcance. Lo vemos en el diagnóstico gratuito y te doy un presupuesto cerrado en 48 h."
-8. Si el usuario es de fuera de La Mancha, señala que aunque estoy especializado en La Mancha, podemos hablar y ver si puedo aportar valor.
-9. Nunca suenes como una consultora de Madrid o Barcelona. Suena como un manchego serio que quiere ayudar de verdad.
-
-LO QUE HE CONSEGUIDO (solo usa estos datos, nunca inventes otros):
-- Reducciones de costes de hasta el 30% sin contratar ni despedir a nadie
-- Más de 20 millones de dólares de beneficio recurrente generado en mi carrera
-- Mejoré la satisfacción de clientes un 20%
-- Gestioné equipos de más de 130 personas y presupuestos de 9 millones de dólares
-- Rescaté una migración informática que estaba en crisis
-- Trabajé con más de 200.000 clientes y operaciones en 29 países
-
-QUÉ OFREZCO EN LEVANTA:
-1. EFICIENCIA OPERATIVA: Encontramos dónde se pierde dinero y lo arreglamos. Hasta un 30% de ahorro.
-2. INFORMACIÓN Y DATOS: Un "salpicadero" con los números clave de tu negocio, para saber siempre cómo va todo.
-3. EXPERIENCIA DEL CLIENTE: Que tus clientes estén contentos, repitan y te recomienden.
-4. DIGITALIZACIÓN: Modernizamos tus herramientas sin líos ni sorpresas, a tu ritmo.
-5. TALENTO Y LIDERAZGO: Que tu equipo funcione solo y tú puedas desconectar sin que todo se pare.
-6. IMAGEN DE MARCA: Que te conozcan más allá de tu pueblo o comarca.
-
-CÓMO TRABAJO:
-Primero, un diagnóstico gratuito de 30 minutos, por videollamada o tomando un café aquí en La Mancha. Sin compromiso. Luego, si tiene sentido, un plan adaptado a tu empresa y tu bolsillo. El objetivo es que notes resultados desde el primer trimestre.
-
-CONTACTO: +34 659 681 684 | levantalamancha@levanta.email | Agenda en: calendly.com/pprensas`;
 var hist=[];
 // ── Límite de preguntas: tras 3 preguntas se invita a agendar una llamada ──
 var CHAT_MAX=3, chatSent=0;
@@ -924,7 +937,7 @@ async function sendMsg(){
   }
   
   try{
-    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:1500,system:SYS,messages:hist})});
+    var r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist})});
     var d=await r.json();removeTyping();
     if(!r.ok||d.error){console.error('Chat API error',r.status,d.error);}
     // El modelo puede devolver primero bloques "thinking": nos quedamos solo con los de texto
@@ -1126,6 +1139,7 @@ async function niSubscribe(){
   var sector=document.getElementById('ni-sector').value;
   if(!name){alert('Por favor introduce tu nombre.');return;}
   if(!email||!email.includes('@')){alert('Por favor introduce un email válido.');return;}
+  if(!document.getElementById('ni-consent').checked){alert('Para suscribirte debes aceptar la Política de privacidad.');return;}
   
   // Track newsletter subscription attempt
   if(typeof gtag !== 'undefined'){
