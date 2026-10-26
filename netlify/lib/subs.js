@@ -1,4 +1,5 @@
-import { createHmac } from "crypto";
+import { createHmac, createHash } from "crypto";
+import { getStore } from "@netlify/blobs";
 
 export const SITE = 'https://levanta-lamancha.es';
 export const FROM = 'Pablo Prensa · LEVANTA <noticias@levanta-lamancha.es>';
@@ -63,4 +64,29 @@ p{color:#6b7280;font-size:14px;line-height:1.7;margin-bottom:1.5rem}.btn{display
 <body><div class="card"><div class="logo">LEVANTA</div><div class="sub">Consultoría · La Mancha</div><span class="emoji">${emoji}</span>
 <h1>${heading}</h1><p>${body}</p><a href="${SITE}" class="btn">Volver a LEVANTA</a>
 <div class="footer">levantalamancha@levanta.email · +34 659 681 684</div></div></body></html>`;
+}
+
+// ── Límite diario por IP y total (antispam) ──────────────────────────────────
+// No se guarda la IP: solo un hash con sal secreta y la fecha. Los contadores de días
+// anteriores se borran de vez en cuando. Si el almacenamiento falla, se deja pasar.
+export async function overIpLimit(name, ip, maxPerIp, maxTotal) {
+  try {
+    const store = getStore({ name: `levanta-limits-${name}`, consistency: 'strong' });
+    const day = new Date().toISOString().slice(0, 10);
+    const salt = process.env.CHAT_LIMIT_SALT || process.env.TRIGGER_KEY || '';
+    const kIp = `${day}/ip-${createHash('sha256').update(`${salt}|${day}|${ip || 'sin-ip'}`).digest('hex').slice(0, 24)}`;
+    const kTotal = `${day}/total`;
+    const [a, t] = await Promise.all([store.get(kIp), store.get(kTotal)]);
+    const nIp = parseInt(a || '0', 10), nTotal = parseInt(t || '0', 10);
+    if (nIp >= maxPerIp || nTotal >= maxTotal) return true;
+    await Promise.all([store.set(kIp, String(nIp + 1)), store.set(kTotal, String(nTotal + 1))]);
+    if (Math.random() < 0.05) {
+      const { blobs } = await store.list();
+      await Promise.all(blobs.filter((b) => !b.key.startsWith(day + '/')).map((b) => store.delete(b.key)));
+    }
+    return false;
+  } catch (e) {
+    console.error(`límite ${name}: no disponible, se permite la petición`, e && e.message);
+    return false;
+  }
 }

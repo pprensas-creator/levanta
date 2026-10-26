@@ -1,5 +1,5 @@
 import { getStore } from "@netlify/blobs";
-import { SITE, esc, isValidEmail, sendMail, mailShell, unsubUrl } from "../lib/subs.js";
+import { SITE, esc, isValidEmail, sendMail, mailShell, unsubUrl, overIpLimit } from "../lib/subs.js";
 
 // Solo la web puede llamar a este endpoint desde un navegador
 const cors = {
@@ -15,7 +15,7 @@ const json = (obj, status = 200) => new Response(JSON.stringify(obj), {
 
 const GENERIC_ERROR = 'No he podido procesar la solicitud. Inténtalo de nuevo en unos minutos o escríbeme a levantalamancha@levanta.email.';
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
   if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405);
 
@@ -25,6 +25,8 @@ export default async (req) => {
 
     const emailClean = String(body?.email || '').toLowerCase().trim();
     if (!isValidEmail(emailClean)) return json({ error: 'Escribe un email válido' }, 400);
+
+    if (await overIpLimit('unsub', context && context.ip, 5, 50)) return json({ error: 'Demasiados intentos hoy. Inténtalo mañana o escríbeme a levantalamancha@levanta.email.' }, 429);
 
     // Si el email no está en la lista, se responde igual para no revelar quién está suscrito
     const store = getStore({ name: 'levanta-subs', consistency: 'strong' });

@@ -1,6 +1,6 @@
 import { getStore } from "@netlify/blobs";
 import { createHash } from "crypto";
-import { SITE, OWNER, esc, isValidEmail, sendMail, mailShell } from "../lib/subs.js";
+import { SITE, OWNER, esc, isValidEmail, sendMail, mailShell, overIpLimit } from "../lib/subs.js";
 import { buildDiagnosticoPdf, validateScores, interpretation } from "../lib/diag-pdf.js";
 
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), {
@@ -23,7 +23,7 @@ async function overLimit(email) {
   return false;
 }
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: { 'Access-Control-Allow-Origin': SITE, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
   if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405);
 
@@ -38,6 +38,7 @@ export default async (req) => {
     if (!nombre || !empresa || !isValidEmail(email)) return json({ error: 'Revisa tu nombre, tu empresa y tu email.' }, 400);
     if (!totals) return json({ error: 'Responde las 24 preguntas del test antes de enviar el informe.' }, 400);
 
+    if (await overIpLimit('diag', context && context.ip, 5, 40)) return json({ error: 'Has pedido varios informes hoy. Inténtalo mañana o escríbeme a levantalamancha@levanta.email.' }, 429);
     if (await overLimit(email)) return json({ error: 'Ya te he enviado varios informes hoy. Inténtalo mañana o escríbeme a levantalamancha@levanta.email.' }, 429);
 
     const fecha = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Europe/Madrid' });
