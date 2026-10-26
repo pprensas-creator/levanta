@@ -1,4 +1,6 @@
 import { getStore } from "@netlify/blobs";
+import { cleanSource } from "../lib/news.js";
+import { esc, isActive, unsubUrl as makeUnsubUrl } from "../lib/subs.js";
 
 export default async () => {
   try {
@@ -28,7 +30,7 @@ export default async () => {
       return;
     }
 
-    console.log(`Enviando newsletter a ${keys.length} suscriptores...`);
+    console.log(`Revisando ${keys.length} altas (solo se envía a las confirmadas)...`);
 
     // ── 3. Construir HTML de las noticias ─────────────────────────────────────
     const newsHtml = news.map(n => {
@@ -36,19 +38,19 @@ export default async () => {
         ? `<span style="display:inline-block;background:#eaf3de;color:#4a6e1a;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-bottom:6px;letter-spacing:.5px">● HOY</span><br/>`
         : '';
       const fuenteHtml = (n.url && n.url.startsWith('http'))
-        ? `<a href="${n.url}" style="color:#6b7280;font-size:11px;text-decoration:none">${n.fuente} ↗</a>`
-        : `<span style="color:#9ca3af;font-size:11px">${n.fuente || ''}</span>`;
+        ? `<a href="${n.url}" style="color:#6b7280;font-size:11px;text-decoration:none">${esc(cleanSource(n.fuente))} ↗</a>`
+        : `<span style="color:#9ca3af;font-size:11px">${esc(cleanSource(n.fuente))}</span>`;
       const fechaHtml = n.fecha ? `<span style="color:#9ca3af;font-size:11px;margin-left:8px">${n.fecha}</span>` : '';
 
       return `
       <div style="border:1px solid #e2e8d8;border-radius:10px;padding:16px;margin-bottom:12px;background:#fff">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#638a28;margin-bottom:6px">${n.icono} ${n.servicio}</div>
         ${hoyBadge}
-        <div style="font-size:15px;font-weight:700;color:#1e2a1e;line-height:1.35;margin-bottom:8px">${n.titular}</div>
-        <div style="font-size:13px;color:#4b5563;line-height:1.6;margin-bottom:10px">${n.resumen}</div>
+        <div style="font-size:15px;font-weight:700;color:#1e2a1e;line-height:1.35;margin-bottom:8px">${esc(n.titular)}</div>
+        <div style="font-size:13px;color:#4b5563;line-height:1.6;margin-bottom:10px">${esc(n.resumen)}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
           <div>${fuenteHtml}${fechaHtml}</div>
-          <div style="font-size:12px;color:#4a6e1a;font-style:italic">${n.cta}</div>
+          <div style="font-size:12px;color:#4a6e1a;font-style:italic">${esc(n.cta)}</div>
         </div>
       </div>`;
     }).join('');
@@ -61,14 +63,11 @@ export default async () => {
       try {
         const subData = await subsStore.get(email);
         const sub = subData ? JSON.parse(subData) : { name: '', email };
-        const name = sub.name || 'empresario';
+        // Doble opt-in: solo se envía a quien ha confirmado su email
+        if (!isActive(sub)) { continue; }
+        const name = esc(sub.name || 'empresario');
 
-        // Generar token de baja
-        const { createHmac } = await import('crypto');
-        const token = createHmac('sha256', process.env.TRIGGER_KEY)
-          .update(email.toLowerCase().trim())
-          .digest('hex');
-        const unsubUrl = `https://levanta-lamancha.netlify.app/.netlify/functions/unsubscribe?email=${encodeURIComponent(email)}&token=${token}`;
+        const unsubUrl = makeUnsubUrl(email);
 
         const emailHtml = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">

@@ -1,4 +1,5 @@
 import { getStore } from "@netlify/blobs";
+import { cleanSource } from "../lib/news.js";
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -20,7 +21,7 @@ export default async () => {
     // Una noticia es "NEW" si se añadió en los últimos 7 días
     const news = (data.news || [])
       .filter(n => n && n.url && /^https?:\/\//.test(n.url))
-      .map(n => ({ ...n, isNew: !!n.addedAt && now - new Date(n.addedAt).getTime() < WEEK_MS }));
+      .map(n => ({ ...n, fuente: cleanSource(n.fuente), isNew: !!n.addedAt && now - new Date(n.addedAt).getTime() < WEEK_MS }));
     return new Response(JSON.stringify({ news, updated: data.updated }), { headers });
   } catch (e) {
     console.error('get-news:', e && e.message);
