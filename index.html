@@ -42,16 +42,16 @@
 <meta name="google-site-verification" content="Fo2sS6CGsG2Pymc-4LMOfEaH1vo8ki9N75sLXb2EpqI" />
 
 <!-- SEO & Open Graph -->
-<meta name="description" content="Consultoría para pymes en Toledo, Ciudad Real, Cuenca, Albacete y Guadalajara. 20 años de experiencia internacional en eficiencia, digitalización y datos. Diagnóstico gratuito."/>
+<meta name="description" content="Consultor para pymes de Castilla-La Mancha: eficiencia, datos y digitalización. 20 años en multinacionales. Diagnóstico gratuito sin compromiso."/>
 <meta property="og:title" content="LEVANTA – Consultoría para pymes de La Mancha"/>
-<meta property="og:description" content="Aplico 20 años de experiencia internacional al servicio de las pymes de La Mancha. Diagnóstico gratuito sin compromiso."/>
+<meta property="og:description" content="Consultor para pymes de Castilla-La Mancha: eficiencia, datos y digitalización. 20 años en multinacionales. Diagnóstico gratuito sin compromiso."/>
 <meta property="og:image" content="https://levanta-lamancha.es/og-image.jpg"/>
 <meta property="og:url" content="https://levanta-lamancha.es"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="es_ES"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="LEVANTA – Consultoría para pymes de La Mancha"/>
-<meta name="twitter:description" content="Aplico 20 años de experiencia internacional al servicio de las pymes de La Mancha."/>
+<meta name="twitter:description" content="Consultor para pymes de Castilla-La Mancha: eficiencia, datos y digitalización. 20 años en multinacionales. Diagnóstico gratuito sin compromiso."/>
 <meta name="twitter:image" content="https://levanta-lamancha.es/og-image.jpg"/>
 <link rel="canonical" href="https://levanta-lamancha.es/"/>
 <script type="application/ld+json">
@@ -59,7 +59,7 @@
 "description":"Consultoría para pymes de La Mancha: eficiencia operativa, datos, experiencia de cliente, digitalización, talento e imagen de marca.",
 "telephone":"+34659681684","email":"levantalamancha@levanta.email","founder":{"@type":"Person","name":"Pablo Prensa"},
 "areaServed":[{"@type":"AdministrativeArea","name":"Toledo"},{"@type":"AdministrativeArea","name":"Ciudad Real"},{"@type":"AdministrativeArea","name":"Cuenca"},{"@type":"AdministrativeArea","name":"Albacete"},{"@type":"AdministrativeArea","name":"Guadalajara"},{"@type":"AdministrativeArea","name":"Castilla-La Mancha"}],
-"knowsLanguage":"es","sameAs":["https://www.linkedin.com/in/pprensas"]}
+"knowsLanguage":"es","sameAs":["https://www.linkedin.com/in/pablo-prensa"]}
 </script>
 
 
@@ -71,7 +71,7 @@ a{color:inherit;text-decoration:none}
 nav{background:#fff;border-bottom:1px solid var(--bd);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;height:60px}
 .nl{display:flex;gap:1.25rem;font-size:13px;color:var(--gr)}.nl a{cursor:pointer}.nl a:hover{color:var(--az)}
 .ncta{background:var(--vd);color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none}
-.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}.ham span{width:22px;height:2px;background:var(--az);border-radius:2px;display:block}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:0}.ham span{width:22px;height:2px;background:var(--az);border-radius:2px;display:block}
 .mmenu{display:none;position:fixed;top:60px;left:0;right:0;background:#fff;border-bottom:1px solid var(--bd);padding:1rem 1.25rem;z-index:99;flex-direction:column;gap:.75rem}
 .mmenu a{font-size:15px;color:var(--tx);padding:.4rem 0;border-bottom:1px solid var(--bd);cursor:pointer}
 .mmenu.open{display:flex}
@@ -233,7 +233,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 
 <nav>
   <div onclick="window.scrollTo({top:0,behavior:'smooth'})" style="cursor:pointer;display:flex;align-items:center;gap:8px">
-    <img id="nav-logo-img" src="" alt="LEVANTA" style="height:44px;display:none"/>
+    <img id="nav-logo-img" src="/logo.webp" alt="LEVANTA" width="42" height="44" style="height:44px;width:auto"/>
     <div><div style="font-size:18px;font-weight:700;color:var(--az);letter-spacing:1px">LEVANTA</div><div style="font-size:10px;color:var(--vd);font-weight:500">Consultoría · La Mancha</div></div>
   </div>
   <div class="nl">
@@ -245,7 +245,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
     <a onclick="navTo('contacto')">Contacto</a>
   </div>
   <button class="ncta" onclick="navTo('contacto')">Diagnóstico gratuito</button>
-  <div class="ham" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <button class="ham" id="ham" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mmenu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div class="mmenu" id="mmenu">
   <a onclick="navTo('servicios')">Servicios</a>
@@ -258,8 +258,6 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 </div>
 
 <section class="hero">
-  <div style="display:none"><img id="hero-logo-img" src="" alt="LEVANTA"/></div>
-  <div id="hero-logo-txt" style="margin-bottom:1.25rem"><div style="font-size:2.4rem;font-weight:800;letter-spacing:4px;color:#fff">LEVANTA</div><div style="font-size:.9rem;color:rgba(255,255,255,.8);letter-spacing:2px">Consultoría de Desarrollo Local · La Mancha</div></div>
   <div class="hbadge">📍 Consultoría Local · Experiencia Global</div>
   <h1>Tu empresa de La Mancha, con estándares de multinacional</h1>
   <p class="hsub">Aplico 20 años de experiencia internacional en logística, finanzas y transformación digital al servicio de las pymes de La Mancha.</p>
@@ -278,9 +276,9 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
     <div>
       <!-- Dos fotos lado a lado -->
       <div style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start">
-        <div class="av" style="flex-shrink:0"><img id="pablo-photo" src="" alt="Pablo Prensa"/></div>
+        <div class="av" style="flex-shrink:0"><img id="pablo-photo" src="/pablo.jpg" alt="Pablo Prensa" width="400" height="400"/></div>
         <div style="flex-shrink:0;width:190px;height:190px;border-radius:50%;overflow:hidden;border:4px solid var(--az);box-shadow:0 4px 20px rgba(26,79,130,.15)">
-          <img id="pablo-mancha" src="3.jpeg" alt="Pablo en los molinos de La Mancha" style="width:100%;height:100%;object-fit:cover;object-position:center top" onerror="this.style.display='none'"/>
+          <img id="pablo-mancha" src="/netlify/foto-molinos.jpg" alt="Pablo en los molinos de La Mancha" width="800" height="600" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" onerror="this.style.display='none'"/>
         </div>
       </div>
       <div class="stag" style="margin-top:.75rem">¿Quién soy?</div>
@@ -300,7 +298,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
         </div>
         <div style="position:relative;border-radius:10px;overflow:hidden;min-height:130px;background:linear-gradient(135deg,#1a1a2e 0%,#8b1a1a 50%,#e67e22 100%);display:flex;align-items:center;justify-content:center">
           <span id="placeholder-atardecer" style="color:rgba(255,255,255,.7);font-size:12px">🌅 Atardecer en La Mancha</span>
-          <img src="5.jpeg" alt="Atardecer en La Mancha" id="foto-atardecer"
+          <img src="/netlify/foto-atardecer.jpg" alt="Atardecer en La Mancha" id="foto-atardecer" width="800" height="600" loading="lazy"
             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px"
             onerror="this.style.display='none'"
             onload="document.getElementById('placeholder-atardecer').style.display='none'"/>
@@ -438,7 +436,7 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
       <div style="font-size:1.5rem;margin-bottom:.5rem">📅</div>
       <h3 style="color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;line-height:1.4">¿Quieres saber exactamente dónde está perdiendo dinero tu empresa?</h3>
       <p style="color:rgba(255,255,255,.85);font-size:14px;margin-bottom:1.25rem;line-height:1.6">Agenda una sesión gratuita de 30 minutos conmigo — por videollamada o tomando un café en La Mancha.</p>
-      <a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#fff;color:var(--vd);padding:16px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:.75rem;line-height:1.4">
+      <a href="https://calendly.com/pprensas" target="_blank" onclick="gtag('event','calendly_click',{event_label:'resultado_test'})" style="display:inline-block;background:#fff;color:var(--vd);padding:16px 28px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:.75rem;line-height:1.4">
         📅 Agenda tu diagnóstico gratuito conmigo<br/>
         <span style="font-size:12.5px;font-weight:500;color:var(--az)">30 min · Videollamada o café en La Mancha</span>
       </a>
@@ -669,7 +667,13 @@ footer a{color:rgba(255,255,255,.8);text-decoration:underline;cursor:pointer}
 </script>
 
 <script>
-function toggleMenu(){document.getElementById('mmenu').classList.toggle('open');}
+function setMenu(open){
+  var m=document.getElementById('mmenu'),b=document.getElementById('ham');
+  m.classList.toggle('open',open);
+  b.setAttribute('aria-expanded',open?'true':'false');
+  b.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú');
+}
+function toggleMenu(){setMenu(!document.getElementById('mmenu').classList.contains('open'));}
 function navTo(id){
   var el=document.getElementById(id);
   if(el){
@@ -683,44 +687,8 @@ function navTo(id){
       });
     }
   }
-  document.getElementById('mmenu').classList.remove('open');
+  setMenu(false);
 }
-
-(function(){
-  var pp=document.getElementById('pablo-photo');
-  pp.src='/pablo.jpg';
-  pp.style.display='block';
-  var nl=document.getElementById('nav-logo-img');
-  nl.src='/logo.webp';
-  nl.style.display='block';
-  nl.onerror=function(){this.style.display='none';};
-  var hl=document.getElementById('hero-logo-img');
-  hl.src='/logo.webp';
-  hl.style.display='block';
-  hl.onerror=function(){this.style.display='none';};
-  document.getElementById('hero-logo-txt').style.display='none';
-
-  // Fotos manchegas - archivos locales
-  var imgs = {
-    'pablo-mancha':   'netlify/foto-molinos.jpg',
-    'foto-atardecer': 'netlify/foto-atardecer.jpg'
-  };
-  Object.keys(imgs).forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el)return;
-    el.src=imgs[id];
-    el.style.display='block';
-    el.onerror=function(){this.style.display='none';};
-  });
-
-  // Ocultar placeholder atardecer si la foto carga
-  var at=document.getElementById('foto-atardecer');
-  var ph=document.getElementById('foto-atardecer-placeholder');
-  if(at&&ph){
-    at.onload=function(){ph.style.display='none';};
-    at.onerror=function(){at.style.display='none';ph.style.display='block';};
-  }
-})();
 
 var tipEl=document.createElement('div');
 tipEl.style.cssText='display:none;position:fixed;z-index:9999;background:#1e2a1e;color:#fff;font-size:13px;line-height:1.6;padding:.75rem 1rem;border-radius:10px;max-width:280px;box-shadow:0 6px 24px rgba(0,0,0,.4);pointer-events:none';
@@ -965,7 +933,7 @@ function chatLimitReached(){
   var m=document.getElementById('msgs'),d=document.createElement('div');
   d.className='msg bot';d.id='chat-limit';
   d.innerHTML='Has llegado al límite de preguntas de este asistente. Para seguir hablando de tu negocio, agenda una llamada gratuita conmigo:<br/>'
-    +'📅 <a href="https://calendly.com/pprensas" target="_blank" rel="noopener">calendly.com/pprensas</a><br/>'
+    +'📅 <a href="https://calendly.com/pprensas" target="_blank" onclick="gtag(\'event\',\'calendly_click\',{event_label:\'informe_pdf\'})" rel="noopener">calendly.com/pprensas</a><br/>'
     +'📞 <a href="tel:+34659681684">+34 659 681 684</a><br/>'
     +'✉️ <a href="mailto:levantalamancha@levanta.email">levantalamancha@levanta.email</a>';
   m.appendChild(d);m.scrollTop=m.scrollHeight;
@@ -1061,7 +1029,7 @@ function generarPDF(){
     +'<div style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.7;margin-top:.2rem">Senior Director Internacional · CHEP · Pegasus Solutions · +20 años<br/>'
     +'📞 <a href="tel:+34659681684" style="color:rgba(255,255,255,.8);text-decoration:none">+34 659 681 684</a> &nbsp;·&nbsp; '
     +'✉️ <a href="https://mail.google.com/mail/?view=cm&to=levantalamancha@levanta.email" target="_blank" style="color:rgba(255,255,255,.8);text-decoration:none">levantalamancha@levanta.email</a></div>'
-    +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;margin-top:.5rem;background:#4a6e1a;padding:4px 11px;border-radius:5px;font-size:.75rem;font-weight:700;color:#fff;text-decoration:none">📅 Agenda gratis: calendly.com/pprensas</a>'
+    +'<a href="https://calendly.com/pprensas" target="_blank" onclick="gtag(\'event\',\'calendly_click\',{event_label:\'informe_pdf\'})" style="display:inline-block;margin-top:.5rem;background:#4a6e1a;padding:4px 11px;border-radius:5px;font-size:.75rem;font-weight:700;color:#fff;text-decoration:none">📅 Agenda gratis: calendly.com/pprensas</a>'
     +'</div></div></div>';
   var old=document.getElementById('pdf-overlay');if(old)old.remove();
   document.body.appendChild(overlay);
@@ -1229,7 +1197,7 @@ async function niSubscribe(ev){
         +'<div style="font-size:2.5rem;margin-bottom:.6rem">✅</div>'
         +'<div style="color:#86c94a;font-weight:700;font-size:1.1rem;margin-bottom:.4rem">¡Casi listo! Confirma tu email</div>'
         +'<p style="color:rgba(255,255,255,.6);font-size:13.5px;line-height:1.6;margin:0 0 1rem">Te he enviado un email con un enlace de confirmación. Pulsa el enlace para activar tu suscripción.<br/>Si no lo ves, revisa la carpeta de spam. El enlace caduca en 30 días.</p>'
-        +'<a href="https://calendly.com/pprensas" target="_blank" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
+        +'<a href="https://calendly.com/pprensas" target="_blank" onclick="gtag(\'event\',\'calendly_click\',{event_label:\'newsletter_ok\'})" style="display:inline-block;background:#4a6e1a;color:#fff;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none">📅 Agenda tu diagnóstico gratuito</a>'
         +'</div>';
     }else{
       btn.disabled=false;btn.textContent='📧 Suscribirme a las noticias semanales';
