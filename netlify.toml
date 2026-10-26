@@ -1,5 +1,7 @@
 [build]
   publish = "."
+  # Seguridad: el despliegue falla si queda algún dato legal sin completar
+  command = "! grep -q '{{DOMICILIO}}' aviso-legal.html politica-privacidad.html"
   functions = "netlify/functions"
 
 [functions."weekly-newsletter"]
@@ -16,4 +18,4 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     # En modo "solo informar": no bloquea nada, anota en la consola del navegador lo que bloquearía.
     # Cuando no haya avisos, se cambia a Content-Security-Policy (aplicar).
-    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.postimg.cc https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io"
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io"
