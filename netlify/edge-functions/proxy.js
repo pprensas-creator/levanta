@@ -2,7 +2,7 @@
 // - La clave vive solo en Netlify (ANTHROPIC_API_KEY).
 // - El modelo, las instrucciones del asistente y los límites los fija el servidor:
 //   el navegador solo envía los mensajes de la conversación.
-import SYSTEM_PROMPT from './chat-prompt.js';
+import SYSTEM_PROMPT from '../lib/chat-prompt.js';
 
 const MODEL = Deno.env.get('ANTHROPIC_MODEL') || 'claude-sonnet-5-5';
 const MAX_TOKENS = 1500;
