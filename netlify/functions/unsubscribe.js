@@ -1,5 +1,6 @@
 import { getStore } from "@netlify/blobs";
 import { createHmac } from "crypto";
+import { esc } from "../lib/subs.js";
 
 // Genera o verifica el token de baja (HMAC-SHA256 del email con la TRIGGER_KEY)
 function generateToken(email) {
@@ -73,7 +74,7 @@ export default async (req) => {
     if (!existing) {
       return new Response(
         htmlPage('Ya dado de baja', '✅', 'Ya estabas dado de baja',
-          `El email <strong>${email}</strong> no está en nuestra lista. Es posible que ya te hayas dado de baja anteriormente.`),
+          `El email <strong>${esc(email)}</strong> no está en nuestra lista. Es posible que ya te hayas dado de baja anteriormente.`),
         { status: 200, headers: { 'Content-Type': 'text/html;charset=utf-8' } }
       );
     }
@@ -92,7 +93,7 @@ export default async (req) => {
           subject: `🔕 Baja en IA News: ${email}`,
           html: `<div style="font-family:Arial,sans-serif;padding:24px;max-width:500px">
             <h2 style="color:#dc2626">Baja en newsletter</h2>
-            <p style="color:#4b5563">El usuario <strong>${email}</strong> se ha dado de baja de IA News el ${new Date().toLocaleDateString('es-ES')}.</p>
+            <p style="color:#4b5563">El usuario <strong>${esc(email)}</strong> se ha dado de baja de IA News el ${new Date().toLocaleDateString('es-ES')}.</p>
           </div>`
         })
       });
@@ -100,12 +101,13 @@ export default async (req) => {
 
     return new Response(
       htmlPage('Baja confirmada', '👋', 'Te has dado de baja correctamente',
-        `El email <strong>${email}</strong> ha sido eliminado de nuestra lista. Ya no recibirás más correos de LEVANTA IA News.<br/><br/>Si fue un error, puedes volver a suscribirte en la web.`,
+        `El email <strong>${esc(email)}</strong> ha sido eliminado de nuestra lista. Ya no recibirás más correos de LEVANTA IA News.<br/><br/>Si fue un error, puedes volver a suscribirte en la web.`,
         '#4a6e1a'),
       { status: 200, headers: { 'Content-Type': 'text/html;charset=utf-8' } }
     );
 
   } catch (e) {
+    console.error('unsubscribe:', e && e.message);
     return new Response(
       htmlPage('Error', '⚠️', 'Error al procesar la baja',
         'Ha ocurrido un error. Por favor escríbenos a <strong>levantalamancha@levanta.email</strong> y te daremos de baja manualmente.'),
