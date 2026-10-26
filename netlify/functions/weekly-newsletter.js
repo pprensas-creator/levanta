@@ -7,7 +7,7 @@ export default async () => {
     const today = new Date().toISOString().split('T')[0];
     const fechaEs = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    // ── 1. Leer noticias del día (generadas por trigger-news o daily-news) ────
+    // ── 1. Leer noticias del día (generadas por trigger-news o weekly-news) ────
     const newsStore = getStore({ name: 'levanta-news', consistency: 'strong' });
     const cached = await newsStore.get(today);
     if (!cached) {

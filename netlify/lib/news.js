@@ -82,77 +82,96 @@ function isToday(isoDate) {
   return isoDate.slice(0, 10) === today;
 }
 
-// ── FUNCIÓN PRINCIPAL (compartida por el disparo manual y el programado) ─────
+// ── FUNCIÓN PRINCIPAL: renovación SEMANAL ───────────────────────────────────
+// Reglas:
+//  1. Solo se publican noticias REALES: título/fuente/URL/fecha salen del artículo de NewsAPI
+//     (la IA solo elige cuál y redacta el titular y el resumen).
+//  2. Si para un servicio no hay ningún artículo nuevo, se mantiene la noticia existente.
+//  3. Las noticias añadidas en esta ejecución llevan addedAt = ahora (la web las marca "NEW").
+const MAX_USED = 200;
+
 export async function generateNews() {
   const NEWS_API_KEY = process.env.NEWS_API_KEY;
   if (!NEWS_API_KEY) throw new Error('NEWS_API_KEY no configurada en Netlify');
   if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY no configurada en Netlify');
 
-  {
-    const today = new Date().toISOString().split('T')[0];
-    const fechaEs = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const store = getStore({ name: 'levanta-news', consistency: 'strong' });
+  const today = new Date().toISOString().split('T')[0];
+  const nowIso = new Date().toISOString();
+  const fechaEs = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    // ── PASO 1: Recopilar artículos reales por servicio, TODO EN PARALELO ────
-    // (antes era secuencial y superaba el límite de tiempo de la función)
-    const articulosPorServicio = await Promise.all(SERVICIOS.map(async (svc) => {
-      const kw = svc.keywords.split(' ')[0];
-      const [manchaResults, provinciaAll, nacionalResults] = await Promise.all([
-        buscarNoticias(`("castilla la mancha" OR "la mancha") (${svc.keywords})`, NEWS_API_KEY, 3),
-        buscarNoticias(`(Toledo OR Guadalajara OR Cuenca OR Albacete OR "Ciudad Real") (${svc.keywords})`, NEWS_API_KEY, 3),
-        buscarNoticias(`${kw} empresa españa`, NEWS_API_KEY, 5),
-      ]);
-      // La provincia solo cuenta si no hay resultados de la región
-      const provinciaResults = manchaResults.length ? [] : provinciaAll;
+  // Estado actual (lo que ya está publicado)
+  let current = { news: [], usedUrls: [] };
+  try {
+    const raw = await store.get('current');
+    if (raw) current = JSON.parse(raw);
+  } catch (e) {
+    console.error('No se pudo leer el estado actual:', e && e.message);
+  }
+  const existingById = new Map((current.news || []).map(n => [n.id, n]));
+  const used = new Set([...(current.usedUrls || []), ...(current.news || []).map(n => n.url).filter(Boolean)]);
 
-      const seen = new Set();
-      const combinados = [...manchaResults, ...provinciaResults, ...nacionalResults].filter(a => {
-        if (seen.has(a.url)) return false;
-        seen.add(a.url);
-        return true;
-      }).slice(0, 5);
+  // ── PASO 1: artículos reales por servicio, en paralelo ──────────────────────
+  const porServicio = await Promise.all(SERVICIOS.map(async (svc) => {
+    const kw = svc.keywords.split(' ')[0];
+    const [manchaResults, provinciaAll, nacionalResults] = await Promise.all([
+      buscarNoticias(`("castilla la mancha" OR "la mancha") (${svc.keywords})`, NEWS_API_KEY, 3),
+      buscarNoticias(`(Toledo OR Guadalajara OR Cuenca OR Albacete OR "Ciudad Real") (${svc.keywords})`, NEWS_API_KEY, 3),
+      buscarNoticias(`${kw} empresa españa`, NEWS_API_KEY, 5),
+    ]);
+    const provinciaResults = manchaResults.length ? [] : provinciaAll;
+    const existing = existingById.get(svc.id);
 
-      return {
-        servicio: svc,
-        articulos: combinados,
-        tieneProvincia: provinciaResults.length > 0,
-        tieneLaMancha: manchaResults.length > 0 || provinciaResults.length > 0,
-      };
-    }));
+    const seen = new Set();
+    const nuevos = [...manchaResults, ...provinciaResults, ...nacionalResults].filter(a => {
+      if (seen.has(a.url)) return false;
+      seen.add(a.url);
+      if (used.has(a.url)) return false;                       // ya publicada antes
+      if (!/^https?:\/\//.test(a.url)) return false;
+      // no sustituir por algo más antiguo que lo que ya está publicado
+      if (existing && existing.fechaArticulo && (a.publishedAt || '').slice(0, 10) < existing.fechaArticulo) return false;
+      return true;
+    }).slice(0, 5);
 
-    // ── PASO 2: Formatear artículos para el prompt de Claude ─────────────────
-    const resumenArticulos = articulosPorServicio.map(({ servicio, articulos, tieneProvincia, tieneLaMancha }) => {
-      if (!articulos.length) {
-        return `SERVICIO ${servicio.id} - ${servicio.nombre}: Sin artículos disponibles en los últimos 30 días.`;
-      }
+    return {
+      servicio: svc,
+      articulos: nuevos,
+      tieneProvincia: provinciaResults.length > 0,
+      tieneLaMancha: manchaResults.length > 0 || provinciaResults.length > 0,
+    };
+  }));
+
+  const conNuevos = porServicio.filter(x => x.articulos.length > 0);
+
+  // ── PASO 2: la IA elige un artículo por servicio y redacta titular y resumen ──
+  let picks = [];
+  if (conNuevos.length > 0) {
+    const resumenArticulos = conNuevos.map(({ servicio, articulos, tieneProvincia, tieneLaMancha }) => {
       const lista = articulos.map((a, i) =>
-        `  [${i + 1}] Fuente: ${a.source.name} | Título: ${a.title} | URL: ${a.url} | Fecha: ${a.publishedAt?.slice(0, 10)}`
+        `  [${i + 1}] Fuente: ${a.source.name} | Título: ${a.title} | Descripción: ${(a.description || '').slice(0, 300)} | Fecha: ${a.publishedAt?.slice(0, 10)}`
       ).join('\n');
-      const nota = tieneLaMancha && !tieneProvincia
-        ? '⭐⭐ Hay artículos de La Mancha (región)'
-        : tieneProvincia
-          ? '⭐ Hay artículos de PROVINCIA (Toledo/Guadalajara/Cuenca/Albacete/Ciudad Real)'
-          : '(sin resultados locales, usar mejor nacional)';
+      const nota = tieneProvincia
+        ? '⭐ artículos de PROVINCIA (Toledo/Guadalajara/Cuenca/Albacete/Ciudad Real)'
+        : tieneLaMancha
+          ? '⭐⭐ artículos de La Mancha (región)'
+          : '(sin resultados locales, usar el mejor nacional)';
       return `SERVICIO ${servicio.id} - ${servicio.nombre} ${nota}:\n${lista}`;
     }).join('\n\n');
 
-    // ── PASO 3: Claude elige y reformatea ────────────────────────────────────
     const prompt = `Hoy es ${fechaEs}. Eres editor de noticias para PYMEs de La Mancha (vino, aceite, manufactura, agroalimentario, turismo rural, servicios locales).
 
-Aquí tienes artículos reales de medios españoles (últimos 30 días). Para cada uno de los 6 servicios, elige el artículo MÁS RELEVANTE y conviértelo en una noticia útil para el empresario manchego.
+Aquí tienes artículos reales de medios españoles. Para cada servicio, elige el artículo MÁS RELEVANTE para el empresario manchego (si ninguno es relevante, omite ese servicio) y redacta titular y resumen.
 
 REGLAS CRÍTICAS:
-- Usa SOLO la información de los artículos proporcionados. No inventes ni añadas datos.
-- El campo "url" debe ser EXACTAMENTE la URL del artículo elegido, sin modificarla.
-- El campo "fuente" debe ser EXACTAMENTE el nombre de la fuente del artículo elegido.
-- El campo "fechaArticulo" debe ser EXACTAMENTE la fecha del artículo elegido (formato YYYY-MM-DD), sin modificarla.
-- Prioridad: ⭐⭐ provincia específica > ⭐ región La Mancha > nacional. Usa siempre el artículo de mayor prioridad disponible.
-- Si no hay artículos disponibles para un servicio, pon url:"", fuente:"" y fechaArticulo:"" (cadena vacía, NO pongas la fecha de hoy).
+- Usa SOLO la información del artículo elegido. No inventes datos, cifras ni citas.
+- "elegido" es el número [n] del artículo dentro de su servicio.
+- Prioridad: provincia específica > región La Mancha > nacional.
 
-ARTÍCULOS DISPONIBLES:
+ARTÍCULOS NUEVOS:
 ${resumenArticulos}
 
-RESPONDE SOLO con array JSON sin markdown:
-[{"id":1,"servicio":"nombre exacto","icono":"emoji","titular":"titular periodístico max 85 chars","resumen":"2 frases: qué dice el artículo y por qué importa a una PYME manchega.","fuente":"nombre exacto de la fuente","url":"URL exacta","fechaArticulo":"YYYY-MM-DD fecha exacta del artículo","cta":"pregunta directa al empresario"}]`;
+RESPONDE SOLO con un array JSON sin markdown:
+[{"id":1,"elegido":1,"titular":"titular periodístico, máx. 85 caracteres","resumen":"2 frases: qué dice el artículo y por qué importa a una PYME manchega.","cta":"pregunta directa al empresario"}]`;
 
     const claudeResp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -168,41 +187,51 @@ RESPONDE SOLO con array JSON sin markdown:
         messages: [{ role: 'user', content: prompt }]
       })
     });
-
     const claudeData = await claudeResp.json();
     if (claudeData.error) throw new Error('Claude error: ' + claudeData.error.message);
-
     const text = (claudeData.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     const match = text.match(/\[[\s\S]*\]/);
     if (!match) throw new Error('Claude no devolvió JSON válido. Raw: ' + text.slice(0, 300));
-
-    const news = JSON.parse(match[0]);
-
-    // Enriquecer con fecha formateada e isToday desde la fecha real del artículo
-    const cleanNews = news.map(n => {
-      const urlOk = (n.url && typeof n.url === 'string' && n.url.startsWith('http')) ? n.url : '';
-      const fechaArt = n.fechaArticulo || '';
-      return {
-        ...n,
-        url: urlOk,
-        fecha: fechaArt ? formatFecha(fechaArt) : '',
-        isToday: isToday(fechaArt),
-        fechaArticulo: fechaArt,
-      };
-    });
-
-    // Guardar en Netlify Blobs
-    const store = getStore({ name: 'levanta-news', consistency: 'strong' });
-    await store.set(today, JSON.stringify({ news: cleanNews, date: today, generated: new Date().toISOString() }));
-
-
-    return {
-      ok: true,
-      date: today,
-      count: cleanNews.length,
-      provinciaHits: articulosPorServicio.filter(a => a.tieneProvincia).length,
-      manchaHits: articulosPorServicio.filter(a => a.tieneLaMancha).length,
-      todayHits: cleanNews.filter(n => n.isToday).length,
-    };
+    picks = JSON.parse(match[0]);
   }
+
+  // ── PASO 3: fusionar con lo existente ───────────────────────────────────────
+  const merged = [];
+  let added = 0;
+  for (const svc of SERVICIOS) {
+    const bloque = porServicio.find(x => x.servicio.id === svc.id);
+    const pick = picks.find(p => Number(p.id) === svc.id);
+    const art = pick && bloque ? bloque.articulos[Number(pick.elegido) - 1] : null;
+    if (art && pick.titular && pick.resumen && !used.has(art.url)) {   // no repetir la misma noticia en dos servicios
+      merged.push({
+        id: svc.id,
+        servicio: svc.nombre,
+        icono: svc.icono,
+        titular: String(pick.titular).slice(0, 140),
+        resumen: String(pick.resumen).slice(0, 500),
+        cta: String(pick.cta || '').slice(0, 200),
+        fuente: art.source.name,               // siempre del artículo real
+        url: art.url,                          // siempre del artículo real
+        fechaArticulo: (art.publishedAt || '').slice(0, 10),
+        fecha: formatFecha(art.publishedAt),
+        addedAt: nowIso,
+      });
+      used.add(art.url);
+      added++;
+    } else if (existingById.has(svc.id)) {
+      merged.push(existingById.get(svc.id));   // nada nuevo: se mantiene la existente
+    }
+  }
+
+  const payload = {
+    news: merged,
+    updated: added > 0 ? nowIso : (current.updated || nowIso),
+    lastRun: nowIso,
+    usedUrls: [...used].slice(-MAX_USED),
+  };
+  await store.set('current', JSON.stringify(payload));
+  // Compatibilidad con la newsletter semanal, que lee la clave del día
+  await store.set(today, JSON.stringify({ news: merged, date: today, generated: nowIso }));
+
+  return { ok: true, date: today, added, kept: merged.length - added, total: merged.length };
 }
